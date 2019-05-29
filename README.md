@@ -1,5 +1,5 @@
 # 项目介绍
-从vue-cli2.0 更新到 vue-cli 3.0 , nodejs(v10.15.3)和npm(v5.8.0)更新。
+从vue-cli2.0 更新到 vue-cli 3.0 , nodejs(v9.10.1)和npm(v5.8.0)更新。
 > npm 在nodev10 下面会有警告 <(`^′)>,建议使用nodev9+版本  
 
 # 项目环境
@@ -11,7 +11,7 @@
     * Darcula Theme - WebStorm Edition  一 WebStorm 主题
     * ...
 * git bash
-* nodejs v10.15.3
+* nodejs  https://nodejs.org/en/blog/release/v9.10.1/
 > 安装 VS Code（开发工具） , git , nodejs
 
 # 准备工作
