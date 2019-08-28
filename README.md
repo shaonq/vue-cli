@@ -1,6 +1,5 @@
 # 项目介绍
-从vue-cli2.0 更新到 vue-cli 3.0 , nodejs(v8.9.3)和npm(v5.6.0)更新。
-> npm 在nodev10 下面会有警告 <(`^′)>
+vue-cli 3.0 , nodejs(v8.9.3)和npm(v5.6.0)更新。
 
 # 项目环境
 * VS Code ( 包含插件 )
