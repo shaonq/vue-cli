@@ -43,6 +43,26 @@
       padding: 12px 12px 12px 16px;
   }
 
+  .el-message-box {
+      padding-bottom: 8px;
+
+      &__header {
+          padding: 12px 12px 8px;
+      }
+
+      &__content {
+          padding: 8px 12px;
+      }
+
+      &__btns {
+          padding: 4px 12px 0;
+      }
+
+      &__headerbtn {
+          top: 8px;
+      }
+  }
+
   .el-dialog__header {
       padding: 12px 16px 12px;
       background: #eee;
@@ -63,4 +83,18 @@
 
   .el-dialog__footer {
       padding: 8px 16px 16px;
+  }
+
+  /**  form */
+  .el-form-item {
+      margin-bottom: 16px;
+
+      &__error {
+          padding-top: 2px;
+      }
+
+      &__label,
+      &__content {
+          line-height: 36px;
+      }
   }

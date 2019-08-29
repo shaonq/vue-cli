@@ -3,11 +3,21 @@
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="活动名称">
         <el-input v-model="form.name"></el-input>
+      </el-form-item>      
+      <el-form-item label="活动描述">
+        <el-input type="textarea" v-model="form.desc"></el-input>
       </el-form-item>
-      <el-form-item label="活动区域">
-        <el-select v-model="form.region" placeholder="请选择活动区域">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
+      <el-form-item label="负责人"> <el-avatar size="medium" icon="el-icon-user-solid"></el-avatar></el-form-item>
+      <el-form-item label="管理员"> <el-avatar size="medium" icon="el-icon-user-solid"></el-avatar></el-form-item>
+      <el-form-item label="成员"> <el-avatar size="medium" icon="el-icon-user-solid"></el-avatar></el-form-item>
+      <el-form-item label="归属">
+        <el-select  value='个人' placeholder="请选择归属">
+          <el-option label="个人" value="shanghai"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="公开范围">
+        <el-select value='仅项目成员可见'  placeholder="请选择公开范围">
+          <el-option label="仅项目成员可见" value="shanghai"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="活动时间">
@@ -35,9 +45,6 @@
           <el-radio label="线上品牌商赞助"></el-radio>
           <el-radio label="线下场地免费"></el-radio>
         </el-radio-group>
-      </el-form-item>
-      <el-form-item label="活动形式">
-        <el-input type="textarea" v-model="form.desc"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">立即创建</el-button>
