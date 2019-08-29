@@ -1,1 +1,9 @@
-@import "./nui.css";
+@import './skin/nui.scss';
+@import './skin/index.css';
+@import './skin/el-skin.scss';
+
+body,input,button,textarea,select {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+}
+
+

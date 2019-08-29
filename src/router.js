@@ -1,23 +1,41 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './views/Home.vue'
+import VueRouter from 'vue-router'
+import App from './App.vue'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    }
-  ]
+const view = path => {
+  return Vue.extend(require(`@/views/${path}.vue`).default)
+  // ()=>import('@/views/Index.vue')
+}
+export default new VueRouter({
+  routes: [{
+    path: '/',
+    component: App,
+    redirect:'/common',
+    children: [{
+      path: 'common',
+      component: view('Index'),
+      children: [
+        {
+          path: '',
+          component: view('common/Index'),
+          children: [
+            {
+              path: '',
+              component: view('common/Form')
+            },
+            {
+              path: 'notice',
+              component: view('common/Notice')
+            },
+            {
+              path: 'dialog',
+              component: view('common/Dialog')
+            }
+          ]
+        }
+      ]
+    }]
+  }]
 })
