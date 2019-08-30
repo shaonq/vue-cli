@@ -11,7 +11,6 @@ vue-cli v3.0 , nodejs v8.9.3 , npm v6.11.0
     * ...
 * git bash
 * nodejs  https://nodejs.org/en/blog/release/v8.9.3/
-> 安装 VS Code（开发工具） , git , nodejs
 
 # 准备工作
 ```
