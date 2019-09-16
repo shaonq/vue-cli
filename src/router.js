@@ -32,7 +32,11 @@ export default new VueRouter({
             {
               path: 'dialog',
               component: view('common/Dialog')
-            }
+            },
+            {
+              path: 'worksheet',
+              component: view('common/Worksheet')
+            },
           ]
         }
       ]

@@ -1,9 +1,22 @@
-@import './skin/nui.scss';
+body { -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.428571428; color: #555; background-color: #fff }
+h1, h2, h3, h4, h5, h6 { font-size: 100%; margin: 0; font-weight: 400 }
+body, form, input, ul, ol, dl, dd, p { margin: 0 }
+ul, ol { list-style-type: none; padding: 0 }
+address, cite, dfn, em, i, var { font-style: normal }
+em, i { font-weight: normal }
+img { border-style: none; display: inline-block; height: auto; vertical-align: top; max-width: 100%; width: auto\9 }
+input, button, textarea, select { outline-width: 0 }
+a { text-decoration: none; background-color: transparent }
+article, aside, details, figcaption, figure, footer, header, menu, nav, section { display: block }
+table { border-collapse: collapse; border-spacing: 0; width: 100% }
+code, kbd, pre, samp { font-family: monaco, menlo, consolas, 'courier new', courier, monospace; white-space: pre-wrap; word-wrap: break-word }
+body, input, button, textarea, select { font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif; }
+.cl:before,.cl:after { content:""; display:table }
+.cl:after { clear:both }
+.fr { float:right }
+.fl { float:left }
+
 @import './skin/index.css';
-@import './skin/el-skin.scss';
-
-body,input,button,textarea,select {
-    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
-}
-
+@import './skin/_el-skin.scss';
+@import './skin/okr.scss';
 

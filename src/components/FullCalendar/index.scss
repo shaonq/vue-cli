@@ -1,0 +1,194 @@
+$blue :#398DEE;
+$orange :#eabe38;
+$red :#f43;
+
+.__calendar {
+    &-flex {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+
+        &__item {
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+        }
+    }
+
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+    }
+
+    td {
+        border: 1px solid #eee;
+    }
+
+    &__thead {
+        td {
+            padding: 8px;
+        }
+    }
+
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    user-select: none; // 某一条事件
+
+    &-title {
+        position: relative;
+        cursor: pointer;
+        margin: 3px 5px 0;
+        height: 18px;
+        line-height: 18px;
+        padding: 0 4px;
+        border-radius:2px;
+        font-size: 12px;
+        background-color: rgba($blue, .91);
+        color: #fff;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        &.is-start, &.is-end {
+            &::before{
+                content:''
+            }
+        }
+
+        cite {
+            display: none;
+        }
+    }
+
+    // 某一天的列表
+    &-item {
+        position: relative;
+        height: 120px;
+        border: 1px solid transparent;
+        box-sizing: border-box;
+        transition: border .2s, background-color .2s, ;
+        opacity: .1; // 当前月
+
+        // 法定节假日
+        &-holiday {
+
+            &,
+            &week {
+                &:before {
+                    content: '\4F11';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    display: block;
+                    width: 15px;
+                    height: 15px;
+                    color: #fff;
+                    background: $red;
+                    font-size: 13px;
+                    text-align: left;
+                    text-indent: 1px;
+                    line-height: 14px;
+                    overflow: hidden;
+                }
+            }
+
+            &week:before {
+                content: '\73ED';
+                background: #555;
+            }
+        }
+
+        &-show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        // 有样式标识的
+        &-active {
+            background-color: rgba($orange, .05);
+            border: 1px solid rgba($orange, .1);
+        }
+
+        &-today {
+            color: $red;
+        }
+
+        // 遮罩层
+        &-mask {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+        }
+
+        // 内部内容
+        &-hd {
+            position: relative;
+            opacity: .8;
+            margin-left: 5px;
+            margin-right: 5px;
+            text-align: right;
+        }
+
+        &-bd {
+            position: relative;
+        }
+
+        &-fd {
+            position: relative;
+            cursor: pointer;
+            margin-left: 5px;
+            margin-right: 5px;
+            line-height: 16px;
+            color: #888;
+            font-size: 12px;
+            text-align: right;
+        }
+    }
+
+    &-week,
+    &-day {
+        .__calendar-item {
+            height: 594px;
+            opacity: 1;
+        }
+    }
+
+    &-day {
+        .__calendar-title {
+            display: inline-block;
+            width: 19%;
+            margin-left: 0.5%;
+            margin-right: 0.5%;
+            height: 120px;
+            white-space: normal;
+            word-break: break-all;
+            overflow: hidden;
+            border: 1px solid #e2e2e2;
+            padding: 10px;
+            box-sizing: border-box;
+            background: #fff;
+            color: #555;
+        }
+    }
+
+    // 头部
+    &-head {
+        font-size: 18px;
+        padding: 16px 0;
+        line-height: 32px;
+
+        &__title {
+            display: inline-block;
+            padding: 0 16px;
+        }
+
+        * {
+            vertical-align: top
+        }
+    }
+}

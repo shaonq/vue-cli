@@ -1,21 +1,21 @@
 <template>
-  <div class="page-home">
-    <div class="page-home__side">
-      <div>
-        <h5>list</h5>
-        <router-link :to="{path:'/common'}">表单</router-link>
-        <router-link :to="{path:'/common/notice'}">提示弹窗</router-link>
-        <router-link :to="{path:'/common/dialog'}">Dialog</router-link>
-      </div>
-    </div>
-    <div class="page-home__body">
-      <router-view></router-view>
+<div class="page-home">
+  <div class="page-home__side">
+    <div>
+      <h5>list</h5>
+      <router-link :to="{path:'/common'}">表单</router-link>
+      <router-link :to="{path:'/common/notice'}">提示弹窗</router-link>
+      <router-link :to="{path:'/common/dialog'}">Dialog</router-link>
+      <router-link :to="{path:'/common/worksheet'}">worksheet</router-link>
     </div>
   </div>
+  <div class="page-home__body">
+    <router-view></router-view>
+  </div>
+</div>
 </template>
 
 <script>
-
 export default {
   name: 'home',
   data() {
@@ -39,7 +39,7 @@ export default {
   &__side {
     position: absolute;
     width: 200px;
-    & > div {
+    &>div {
       height: 100%;
       overflow-y: hidden;
       padding: 20px;
@@ -73,6 +73,7 @@ export default {
   }
   &__body {
     margin-left: 200px;
+    overflow: hidden;
   }
 }
 </style>

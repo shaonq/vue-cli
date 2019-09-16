@@ -1,8 +1,8 @@
 
 
-import HelloWorld from './HelloWorld.vue'
+import FullCalendar from './FullCalendar/Index.vue'
 export default {
     install: function (Vue) {
-        Vue.component('n-code', HelloWorld)
+        Vue.component('full-calendar', FullCalendar)
     }
 }
