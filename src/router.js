@@ -37,6 +37,10 @@ export default new VueRouter({
               path: 'worksheet',
               component: view('common/Worksheet')
             },
+            {
+              path: 'naotu',
+              component: view('common/KityMinder')
+            },
           ]
         }
       ]

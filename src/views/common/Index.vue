@@ -7,6 +7,7 @@
       <router-link :to="{path:'/common/notice'}">提示弹窗</router-link>
       <router-link :to="{path:'/common/dialog'}">Dialog</router-link>
       <router-link :to="{path:'/common/worksheet'}">worksheet</router-link>
+      <router-link :to="{path:'/common/naotu'}">naotu</router-link>
     </div>
   </div>
   <div class="page-home__body">
