@@ -9,6 +9,8 @@ const view = path => {
   // ()=>import('@/views/Index.vue')
 }
 export default new VueRouter({
+  linkActiveClass: 'is-active',
+  linkExactActiveClass: 'is-exact-active',
   routes: [{
     path: '/',
     component: App,
