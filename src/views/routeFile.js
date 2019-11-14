@@ -1,18 +1,17 @@
 import pinyin from "pinyin";
 let docs = ["如何启动vue项目 ？", "vue vue-route vuex 简介"];
 let servers = ["如何启动vue项目 ？",];
-let laboratory = ["如何启动vue项目 ？",];
+let laboratory = ["甘特图",];
 
 const setRoute = (arr, file) =>
   arr.map(item => {
+    const url = item.replace(/\s/g, "").split("").map((p, i) => "_" + pinyin(p)[0][0]) .join("")
     return {
       name: item,
+      to: `/${file}/${url}`,
+
       path: `${file}/${item}`,
-      url: item
-        .replace(/\s/g, "")
-        .split("")
-        .map((p, i) => "_" + pinyin(p)[0][0])
-        .join("")
+      url
     };
   });
 

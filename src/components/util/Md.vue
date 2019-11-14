@@ -5,11 +5,23 @@
 </template>
 
 <script>
+/**! https://github.com/markdown-it/markdown-it */
+import hljs from 'highlight.js'
+import 'highlight.js/styles/xcode.css';
 const md = require('markdown-it')({
     html: true,
     xhtmlOut: true,
     typographer: true,
-    linkify : true
+    linkify: true,
+    highlight: function (str, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+            try {
+                return hljs.highlight(lang, str).value;
+            } catch (__) {}
+        }
+
+        return ''; // use external default escaping
+    }
 });
 export default {
     mounted() {
@@ -105,6 +117,14 @@ export default {
         line-height: 20px;
     }
 
+    em {
+        color: #2196F3;
+    }
+
+    ol {
+        list-style-type: circle;
+    }
+
     ol ol,
     ul ol {
         list-style-type: lower-roman;
@@ -115,36 +135,37 @@ export default {
         font-family: Consolas, Monaco, Andale Mono, monospace;
         background-color: #f7f7f7;
         color: inherit;
+        font-size: 0.9em;
     }
 
-    code {
-        margin: 0 2px;
-    }
+    // code {
+    //     margin: 0 2px;
+    // }
 
     pre {
-        line-height: 1.7em;
+        line-height: 1.6;
         overflow: auto;
         padding: 6px 10px;
-        border-left: 5px solid #ccc;
+        border-left: 5px solid #d5d5d5;
     }
 
-    pre>code {
-        border: 0;
-        display: inline;
-        max-width: initial;
-        padding: 0;
-        margin: 0;
-        overflow: initial;
-        line-height: 1.6em;
-        font-size: .95em;
-        white-space: pre;
-        background: 0 0;
+    // pre>code {
+    //     border: 0;
+    //     display: inline;
+    //     max-width: initial;
+    //     padding: 0;
+    //     margin: 0;
+    //     overflow: initial;
+    //     line-height: 1.6em;
+    //     font-size: .95em;
+    //     white-space: pre;
+    //     background: 0 0;
 
-    }
+    // }
 
-    code {
-        color: #666555;
-    }
+    // code {
+    //     color: #666555;
+    // }
 
     aside {
         display: block;

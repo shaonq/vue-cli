@@ -23,7 +23,7 @@ import { docsRoute, serversRoute, laboratoryRoute } from "@/views/routeFile.js";
 export default {
     data() {
         return {
-          list: docsRoute
+            list:laboratoryRoute
         }
     }
 }

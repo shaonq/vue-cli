@@ -9,11 +9,11 @@
 
 ## 全局依赖
 #### 使用 yarn 管理依赖包
-```
-  npm config set registry https://registry.npm.taobao.org  
-  npm install -g yarn@1.12.3
-  yarn config set registry https://registry.npm.taobao.org -g
-  yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
+```bash
+ npm config set registry https://registry.npm.taobao.org  
+ npm install -g yarn@1.12.3
+ yarn config set registry https://registry.npm.taobao.org -g
+ yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
 ```
 
 #### 安装 vue-cli
@@ -36,7 +36,7 @@
 
 
 # 项目结构
- ```bash
+ ```
 # public/
 # -------- index.html
 # src/
@@ -54,7 +54,7 @@
 ```
 
 # 项目启动
-```
+```bash
 yarn install # 安装依赖包
 npm start    # 启动测试环境
 npm run build # 编译项目 
@@ -68,6 +68,8 @@ npm run build # 编译项目
 export default {
 
 }
+
+
 </script>
 
 <style>

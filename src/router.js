@@ -35,7 +35,7 @@ const router = new VueRouter({
         },
         {
           path: "laboratory",
-          component: V("docs/Index"),
+          component: V("laboratory/Index"),
           children: getChildren(laboratoryRoute)
         },
         { path: "*", component: V("404") }

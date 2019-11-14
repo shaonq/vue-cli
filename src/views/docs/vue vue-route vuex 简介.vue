@@ -5,7 +5,7 @@
 ## vue 常用生命周期
 * [模板文档](https://cn.vuejs.org/v2/guide/syntax.html)
 * [API文档](https://cn.vuejs.org/v2/api/)
-```
+```javascript
 export default {
   /** * data : 可用的数据，模板中的数据必须预定义 */
   data(){ return { a:1, b:2 } },
@@ -24,7 +24,7 @@ export default {
 
 ## vue-route 路由配置
 * [官方文档](https://router.vuejs.org/zh/guide/essentials/named-routes.html)
-```
+```javascript
  { path: '/** 路由访问地址 */',
    component: function(){return import('/* 引入 vue 文件地址 */')},
    name:'/** 路由名称 */',
@@ -35,7 +35,7 @@ export default {
 
 ## vuex 状态管理
 * [官方文档](https://vuex.vuejs.org/zh/guide/state.html)
-```
+```javascript
 const store = new Vuex.Store({
   /** * state : 全局 this.$store.state 只读 */
   state: {
@@ -64,45 +64,8 @@ export default store
 </template>
 
 <script>
-export default {
-  /**
-   * data : 可用的数据，模板中的数据必须预定义
-   */
-  data(){
-    return {
-      a:1,
-      b:2
-    }
-  },
-  /**
-   * computed： 自动计算，计算阶段的数据可以出现在模板中
-   */
-  computed:{
-    count(){
-      return this.a + this.b
-    }
-  },
-  /**
-   * 数据计算完毕，但是未渲染模板 this.$refs还未生成
-   */
-  created(){
-    this.dataInit()
-  },
-  /**
-   * 书写模板中和当前生命周期中可用的方法
-   */
-  methods:{
-    dataInit(){
-      console.log('我是请求数据等操作')
-    }
-  },
-  /**
-   * 模板渲染完毕 类似jQ $(function(){})
-   */
-  mounted(){
-    // console.log("这里能读取虚拟dom");
-    // window.vue =this;
-  }
+export default{
+  
 }
 </script>
 

@@ -8,7 +8,7 @@
             <div class="u-flex__item"></div>
             <div>
                 <router-link class="link"  :to="{path:'/docs'}">相关文档</router-link>
-                <router-link class="link"  :to="{path:'/servers'}">团队约定</router-link>
+                <!-- <router-link class="link"  :to="{path:'/servers'}">团队约定</router-link> -->
                 <router-link class="link"  :to="{path:'/laboratory'}">实验室</router-link>
             </div>
         </div>
