@@ -5,7 +5,7 @@
  * @return cookie.set("cookie",e,document.domain,"/",7)
  */
 
-const utils = {
+const util = {
   is: function () {
     let d = {},
       ua = navigator.userAgent;
@@ -16,17 +16,13 @@ const utils = {
   }(),
   cookie: {
     set(name, value, domain, path, expires, is) {
-      value = typeof value === "object" ? JSON.stringify(value) : value;
-      document.cookie = name + "=" + (is ? value : decodeURI(value)) + (expires ? "; expires=" + expires.toGMTString() : "") + (path ? "; path=" + path : "; path=/") + (domain ? "; domain=" + domain : "")
+      value = util.stringify(value);
+      if (expires) { var d = new Date; d.setTime(d.getTime() + expires * 1000 * 60 * 60 * 24); expires = d; d = null; }
+      document.cookie = name + "=" + (is ? value : escape(value)) + (expires ? "; expires=" + expires.toGMTString() : "") + (path ? "; path=" + path : "; path=/") + (domain ? "; domain=" + domain : "")
     },
     get(name, value) {
-      let o = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
-      value = null !== o ? decodeURIComponent(o[2]) : value;
-      try {
-        return JSON.parse(value)
-      } catch (e) {
-      }
-      return value
+      var o = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+      return null != o ? util.parse(unescape(o[2])) : value;
     },
     clear(name, path, domain) {
       this.get(name) && (document.cookie = name + "=" + (path ? "; path=" + path : "; path=/") + (domain ? "; domain=" + domain : "") + ";expires=Fri, 02-Jan-1970 00:00:00 GMT")
@@ -35,12 +31,11 @@ const utils = {
   ,
   session: {
     set: function (name, value) {
-      value = typeof value === "object" ? JSON.stringify(value) : value;
-      return window.sessionStorage.setItem(name, value)
+      return window.sessionStorage.setItem(name, util.stringify(value))
     },
     get: function (name) {
       let value = window.sessionStorage.getItem(name) || "";
-      return value.indexOf('{') > -1 ? JSON.parse(value) : value
+      return util.parse(value)
     },
     clear: function (name) {
       return window.sessionStorage.removeItem(name)
@@ -48,12 +43,11 @@ const utils = {
   },
   store: {
     set: function (name, value) {
-      value = typeof value === "object" ? JSON.stringify(value) : value;
-      return window.localStorage.setItem(name, value)
+      return window.localStorage.setItem(name, util.stringify(value))
     },
     get: function (name) {
       let value = window.localStorage.getItem(name) || "";
-      return value.indexOf('{') > -1 ? JSON.parse(value) : value
+      return util.parse(value)
     },
     clear: function (name) {
       return window.localStorage.removeItem(name)
@@ -67,7 +61,7 @@ const utils = {
    * @returns {Function}
    * 等待执行,在time之内只执行1次
    */
-  debounce(func, wait, immediate) {
+  debounce: function (func, wait, immediate) {
     let timeout, args, context, timestamp, result;
 
     let later = function () {
@@ -106,7 +100,7 @@ const utils = {
    * @returns {Function}
    * 立即执行,在time之内只执行1次
    */
-  throttle(func, wait, options) {
+  throttle: function (func, wait, options) {
     let context, args, result;
     let timeout = null;
     let previous = 0;
@@ -317,24 +311,39 @@ const utils = {
       }
     }
   },
-  // global util
-  typeName(val) {
+  /**
+   * 辅助方法
+   */
+  stringify: function (val) {
+    if (typeof val === 'object') try { return JSON.stringify(val) } catch (e) { }
+    return val
+  },
+  parse: function (val) {
+    if (typeof val === 'string') try { return JSON.parse(val) } catch (e) { }
+    return val
+  },
+  typeName: function (val) {
     return toString.call(val).slice(8, -1)
   },
-  isNumber(val) {
+  isNumber: function (val) {
     return this.typeName(val) === 'Number' && val.toString() !== 'NaN'
   },
-  isArrayLen(val) {
+  isArrayLen: function (val) {
     return this.typeName(val) === 'Array' && val.length > 0
   },
-  toPercent(a) {
+  toPercent: function (a) {
     return (Math.round(a * 10000) / 100).toFixed(2) + '%';
   },
-  toClone(obj){
-    return typeof obj === "object" ? JSON.parse(JSON.stringify(obj)) : obj
+  clone: function (val) {
+    return typeof val === "object" ? this.parse(this.stringify(val)) : val
+  },
+  toObject: function (val) {
+    return val = this.parse(val), this.typeName(val) === 'Object' ? val : {}
   }
 };
 
-
-export default utils;
+// 添加基础弹窗
+import dialog from '@/utils/dialog/index.js'
+import '@/utils/dialog/index.scss'
+export default Object.assign(util,dialog);
 

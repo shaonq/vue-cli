@@ -1,51 +1,59 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import App from './App.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import App from "./App.vue";
+import store from "@/store";
+Vue.use(VueRouter);
+import { docsRoute, serversRoute, laboratoryRoute } from "@/views/routeFile.js";
+const getChildren = (arr, file) => {
+  let children = arr.map((item, index) => {
+    return { path: item.url, component: V(item.path) };
+  });
+  children.push({ path: "", component: V(arr[0].path) });
+  return children;
+};
 
-Vue.use(VueRouter)
+const V = path => Vue.extend(require(`@/views/${path}.vue`).default);
 
-const view = path => {
-  return Vue.extend(require(`@/views/${path}.vue`).default)
-  // ()=>import('@/views/Index.vue')
-}
-export default new VueRouter({
-  linkActiveClass: 'is-active',
-  linkExactActiveClass: 'is-exact-active',
-  routes: [{
-    path: '/',
-    component: App,
-    redirect:'/common',
-    children: [{
-      path: 'common',
-      component: view('Index'),
+const router = new VueRouter({
+  linkActiveClass: "is-active",
+  linkExactActiveClass: "is-exact-active",
+  routes: [
+    {
+      path: "/",
+      component: V("Layout"),
       children: [
+        { path: "", redirect: "/docs" },
         {
-          path: '',
-          component: view('common/Index'),
-          children: [
-            {
-              path: '',
-              component: view('common/Form')
-            },
-            {
-              path: 'notice',
-              component: view('common/Notice')
-            },
-            {
-              path: 'dialog',
-              component: view('common/Dialog')
-            },
-            {
-              path: 'worksheet',
-              component: view('common/Worksheet')
-            },
-            {
-              path: 'naotu',
-              component: view('common/KityMinder')
-            },
-          ]
-        }
+          path: "docs",
+          component: V("docs/Index"),
+          children: getChildren(docsRoute)
+        },
+        {
+          path: "servers",
+          component: V("docs/Index"),
+          children: getChildren(serversRoute)
+        },
+        {
+          path: "laboratory",
+          component: V("docs/Index"),
+          children: getChildren(laboratoryRoute)
+        },
+        { path: "*", component: V("404") }
       ]
-    }]
-  }]
-})
+    }
+  ]
+});
+
+// 用户登录
+router.beforeEach(({ name, matched, fullPath }, from, next) => {
+  if (
+    matched.some(item => item.meta.auth) &&
+    name !== "login" &&
+    !store.getters.token
+  ) {
+    return next({ name: "login", query: { redirect: fullPath } });
+  }
+  next();
+});
+
+export default router;
