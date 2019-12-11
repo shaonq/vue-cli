@@ -19,24 +19,26 @@
 
 ### 甘特图构造
 
-#### 节点构造
+### 节点构造
 ```javascript
-  {
+// porp tasks Array
+  [{
     id: 11,                 // 节点id 
     parent: 1,              // 父节点的id 
     name: 'Requirements',   // 节点名称
     start: new Date(),      // 开始时间
     duration: 10,           // 节点周期
     percent: 0.5            // 进度
-  }
+  }]
 ```
 ### 节点关系构造
 ```javascript
-  {
+// porp links Array
+  [{
     source: 11,     // 开始节点id
     target: 12,     // 结束节点id
     type: 'FS'      // 节点关系
-  }
+  }]
 ```
 
 ### 例子

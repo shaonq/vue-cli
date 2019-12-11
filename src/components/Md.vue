@@ -8,12 +8,12 @@
 /**! https://github.com/markdown-it/markdown-it */
 import hljs from 'highlight.js'
 import 'highlight.js/styles/xcode.css';
-const md = require('markdown-it')({
+const md = require('markdown-it')({   
     html: true,
     xhtmlOut: true,
     typographer: true,
-    linkify: true,
-    highlight: function (str, lang) {
+    linkify: false,
+    highlight(str, lang) {
         if (lang && hljs.getLanguage(lang)) {
             try {
                 return hljs.highlight(lang, str).value;
@@ -22,6 +22,7 @@ const md = require('markdown-it')({
 
         return ''; // use external default escaping
     }
+
 });
 export default {
     mounted() {
@@ -133,9 +134,9 @@ export default {
     code,
     pre {
         font-family: Consolas, Monaco, Andale Mono, monospace;
-        background-color: #f7f7f7;
+        background-color: #f4f4f4;
         color: inherit;
-        font-size: 0.9em;
+        font-size: 13px;
     }
 
     // code {
@@ -146,7 +147,7 @@ export default {
         line-height: 1.6;
         overflow: auto;
         padding: 6px 10px;
-        border-left: 5px solid #d5d5d5;
+        border-radius: 2px;
     }
 
     // pre>code {
@@ -213,6 +214,10 @@ export default {
 
     table {
         border: solid #ccc 1px;
+    }
+
+    table+table {
+        margin-top: 16px;
     }
 
     table thead {

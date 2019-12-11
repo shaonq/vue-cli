@@ -11,14 +11,14 @@ function dialog() {
         const id = this.getUid();
         let maskEl = document.createElement('div');
         maskEl.className = "u-dialog-mask " + (options.showShadow ? "" : "is-hide");
-        if(options.showShadow < 1 &&  options.showShadow > 0)maskEl.style.opacity = options.showShadow;
+        if (options.showShadow < 1 && options.showShadow > 0) maskEl.style.opacity = options.showShadow;
         maskEl.setAttribute('data-u-dialog', id);
         let el = document.createElement('div');
         el.className = "u-dialog " + (options.className || '');
         el.setAttribute('data-u-dialog', id);
         el.innerHTML = `
             <div class="u-dialog-content"
-                style="width:${options.width ? (options.width + 'px') : '910px'};height:${options.height ? (options.height + 'px') : 'auto'};">
+                style="width:${options.width ? options.width : '910px'};height:${options.height ? options.height : 'auto'};">
                 <div class="u-dialog-title ${options.title ? 'is-show' : ''}">${options.title || ''}</div>
                 <div class="u-dialog-body">${options.content || ''}</div>
                 <div class="u-dialog-close ${options.showClose ? 'is-show' : ''}"x</div>
@@ -35,6 +35,7 @@ function dialog() {
         if (options.shadowClose) maskEl.onclick = () => this.hideToast(maskEl.getAttribute(attr));
         if (options.showClose) el.querySelector('.u-dialog-close').onclick = () => this.hideToast(el.getAttribute(attr));
         if (options.time) setTimeout(() => this.hideToast(el.getAttribute(attr)), options.time * 1e3)
+        if (options.success) options.success.cell(el, id);
         return id
     }
     this.hideToast = id => {
@@ -67,8 +68,8 @@ function dialog() {
             return this.open({
                 className: 'u-dialog__loading',
                 content: `<i></i><p>${content || ''}</p>`,
-                width: 120,
-                height: 120,
+                width: '120px',
+                height: '120px',
                 showShadow: 0.3,
                 shadowClose: false
             })
@@ -82,21 +83,21 @@ function dialog() {
         return this.open({
             className: 'u-dialog__success',
             content: `<i></i><p>${content || ''}</p>`,
-            width: 120,
-            height: 120,
+            width: '120px',
+            height: '120px',
             showShadow: false,
             shadowClose: false,
             time
         })
     }
-    this.showError = (content, time = 5) => {
+    this.showLayer = (content, time = 5) => {
         this.hideToast();
         return this.open({
             className: 'u-dialog__error',
             content: `<i></i><p>${content || ''}</p>`,
-            width: 320,
-            height: 240,
-            shadowClose: true,
+            width: '320px',
+            height: '240px',
+            shadowClose: false,
             showClose: true
         })
 

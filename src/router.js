@@ -30,7 +30,7 @@ const router = new VueRouter({
         },
         {
           path: "servers",
-          component: V("docs/Index"),
+          component: V("servers/Index"),
           children: getChildren(serversRoute)
         },
         {
