@@ -4,7 +4,7 @@ import ULoad from './Load.vue';
 import UMd from './Md.vue';
 import UGantt from './gantt/Main.vue';
 import UFullCalendar from './fullCalendar/Index.vue'
-import UPell from './pell/Index.vue'
+import UPell from './utilPell/Index.vue'
 
 export default {
     install: function (Vue) {

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
-import dialog from '@/utils/dialog/index'
+import util from '@/utils/util/index'
 // 查询 .ENV 配置 
 // console.log(process.env)
 
@@ -50,12 +50,12 @@ request.interceptors.response.use(
         const res = response.data
         // 处理请求成功后的数据 
         if (res.status === 10) {
-            dialog.showError('登陆过期');
+            util.dialog.showError('登陆过期');
         } else if (res.status !== 0) {
-            dialog.showError(res.msg||`${url} 出错了`);
+            util.showError(res.msg||`${url} 出错了`);
             return Promise.reject(new Error(res.msg || 'Error'))
         } else {
-            dialog.hideToast();
+            util.hideToast();
             return res.data || res
         }
     },

@@ -4,6 +4,7 @@ import App from "./App.vue";
 import store from "@/store";
 Vue.use(VueRouter);
 import { docsRoute, serversRoute, laboratoryRoute } from "@/views/routeFile.js";
+const V = path => Vue.extend(require(`@/views/${path}.vue`).default);
 const getChildren = (arr, file) => {
   let children = arr.map((item, index) => {
     return { path: item.url, component: V(item.path) };
@@ -12,7 +13,7 @@ const getChildren = (arr, file) => {
   return children;
 };
 
-const V = path => Vue.extend(require(`@/views/${path}.vue`).default);
+
 
 const router = new VueRouter({
   linkActiveClass: "is-active",

@@ -1,5 +1,5 @@
 <template>
-  <div ref="el" class="u-pell"></div>
+  <div ref="el" class="u-pell" style="height:300px;"></div>
 </template>
 
 <script>
@@ -13,7 +13,39 @@ export default {
   },
   mounted() {
     let { el } = this.$refs;
-    let { content } = pell(el, e => this.$emit("on-change", e));
+    let { exec,content } = pell({
+    el,
+    onChange: e =>this.$emit("on-change", e),
+    actions: [{name: "bold", icon: "&#xe6d9;",title: "粗体(Ctrl+B)"},
+    {name: "italic",icon: "&#xe6f8;",title: "斜体 (Ctrl+I)"},
+    {type: "space"},
+    {name: "heading1",icon: "&#xe68d;",title: "一级标题"},
+    {name: "heading2",icon: "&#xe68e;",title: "二级标题"},
+    {name: "quote",icon: "&#xe649;",title: "引用块"},
+    {name: "code",icon: "&#xe6f7;",title: "插入代码" },
+    {name: "olist",icon: "&#xe71b;",title: "无序列表"},
+    {name: "ulist",icon: "&#xe71a;",title: "有序列表"},
+    {type: "space"},  
+    {name: "link",icon: "&#xe701;",title: "插入链接",
+        result: ()=> {
+            this.$util.showLayer({
+              content:"你好",
+              success:()=>{
+              var url = window.prompt("请输入链接地址");
+              if (url) exec("createLink", url);
+              }
+            })
+
+        }
+    },
+    {name: "image",icon: "&#xe6f5;",title: "上传图片",
+        result:()=> {
+            var url = window.prompt('请输入图片链接地址');
+            if (url) exec('insertImage', url);
+        }
+    },
+    {name: "line",icon: "&#xe6e5;",title: "插入分割线"}]
+});
     this.content = content;
     if (this.html) content.innerHTML = this.html;
   },
@@ -46,13 +78,13 @@ export default {
 .u-pell {
   border: 1px solid rgba(10, 10, 10, 0.1);
   box-sizing: border-box;
-  max-width: 640px;
   font-size: 15px;
+  color:#242424;
 
   &__bar {
     background-color: #fff;
     border-bottom: 1px solid rgba(10, 10, 10, 0.1);
-    padding: 5px 13px;
+    padding: 6px 5px;
   }
 
   &__button {
@@ -60,14 +92,13 @@ export default {
     border: none;
     cursor: pointer;
     height: 26px;
-    outline: 0;
-    margin: 0 2px;
     width: 26px;
+    margin: 0 2px;
     font-family: "icon-pell";
     display: inline-block;
     vertical-align: middle;
     font-size: 17px;
-    color: #666;
+    color: #424242;
   }
 
   i#{&}__button {

@@ -190,15 +190,6 @@ var b = [43856, 19416, 19168, 42352, 21717, 53856, 55632, 25940, 22191, 39632, 2
             cnDay: "日一二三四五六七".charAt(b.getDay())
         }
     };
-const lunar = function (b) {
-    if (typeof b === 'string') {
-        if(b.length === 10) b= b+' 00:00:00';
-        b = new Date(b);
-    }
-    if (typeof b === "number") {
-        b = new Date(b);
-    }
-    return g(b)
-}
 
-export default lunar
+// lunar
+export default g

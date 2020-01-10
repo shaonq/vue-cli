@@ -97,7 +97,7 @@ export default {
     methods: {
         // 获取农历
         toLunar(date) {
-            let item = this.$lunar(date);
+            let item = this.$lunar(new Date(date));
             let value = (item.lunarDate === 1 ? item.lMonth + '月' : item.lDate)
             let festival = item.festival();
             let val = '';

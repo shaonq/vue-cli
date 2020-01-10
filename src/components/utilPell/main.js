@@ -1,7 +1,6 @@
 "use strict";
 
-var _extends =
-  Object.assign ||
+var _extends = Object.assign ||
   function(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
@@ -34,8 +33,7 @@ var queryCommandValue = function queryCommandValue(command) {
 
 /** @desc https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand */
 var exec = function exec(command) {
-  var value =
-    arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
   return document.execCommand(command, false, value);
 };
 
@@ -160,7 +158,7 @@ var defaultClasses = {
   content: "u-pell__content",
   selected: "u-pell__active"
 };
-
+// 光标处理
 var cursor = function(el) {
   var saveSelection, restoreSelection;
 
@@ -191,19 +189,11 @@ var cursor = function(el) {
       while (!stop && (node = nodeStack.pop())) {
         if (node.nodeType == 3) {
           var nextCharIndex = charIndex + node.length;
-          if (
-            !foundStart &&
-            savedSel.start >= charIndex &&
-            savedSel.start <= nextCharIndex
-          ) {
+          if (!foundStart && savedSel.start >= charIndex && savedSel.start <= nextCharIndex) {
             range.setStart(node, savedSel.start - charIndex);
             foundStart = true;
           }
-          if (
-            foundStart &&
-            savedSel.end >= charIndex &&
-            savedSel.end <= nextCharIndex
-          ) {
+          if (foundStart && savedSel.end >= charIndex && savedSel.end <= nextCharIndex) {
             range.setEnd(node, savedSel.end - charIndex);
             stop = true;
           }
@@ -260,8 +250,7 @@ var cursor = function(el) {
 
   // 插入内容
   function insert(str) {
-    var result,
-      val = "value" in el ? el.value : el.innerHTML;
+    var result, val = "value" in el ? el.value : el.innerHTML;
     el.focus();
     if (document.selection) {
       /*ie*/
@@ -270,37 +259,33 @@ var cursor = function(el) {
       document.selection.empty();
       result.text = str;
     } else {
-      result = [
-        val.substring(0, el.selectionStart),
-        str,
-        val.substr(el.selectionEnd)
-      ];
+      result = [val.substring(0, el.selectionStart), str, val.substr(el.selectionEnd)];
       el.focus();
-      "value" in el
-        ? (el.value = result.join(""))
-        : (el.innerHTML = result.join(""));
+      "value" in el ? (el.value = result.join("")) : (el.innerHTML = result.join(""));
     }
   }
 
-  return { save: save, reset: reset, insert: insert };
+  return {
+    save: save,
+    reset: reset,
+    insert: insert
+  };
 };
 
 var init = function init(settings) {
-  var actions = settings.actions
-    ? settings.actions.map(function(action) {
-        if (typeof action === "string") return defaultActions[action];
-        else if (defaultActions[action.name])
-          return _extends({}, defaultActions[action.name], action);
-        return action;
-      })
-    : Object.keys(defaultActions).map(function(action) {
-        return defaultActions[action];
-      });
+  var actions = settings.actions ? settings.actions.map(function(action) {
+    if (typeof action === "string") return defaultActions[action];
+    else if (defaultActions[action.name]) return _extends({},
+      defaultActions[action.name], action);
+    return action;
+  }) : Object.keys(defaultActions).map(function(action) {
+    return defaultActions[action];
+  });
 
-  var classes = _extends({}, defaultClasses, settings.classes);
+  var classes = _extends({},
+    defaultClasses, settings.classes);
 
-  var defaultParagraphSeparator =
-    settings[defaultParagraphSeparatorString] || "div";
+  var defaultParagraphSeparator = settings[defaultParagraphSeparatorString] || "div";
 
   var actionbar = createElement("div");
   actionbar.className = classes.actionbar;
@@ -313,32 +298,30 @@ var init = function init(settings) {
   var compositionstart = false;
   var oninput = function(_ref) {
     var firstChild = _ref.target.firstChild;
-    if (firstChild && !compositionstart && firstChild.nodeType === 3)
-      exec(formatBlock, "<" + defaultParagraphSeparator + ">");
+    if (firstChild && !compositionstart && firstChild.nodeType === 3) exec(formatBlock, "<" + defaultParagraphSeparator + ">");
     else if (content.innerHTML === "<br>") content.innerHTML = "";
+    // 处理图片
     settings.onChange(content.innerHTML);
   };
   content.oninput = oninput;
   /** 处理用户键盘输入 */
-  addEventListener(content,"compositionstart", function() {
-    compositionstart = true;
-  });
-  addEventListener(content,"compositionend", function(_ref) {
-    compositionstart = false;
-    oninput(_ref);
-  });
+  addEventListener(content, "compositionstart",
+    function() {
+      compositionstart = true;
+    });
+  addEventListener(content, "compositionend",
+    function(_ref) {
+      compositionstart = false;
+      oninput(_ref);
+    });
   content.onkeydown = function(event) {
-    /** 输入 Enter 需要换行的元素
-     * queryCommandValue(formatBlock) === "blockquote"
-     */
+    /** 输入 Enter 需要换行的元素 queryCommandValue(formatBlock) === "blockquote" */
     var elements = ["blockquote", "pre", "br"];
-    if (
-      event.key === "Enter" &&
-      ~elements.indexOf(queryCommandValue(formatBlock))
-    ) {
+    if (event.key === "Enter" && ~elements.indexOf(queryCommandValue(formatBlock))) {
       setTimeout(function() {
         return exec(formatBlock, "<" + defaultParagraphSeparator + ">");
-      }, 0);
+      },
+        0);
     }
   };
 
@@ -361,40 +344,48 @@ var init = function init(settings) {
       };
 
       if (action.state) {
-        var handler = function handler() {
-          return button.classList[action.state() ? "add" : "remove"](
-            classes.selected
-          );
+        var handler = function handler(ev) {
+          return button.classList[action.state() ? "add" : "remove"](classes.selected);
         };
         addEventListener(content, "keyup", handler);
         addEventListener(content, "mouseup", handler);
         addEventListener(button, "click", handler);
       }
-    }else{
-      var button =  createElement("i");
+    } else {
+      var button = createElement("i");
       button.className = classes.button;
     }
 
     appendChild(actionbar, button);
   });
+  
+  // 处理高度
+  var height =settings.element.style.height;
+  if(height){
+    height = settings.element.scrollHeight;
+    settings.element.style.height ="auto";
+    content.style.height = (height - actionbar.scrollHeight)+'px';    
+  }
 
   if (settings.styleWithCSS) exec("styleWithCSS");
   exec(defaultParagraphSeparatorString, defaultParagraphSeparator);
-
-  return settings.element;
+  return {content,exec}
 };
 
-const pell = { exec: exec, init: init };
+// const pell = {exec: exec,  init: init};
 
-export default function(element, onChange) {
+export
+  default
+  function(options={}) {
+   // element =, onChange
   // Initialize pell on an HTMLElement
-  return pell.init({
+  return init({
     // <HTMLElement>, required
-    element: element,
+    element: options.el,
     // <Function>, required
     // Use the output html, triggered by element's `oninput` event
     onChange: function(html) {
-      onChange && onChange(html);
+      options.onChange && options.onChange(html);
     },
     // <string>, optional, default = 'div'
     // Instructs the editor which element to inject via the return key
@@ -408,129 +399,7 @@ export default function(element, onChange) {
     // action.title<string> (optional)
     // action.result<Function> (required)
     // Specify the actions you specifically want (in order)
-
     // 'underline', 'strikethrough', 'paragraph',
-    actions: [
-      {
-        name: "bold",
-        icon: "&#xe6d9;",
-        title: "粗体(Ctrl+B)"
-      },
-
-      {
-        name: "italic",
-        icon: "&#xe6f8;",
-        title: "斜体 (Ctrl+I)"
-      },
-      {
-        type: "space"
-      },
-      {
-        name: "heading1",
-        icon: "&#xe68d;",
-        title: "一级标题"
-      },
-      {
-        name: "heading2",
-        icon: "&#xe68e;",
-        title: "二级标题"
-      },
-      {
-        name: "quote",
-        icon: "&#xe649;",
-        title: "引用块"
-      },
-      {
-        name: "code",
-        icon: "&#xe6f7;",
-        title: "插入代码"
-      },
-      {
-        name: "olist",
-        icon: "&#xe71b;",
-        title: "无序列表"
-      },
-      {
-        name: "ulist",
-        icon: "&#xe71a;",
-        title: "有序列表"
-      },
-      {
-        type: "space"
-      },
-      {
-        name: "link",
-        icon: "&#xe701;",
-        title: "插入链接",
-        result: function(cu) {
-          var url = window.prompt("请输入链接地址");
-          if (url) exec("createLink", url);
-          // nui.open({
-          //     title: '插入链接',
-          //     content: '<div class="nui-content"><div class="nui-form-group"><input class="nui-input" placeholder="http(s)://"></div>'
-          //         + '<div class="nui-form-group"><button class="nui-btn nui-btn-blue nui-btn-width">确认</button><button class="nui-btn nui-btn-default nui-btn-width">取消</button></div>'
-          //         + '</div>',
-          //     width: '280px',
-          //     shadeClose: true,
-          //     success: function (that, index) {
-          //         $('.nui-btn-default', this).on("click", function () {
-          //             nui.close(index)
-          //         });
-          //         $('.nui-btn-blue', this).on("click", function () {
-          //             var url = that.find('input').val();
-          //             cu.reset();
-          //             setTimeout(function () {
-          //                 pell.exec('createLink', url);
-          //                 nui.close(index)
-          //             }, 0)
-          //         });
-          //     }
-          // })
-        }
-      },
-      {
-        name: "image",
-        icon: "&#xe6f5;",
-        title: "上传图片",
-        result: function(cu) {
-          var url = window.prompt('请输入图片链接地址')
-          if (url) pell.exec('insertImage', url);
-          // nui.open({
-          //     title: '上传图片',
-          //     content: '<div class="nui-content"><div class="nui-form-group"><input class="nui-input" placeholder="http(s)://"></div>'
-          //         + '<div class="nui-form-group"><button class="nui-btn nui-btn-blue nui-btn-width">确认</button><button class="nui-btn nui-btn-default nui-btn-width">取消</button></div>'
-          //         + '</div>',
-          //     width: '280px',
-          //     shadeClose: true,
-          //     success: function (that, index) {
-          //         $('.nui-btn-default', this).on("click", function () {
-          //             nui.close(index)
-          //         });
-          //         $('.nui-btn-blue', this).on("click", function () {
-          //             var url = that.find('input').val();
-          //             cu.reset();
-          //             setTimeout(function () {
-          //                 pell.exec('insertImage', url);
-          //                 nui.close(index)
-          //             }, 0)
-          //         });
-          //     }
-          // })
-        }
-      },
-      {
-        name: "line",
-        icon: "&#xe6e5;",
-        title: "插入分割线"
-      }
-    ]
-    // classes<Array[string]> (optional)
-    // Choose your custom class names
-    // classes: {
-    //   actionbar: "u-pell__bar",
-    //   button: "u-pell__button",
-    //   content: "u-pell__content",
-    //   selected: "u-pell__active"
-    // }
+    actions:options.actions
   });
 }
