@@ -1,9 +1,9 @@
 <template>
-  <div ref="el" class="u-pell" style="height:300px;"></div>
+  <div ref="el" class="u-pell"><slot/></div>
 </template>
 
 <script>
-import pell from "./main.js";
+import pell from "./pell.js";
 export default {
   props: {
     html: {
@@ -13,14 +13,18 @@ export default {
   },
   mounted() {
     let { el } = this.$refs;
+    let html = el.innerHTML;
+    if(html)el.innerHTML = null;
     let { exec,content } = pell({
     el,
     onChange: e =>this.$emit("on-change", e),
-    actions: [{name: "bold", icon: "&#xe6d9;",title: "粗体(Ctrl+B)"},
+    actions: [
+    // 'underline', 'strikethrough'
+    // {name: "heading2",icon: "&#xe68e;",title: "二级标题"},
+    {name: "bold", icon: "&#xe6d9;",title: "粗体(Ctrl+B)"},
     {name: "italic",icon: "&#xe6f8;",title: "斜体 (Ctrl+I)"},
     {type: "space"},
     {name: "heading1",icon: "&#xe68d;",title: "一级标题"},
-    {name: "heading2",icon: "&#xe68e;",title: "二级标题"},
     {name: "quote",icon: "&#xe649;",title: "引用块"},
     {name: "code",icon: "&#xe6f7;",title: "插入代码" },
     {name: "olist",icon: "&#xe71b;",title: "无序列表"},
@@ -28,13 +32,8 @@ export default {
     {type: "space"},  
     {name: "link",icon: "&#xe701;",title: "插入链接",
         result: ()=> {
-            this.$util.showLayer({
-              content:"你好",
-              success:()=>{
               var url = window.prompt("请输入链接地址");
               if (url) exec("createLink", url);
-              }
-            })
 
         }
     },
@@ -44,18 +43,13 @@ export default {
             if (url) exec('insertImage', url);
         }
     },
-    {name: "line",icon: "&#xe6e5;",title: "插入分割线"}]
+    {name: "line",icon: "&#xe6e5;",title: "插入分割线"},
+    {type: "space"},
+    {name: "paragraph",icon:"&#xe700;",title:"清除格式"},
+    ]
 });
-    this.content = content;
-    if (this.html) content.innerHTML = this.html;
-  },
-  watch: {
-    html(h) {
-      let { content, html, $refs } = this;
-      if ($refs.el && html) {
-        content.innerHTML = h;
-      }
-    }
+    // 显示已经有的内容
+    if (html) content.innerHTML = html;
   }
 };
 </script>
@@ -63,16 +57,13 @@ export default {
 <style lang="scss">
 /** 编辑器 */
 @font-face {
-  font-family: "icon-pell";
-  /* project id 1125526 */
-  src: url("//at.alicdn.com/t/font_1125526_jo9gsc0o7va.eot");
-  src: url("//at.alicdn.com/t/font_1125526_jo9gsc0o7va.eot?#iefix")
-      format("embedded-opentype"),
-    url("//at.alicdn.com/t/font_1125526_jo9gsc0o7va.woff2") format("woff2"),
-    url("//at.alicdn.com/t/font_1125526_jo9gsc0o7va.woff") format("woff"),
-    url("//at.alicdn.com/t/font_1125526_jo9gsc0o7va.ttf") format("truetype"),
-    url("//at.alicdn.com/t/font_1125526_jo9gsc0o7va.svg#icon-pell")
-      format("svg");
+  font-family: 'icon-pell';  /* project id 1125526 */
+  src: url('//at.alicdn.com/t/font_1125526_vsgudgr5ef.eot');
+  src: url('//at.alicdn.com/t/font_1125526_vsgudgr5ef.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1125526_vsgudgr5ef.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1125526_vsgudgr5ef.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1125526_vsgudgr5ef.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1125526_vsgudgr5ef.svg#icon-pell') format('svg');
 }
 
 .u-pell {
@@ -99,6 +90,9 @@ export default {
     vertical-align: middle;
     font-size: 17px;
     color: #424242;
+    &:active{
+      transform: scale(1.05);
+    }
   }
 
   i#{&}__button {
@@ -112,7 +106,7 @@ export default {
     background-color: #f0f0f0;
   }
 }
-
+.u-pell--body,
 .u-pell__content {
   box-sizing: border-box;
   min-height: 140px;
@@ -188,6 +182,11 @@ export default {
     padding-left: 1em;
     color: #646464;
     border-left: 3px solid #d3d3d3;
+  }
+
+  img{
+    display:block;
+    margin :1.4em auto;
   }
 }
 </style>

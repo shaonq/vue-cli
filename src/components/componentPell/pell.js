@@ -81,6 +81,9 @@ var defaultActions = {
   heading1: {
     icon: "<b>H<sub>1</sub></b>",
     title: "Heading 1",
+    state: function state() {
+      return queryCommandState("Heading 1");
+    },
     result: function result() {
       return exec(formatBlock, "<h1>");
     }
@@ -351,12 +354,14 @@ var init = function init(settings) {
         addEventListener(content, "mouseup", handler);
         addEventListener(button, "click", handler);
       }
-    } else {
+          appendChild(actionbar, button);
+    } else if(action.type) {
       var button = createElement("i");
       button.className = classes.button;
+     appendChild(actionbar, button);
     }
 
-    appendChild(actionbar, button);
+
   });
   
   // 处理高度

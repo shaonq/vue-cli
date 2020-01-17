@@ -2,9 +2,9 @@
 import UHouse from './House.vue';
 import ULoad from './Load.vue';
 import UMd from './Md.vue';
-import UGantt from './gantt/Main.vue';
+import UGantt from './componentGantt/Main.vue';
 import UFullCalendar from './fullCalendar/Index.vue'
-import UPell from './utilPell/Index.vue'
+import UPell from './componentPell/Index.vue'
 
 export default {
     install: function (Vue) {

@@ -11,7 +11,10 @@
 #### 例子
 
 </u-md>
-<u-pell/>
+<u-pell  style="height:500px;">
+<div><div><span style="font-size: 18px;"><b>优秀的编辑器</b></span></div><img src="https://pic2.zhimg.com/v2-d00c9dfc3984682bee747f25450a1351_b.gif"><div><br></div><div>我们先看一下表情包 。</div></div>
+</u-pell >
+</div>
 </div>
 </template>
 
