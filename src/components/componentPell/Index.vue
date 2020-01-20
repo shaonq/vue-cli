@@ -69,7 +69,6 @@ export default {
 .u-pell {
   border: 1px solid rgba(10, 10, 10, 0.1);
   box-sizing: border-box;
-  font-size: 15px;
   color:#242424;
 
   &__bar {
@@ -117,6 +116,7 @@ export default {
   word-break: break-word;
   border: 1px solid transparent;
   line-height: 1.6;
+  font-size: 15px;
 
   hr {
     margin: 2em auto;

@@ -16,11 +16,7 @@
     "element-ui": "^2.11.1",
     "babel-polyfill": "^6.26.0",
     
-    "gantt": "^3.0.11",
-    "kity": "^2.0.4",
-    "kityminder-core": "^1.4.50",
-    "highlight": "^0.2.4",
-    "markdown-it": "^10.0.0"
+    "gantt": "^3.0.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",

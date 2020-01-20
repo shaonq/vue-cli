@@ -56,7 +56,6 @@ export default {
             })
         },
         $date: () => UTIL_DATE,
-        $lunar: () => UTIL_LUNAR,
         toDay() {
             return this.$date.today();
         },
@@ -97,7 +96,7 @@ export default {
     methods: {
         // 获取农历
         toLunar(date) {
-            let item = this.$lunar(new Date(date));
+            let item = UTIL_LUNAR(new Date(date));
             let value = (item.lunarDate === 1 ? item.lMonth + '月' : item.lDate)
             let festival = item.festival();
             let val = '';
@@ -108,7 +107,7 @@ export default {
         },
         // 获取农历详情
         dayLunar(date) {
-            let item = this.$lunar(date);
+            let item = UTIL_LUNAR(new Date(date));
             return item.lMonth + '月' + item.lDate + ' ' + item.animal + '年'
         },
         // 获取年份
