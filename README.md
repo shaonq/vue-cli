@@ -26,6 +26,15 @@
 ##### 插件 (自定义)
 * Chinese (Simplified) Language Pack for Visual Studio Code 一 中文语言包
 * Verue / ivue 一 Vue 语法工具
+```json
+"vetur.format.defaultFormatter.html": "js-beautify-html",
+"vetur.format.defaultFormatterOptions": {
+    "js-beautify-html": {
+        "wrap_line_length": 120,
+        "wrap_attributes": "auto",
+        "end_with_newline": false
+    }
+```
 * Auto Close Tag 一 自动添加结束标签
 * Beauify 一 格式化
 * vue-format 一 vue文件格式化
