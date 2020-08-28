@@ -12,6 +12,8 @@
   npm install -g yarn@1.12.3
   yarn config set registry https://registry.npm.taobao.org -g
   yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
+  # 忽略异常
+  yarn config set ignore-engines true
 ```
 
 #### 安装 vue-cli
