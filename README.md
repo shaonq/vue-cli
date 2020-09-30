@@ -9,12 +9,22 @@
 #### 使用 yarn 管理依赖包
 ```
   npm config set registry https://registry.npm.taobao.org  
-  npm config set sass_binary_site "https://npm.taobao.org/mirrors/node-sass"
+  npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass
   npm install -g yarn@1.12.3
   yarn config set registry https://registry.npm.taobao.org -g
   yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
+  
   # 忽略异常
   yarn config set ignore-engines true
+  
+  # 其他变量名称
+  registry=https://registry.npm.taobao.org/
+  sass_binary_site=https://npm.taobao.org/mirrors/node-sass/phantomjs_cdn
+  electron_mirror=https://npm.taobao.org/mirrors/electron/
+  sqlite3_binary_host_mirror=https://foxgis.oss-cn-shanghai.aliyuncs.com/
+  profiler_binary_host_mirror=https://npm.taobao.org/mirrors/node-inspector/
+  
+  
 ```
 
 #### 安装 vue-cli
