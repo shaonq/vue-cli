@@ -5,15 +5,13 @@ export default {
     props: {
         list: {
             type: Array,
-            default(){
-                return []
-            }
+            default: []
         },
         type: {
             type: String,
             default: 'month' // month | week | day
         },
-        holiday: Array,
+        holiday: Array // 法定节假日
         //{"holiday":false,"name":"国庆节前调休","target":"国庆节","date":"2019-09-29"}
     },
     data() {
@@ -51,7 +49,9 @@ export default {
                     _className: {},
                     _source: item
                 };
-                if (item.className) o._className = { [item.className]: true }
+                if (item.className) o._className = {
+                    [item.className]: true
+                }
                 return o
             })
         },
@@ -66,7 +66,7 @@ export default {
         },
         monthList() { // 当月数据，按周分
             let first = this.$date.firstDayOfMonth(this.activeDay);
-            let len = 36,
+            let len = 31,
                 i = 0,
                 j = 0,
                 _j = 0,
@@ -96,10 +96,10 @@ export default {
     methods: {
         // 获取农历
         toLunar(date) {
+            let val = '',
+                value;
             let item = UTIL_LUNAR(new Date(date));
-            let value = (item.lunarDate === 1 ? item.lMonth + '月' : item.lDate)
-            let festival = item.festival();
-            let val = '';
+            value = (item.lunarDate === 1 ? item.lMonth + '月' : item.lDate)
             item.festival().forEach(item => {
                 if (~'thc'.indexOf(item.type)) val = item.value;
             })
@@ -107,7 +107,7 @@ export default {
         },
         // 获取农历详情
         dayLunar(date) {
-            let item = UTIL_LUNAR(new Date(date));
+            let item = UTIL_LUNAR(new Date());
             return item.lMonth + '月' + item.lDate + ' ' + item.animal + '年'
         },
         // 获取年份
@@ -125,8 +125,11 @@ export default {
         // 获取当天的数据
         getItem(ymd) {
             let date = +new Date(ymd);
-            let arr = this.listFormat.filter(item => {
-                let { startDate, endDate } = item;
+            let arr = (this.listFormat||[]).filter(item => {
+                let {
+                    startDate,
+                    endDate
+                } = item;
                 let start = +new Date(startDate);
                 if (endDate) {
                     let end = +new Date(endDate);
@@ -137,7 +140,10 @@ export default {
             return JSON.parse(JSON.stringify(arr)).map(item => {
                 let css_start = "is-start";
                 let css_end = "is-end";
-                let { startDate, endDate } = item;
+                let {
+                    startDate,
+                    endDate
+                } = item;
                 if (endDate) {
                     let start = +new Date(startDate);
                     let end = +new Date(endDate);
@@ -153,7 +159,7 @@ export default {
         },
         // 法定节假日
         getHoliday(date, holiday = true) {
-            let [item] = (this.holiday || []).filter(d => d.date === date);
+            let [item] = (this.holiday||[]).filter(d => d.date === date);
             return item && item.holiday === holiday
         }
 

@@ -11,8 +11,8 @@ Vue.use(Components);
 Vue.use(ElementUI)
 
 // 添加工具
-import util from '@/utils/util/'
-import '@/utils/util/index.scss'
+import util from '@/utils'
+// import '@/utils/util/index.scss'
 import http from '@/utils/request'
 
 // 引入主题
@@ -25,4 +25,4 @@ Object.defineProperties(Vue.prototype, {
 })
 
 // 初始化 debug
-window.vm = new Vue({ router, store, render: h => h(App) }).$mount('#app')
+window.app = new Vue({ router, store, render: h => h(App) }).$mount('#app')

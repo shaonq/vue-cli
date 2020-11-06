@@ -1,77 +1,84 @@
-/**
- * @name 基础弹窗插件
- * @date 2019-01-09
- * @author shaonq@qq.com
- */
-let index = 0;
 let attr = "data-u-dialog";
+const isUndefined = value => typeof value === "undefined";
 function dialog() {
-  const isUndefined = value => typeof value === "undefined";
   const open = (options = {}) => {
-    if (isUndefined(options.showShadow)) options.showShadow = true;
+    // default options key
+    if (isUndefined(options.shadow)) options.shadow = true;
     if (isUndefined(options.shadowClose)) options.shadowClose = true;
     if (isUndefined(options.showClose)) options.showClose = false;
-    const id = (+new Date() + ++index).toString(32);
-    // element
-    let maskEl = document.createElement("div");
-    maskEl.className = "u-dialog-mask " + (options.showShadow ? "is-show" : "");
-    if (options.showShadow < 1 && options.showShadow > 0)
-      maskEl.style.opacity = options.showShadow;
+    // created element
+    const maskEl = document.createElement("div");
+    const id = (+new Date).toString(32);
+    maskEl.className = "u-dialog-mask";
+    if (options.shadow) maskEl.classList.add("is-show");
+    if (options.shadow < 1 && options.shadow > 0) maskEl.style.opacity = options.shadow;
     maskEl.setAttribute("data-u-dialog", id);
-    let el = document.createElement("div");
-    el.className = "u-dialog " + (options.className || "");
+    const el = document.createElement("div");
+    el.className = "u-dialog";
+    // add skin className
+    const skin = options.skin || options.className;
+    if (skin) el.classList.add(skin);
+    // add extend
+    if (options.extend) { el.classList.add("is-extend"); maskEl.classList.add("is-extend"); }
     el.setAttribute("data-u-dialog", id);
-    // xss
-    const filterXss = value => {
-      return value ? value.replace(/<[\/]*script>/ig, "[script]") : "";
-    };
+    // change xss
+    const filterXss = (value = "") => value.replace(/ipt>/g, "ipt&gt;")
     options.title = filterXss(options.title);
     options.content = filterXss(options.content);
-    options.width = options.width ? options.width : "910px";
+    options.width = options.width ? options.width : "auto";
     options.height = options.height ? options.height : "auto";
     el.innerHTML = `
-            <div class="u-dialog-content"
-                style="width:${options.width};height:${options.height}">
-                <div class="u-dialog-title ${options.title ? "is-show" : ""}">
-                ${options.title}</div>
-                <div class="u-dialog-body">${options.content}</div>
-                <div 
-                class="u-dialog-close ${options.showClose ? "is-show" : ""}">
-                x</div>
-            </div> `;
+      <div class="u-dialog-content" style="width:${options.width};height:${options.height}">
+        <div class="u-dialog-title ${options.title ? "is-show" : ""}"> ${options.title}</div>
+        <div class="u-dialog-body">${options.content}</div>
+        <div class="u-dialog-close ${options.showClose ? "is-show" : ""}">x</div>
+      </div> `;
     document.body.appendChild(maskEl);
     document.body.appendChild(el);
-    // position
-    let top = Math.max((window.innerHeight - el.clientHeight) / 2, 0);
-    let left = Math.max((window.innerWidth - el.clientWidth) / 2, 0);
-    el.style.top = top + "px";
-    el.style.left = left + "px";
-    el.classList.add("is-show");
-    // event
-    if (options.shadowClose)
-      maskEl.onclick = () => this.hideToast(maskEl.getAttribute(attr));
-    if (options.showClose)
-      el.querySelector(".u-dialog-close").onclick = () =>
-        this.hideToast(el.getAttribute(attr));
-    if (options.time)
-      setTimeout(
-        () => this.hideToast(el.getAttribute(attr)),
-        options.time * 1e3
-      );
-    if (typeof options.success === "function") options.success.call(el, id);
+    const winHeight = window.innerHeight;
+    const winWidth = window.innerWidth;
+    // set position width/height
+    {
+      let offset = options.offset || ["auto", "auto"];
+      el.style.top = offset[0] === "auto" ? Math.max((winHeight - el.clientHeight) / 2, 0) + "px" : offset[0];
+      el.style.left = offset[1] === "auto" ? Math.max((winWidth - el.clientWidth) / 2, 0) + "px" : offset[1];
+      el.classList.add("is-show");
+    }
+    // add event
+    if (options.shadowClose) maskEl.onclick = () => this.hideToast(maskEl.getAttribute(attr));
+    if (options.showClose) el.querySelector(".u-dialog-close").onclick = () => this.hideToast(el.getAttribute(attr));
+    if (options.time) setTimeout(() => this.hideToast(el.getAttribute(attr)), options.time * 1e3);
+    if (typeof options.success === "function") options.success(id, el);
+    // @bug  IE not`s support vh
+    {
+      let elc = el.querySelector(".u-dialog-content");
+      let elhh = el.querySelector(".u-dialog-title").clientHeight;
+      let elch = winHeight - elhh;
+      elc.style.maxHeight = elch + 'px';
+      el.querySelector(".u-dialog-body").style.maxHeight = (elch - elhh) + 'px';
+    }
+    // width height auto
+    {
+      let offsetTop = el.clientHeight + el.offsetTop;
+      let offsetLeft = el.clientWidth + el.offsetLeft;
+      if (offsetTop > (winHeight - 10)) el.style.top = (winHeight - el.clientHeight - 10) + "px";
+      if (offsetLeft > (winWidth - 10)) el.style.top = (winWidth - el.clientWidth - 10) + "px";
+    }
+    // return clsoe index
     return id;
   };
   this.hideToast = id => {
     function remove(el) {
       el.classList.remove("is-show");
-      setTimeout(() => {
-        let parent = el.parentNode;
-        if (parent) parent.removeChild(el);
-      }, 150);
+      let cl = () => el.parentNode && el.parentNode.removeChild(el);
+      setTimeout(cl, 300);
     }
-    Array.prototype.forEach.call(document.querySelectorAll(`[${attr}]`), el => {
-      id ? id == el.getAttribute(attr) && remove(el) : remove(el);
-    });
+    // Array.prototype.forEach.call(document.querySelectorAll(`[${attr}]`), el => {
+    //   id ? id == el.getAttribute(attr) && remove(el) : (!~el.className.indexOf('is-extend') && remove(el));
+    // });
+    [].slice.call(document.querySelectorAll(`[${attr}]`)).forEach(el => {
+      id ? id == el.getAttribute(attr) && remove(el) : (!~el.className.indexOf('is-extend') && remove(el));
+    })
   };
   this.toast = (content, time = 2) => {
     this.hideToast();
@@ -79,7 +86,7 @@ function dialog() {
       className: "u-dialog__toast",
       content,
       width: "auto",
-      showShadow: false,
+      shadow: false,
       shadowClose: false,
       time
     });
@@ -93,7 +100,7 @@ function dialog() {
         content: `<i></i><p>${content || ""}</p>`,
         width: "120px",
         height: "120px",
-        showShadow: 0.3,
+        shadow: 0.3,
         shadowClose: false
       });
     } else {
@@ -108,12 +115,12 @@ function dialog() {
       content: `<i></i><p>${content || ""}</p>`,
       width: "120px",
       height: "120px",
-      showShadow: false,
+      shadow: false,
       shadowClose: false,
       time
     });
   };
-  this.showLayer = content => {
+  this.showModal = content => {
     this.hideToast();
     typeof content === "string" && (content = { content });
     if (isUndefined(content.width)) content.width = "320px";
@@ -123,25 +130,61 @@ function dialog() {
     if (isUndefined(content.showClose)) content.showClose = true;
     return open(content);
   };
+  this.showContextMenu = ({ offset, list, success }) => {
+    let render = (list) => {
+      let html = '';
+      for (let i in list) {
+        let item = list[i], p = '', isChildren = item.children && item.children.length
+        if (isChildren) p = render(item.children);
+        html += `<div class="u-dialog--contextmenu-item ${item.border ? 'is-border' : ''} ${isChildren ? 'is-children' : ''}" data-code="${item.code}">${item.text}${p}</div>`
+      }
+      return `<div>${html}</div>`
+    }
+    this.showModal({
+      content: render(list),
+      shadow: false,
+      width: "auto",
+      height: "auto",
+      skin: "u-dialog--contextmenu",
+      showClose: false,
+      offset,
+      success: (index, el) => {
+        [].forEach.call(el.querySelectorAll('.u-dialog--contextmenu-item'), self => {
+          if (!~self.className.indexOf("is-children")) {
+            const close = () => {
+              this.hideToast(index);
+              document.removeEventListener("click", close, false);
+            }
+            self.addEventListener("click", e => {
+              success && success({
+                text: self.innerText,
+                code: self.getAttribute("data-code")
+              });
+              close();
+              e.stopPropagation();
+              e.preventDefault();
+            })
+            document.addEventListener("click", close, false);
+          }
+        })
+      }
+    });
+  }
 
   /**
-   * 扩展
-   * uplaodAvartar 头像上传
-   * btnClass Object
-   * change : Function 读取图片信息 Object
-   * success : Function 返回图片地址 Srting
+   ** 扩展:extend
+   ** uplaodAvartar 头像上传
+   ** change : Function 读取图片信息 Object *
+   ** success : Function 返回图片地址 Srting 
    */
-
-  this.uplaodAvartar = function(options) {
-    if (typeof options === "function") options = { success: options }
-    if (typeof options !== "object") throw ""
-    if (!options.btnClass) options.btnClass = "u-button u-button__blue u-button__spread";
-    const showLayer = this.showLayer;
+  this.uplaodAvartar = function (options = {}) {
+    const showModal = this.showModal;
     function imageInit(callback) {
       let input = document.createElement("input");
       input.type = "file";
       input.accept = "image/*";
       input.onchange = e => {
+        // console.log(e);
         const file = (e.target || e.path[0]).files[0];
         /** 名称，大小，类型 */
         let { name, size, type } = file;
@@ -169,25 +212,24 @@ function dialog() {
       input.click();
     }
     function canvasInit(callback) {
-      showLayer({
+      showModal({
         extend: true,
         title: "上传头像",
-        showShadow: 0.8,
+        shadow: 0.8,
         width: "400px",
         height: "540px",
-        content: `<div class="u-center">
+        content: `<div class="u-center u-noselect">
                    <p style="margin: 20px 0;color: #888;">调整头像位置</p>
                    <div><canvas width="240" height="240" style="width: 240px; height: 240px; cursor: grab;"></canvas></div>
-                   <p style="margin:40px auto 0;width:240px;"><button class="${options.btnClass}"> 保存</button></p>
-                   </div>
-                  `,
-        success() {
-          let canvas = this.querySelector("canvas");
+                   <p style="margin-top:40px"><button style="width:240px;" class="${options.btnClass || 'u-btn'}"> 保存</button></p>
+                   </div> `,
+        success(index, el) {
+          let canvas = el.querySelector("canvas");
           const ctx = canvas.getContext("2d");
           if (typeof callback === "function") {
             callback(canvas, ctx);
-            let button = this.querySelector("button");
-            button.onclick = function() {
+            let button = el.querySelector("button");
+            button.onclick = function () {
               let imgData = ctx.getImageData(40, 40, 160, 160);
               let _canvas = document.createElement("canvas");
               let _ctx = _canvas.getContext("2d");
@@ -195,7 +237,7 @@ function dialog() {
               _ctx.putImageData(imgData, 0, 0);
               let base64 = _canvas.toDataURL("image/png", 0.91);
               imgData = _canvas = _ctx = null;
-              typeof options.success === "function" && options.success(base64);
+              typeof options.success === "function" && options.success(base64, index);
             };
           }
         }
@@ -273,20 +315,23 @@ function dialog() {
           ctx.fill();
         }
         // 绑定事件
-        canvas.onmousedown = ea => {
-          let clientX = ea.pageX || ea.clientX;
-          let clientY = ea.pageY || ea.clientY;
+
+        canvas.onmousedown = e => {
+          let clientX = e.pageX || e.clientX;
+          let clientY = e.pageY || e.clientY;
 
           canvas.style.cursor = "grabbing";
-          document.onmousemove = eb => {
-            let cX = eb.pageX || eb.clientX;
-            let cY = eb.pageY || eb.clientY;
+          document.onmousemove = e => {
+            let cX = e.pageX || e.clientX;
+            let cY = e.pageY || e.clientY;
             let width = cX - clientX;
             let height = cY - clientY;
             drawImage({ width, height });
           };
-          document.onmouseup = () => {
+          document.onmouseup = e => {
             canvas.style.cursor = "grab";
+            clientX = e.pageX || e.clientX;
+            clientY = e.pageY || e.clientY;
             document.onmousemove = null;
           };
         };

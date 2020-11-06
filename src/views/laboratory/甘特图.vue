@@ -28,7 +28,7 @@
       <h1>例子</h1>
     </div>
 
-    <u-full-calendar :list="list" />
+    <u-gantt :list="list" />
   </div>
 </template>
 

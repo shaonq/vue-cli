@@ -29,7 +29,7 @@ var b = [43856, 19416, 19168, 42352, 21717, 53856, 55632, 25940, 22191, 39632, 2
                 h = 1; 12 >= h; h++) {
                 if (d = this.getMonthDays(r, h),
                     n === !0 && (n = !1,
-                        h-- ,
+                        h--,
                         d = this.getLeapDays(r),
                         d > e && (u = !0)),
                     n === h && (n = !0),
@@ -167,6 +167,7 @@ var b = [43856, 19416, 19168, 42352, 21717, 53856, 55632, 25940, 22191, 39632, 2
             })
     }
     , g = function (b) {
+        if (typeof b !== "object") throw new Error("lunar.js -> a time object needs to be passed in");
         var f, e = b.getFullYear(), a = b.getMonth() + 1, o = b.getDate(), l = 2 * (a - 1), g = i(e, l), D = "";
         o != g.getDate() ? (f = i(e, l + 1),
             o == f.getDate() && (D = c[l + 1])) : D = c[l];
@@ -190,6 +191,5 @@ var b = [43856, 19416, 19168, 42352, 21717, 53856, 55632, 25940, 22191, 39632, 2
             cnDay: "日一二三四五六七".charAt(b.getDay())
         }
     };
-
 // lunar
-export default g
+export default typeDate => g(typeDate)

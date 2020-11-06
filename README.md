@@ -8,7 +8,7 @@
 
 ## Node安装
 * windows 下载系统版本的`.msi`的安装包完全安装即可
-* [下载地址](https://nodejs.org/dist/v8.12.0/)
+* [下载地址](https://nodejs.org/dist/v10.16.0/)
 
 ## 全局依赖
 #### 使用 yarn 管理依赖包
@@ -82,9 +82,9 @@
 
 # 项目启动
 ```
-yarn install # 安装依赖包
-npm start    # 启动测试环境
-npm run build # 编译项目 
+yarn  # 安装依赖包
+yarn dev    # 启动测试环境
+yarn build # 编译项目 
 ```
 
 # END

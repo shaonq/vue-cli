@@ -1,153 +1,4 @@
 /**
- * @namespace u-* 
- * @name 基础样式
- * @date 2019-01-09
- * @author shaonq@qq.com
- * @变量声明参考： https://github.com/ElemeFE/element/blob/dev/packages/theme-chalk/src/common/var.scss
- */
-$--color-blur:#398dee;
-$--color-blur-light-1:mix(#fff, $--color-blur, 10%) !default;
-$--color-green:#12b370;
-$--color-green-light-1:mix(#fff, $--color-green, 10%) !default;
-$--color-red:#f75b43;
-$--color-red-light-1:mix(#fff, $--color-red, 10%) !default;
-$--color-light:#888888;
-$--color-light-light-7:mix(#fff, $--color-light, 70%) !default;
-.u-cl:before,
-.u-cl:after {
-  content: "";
-  display: table;
-}
-.u-cl:after {
-  clear: both;
-}
-.u-fr {
-  float: right;
-}
-.u-fl {
-  float: left;
-}
-.u-center {
-  text-align: center;
-}
-.u-inline {
-  display: inline-block;
-  vertical-align: middle;
-}
-.u-flex {
-  display: -webkit-box;
-  display: flex;
-  &__item {
-    -webkit-box-flex: 1;
-    flex: 1;
-  }
-}
-.u-mt {
-  margin-top: 20px;
-}
-
-.u-ml {
-  margin-left: 20px;
-}
-
-.u-mr {
-  margin-right: 20px;
-}
-
-.u-mb {
-  margin-bottom: 20px;
-}
-
-/** input */
-
-.u-input{
-    
-    padding: 6px 10px;
-    width: 100%;
-    border: 1px solid $--color-light-light-7;
-    border-radius: 2px;
-    outline:0;
-    box-sizing: border-box;
-    font-size:14px;
-    transition :.1s;
-
-    &:focus{
-        border-color:$--color-blur-light-1
-    }
-    &-group{ 
-    margin-bottom: 13px;
-    overflow: hidden;
-    }
-}
-
-/** button */
-
-.u-button{
-    display: inline-block;
-    padding: 0 16px;
-    font-size: 14px;
-    line-height: 32px;
-    color:$--color-light;
-    text-align: center;
-    cursor: pointer;
-    background: none;
-    border: 1px solid $--color-light-light-7;
-    border-radius: 2px;
-    transition: border-color .3s,background-color .1s;
-    &:hover{      
-      border-color:$--color-light;    
-    }
-    &+&{
-        margin-left: 16px
-    }
-
-    &__spread {
-      width: 100%
-    }
-    &:disabled {    
-      cursor: default;
-      opacity: .5;
-      pointer-events: none;
-    }
-
-    &__blue{
-      color: #fff;
-      background-color:$--color-blur;    
-      border-color :$--color-blur;    
-      &:hover{
-         background-color:$--color-blur-light-1;
-         border-color:$--color-blur-light-1;
-      }
-    }
-
-    &__green{
-      color: #fff;
-      background-color:$--color-green ;
-      border-color :$--color-green;  
-      &:hover{
-         background-color:$--color-green-light-1;
-         border-color:$--color-green-light-1;
-      }
-    }
-
-    &__red{
-      color: #fff;
-      background-color:$--color-red;    
-      border-color :$--color-red;  
-      &:hover{
-         background-color:$--color-red-light-1;
-         border-color:$--color-red-light-1;
-      }
-    }
-}
-
-
-
-
-
-
-
-/**
  * 弹窗组件 by github.com/shaonq
  * type
  * toast / loading / success / layer 
@@ -159,15 +10,24 @@ $--color-light-light-7:mix(#fff, $--color-light, 70%) !default;
   z-index: 9999;
   transform: scale(0.7);
   opacity: 0;
-  transition: transform 100ms ease-out, opacity 100ms ease;
+  transition: transform 120ms ease-out, opacity 100ms ease-in-out;
   word-break: break-all;
   word-wrap: break-word;
   visibility: hidden;
+
   &.is-show {
-    transition: transform 300ms ease-out, opacity 300ms ease;
+    transition: transform 300ms ease-out, opacity 300ms ease-out;
     visibility: visible;
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+.u-dialog--ani1 {
+  transform: translateY(10px);
+
+  &.is-show {
+    transform: translateY(0);
   }
 }
 
@@ -178,9 +38,10 @@ $--color-light-light-7:mix(#fff, $--color-light, 70%) !default;
   left: 0;
   top: 0;
   background-color: rgba(37, 38, 45, 0.65);
-  transition: opacity 100ms ease-out;
+  transition: opacity 100ms ease-in-out;
   z-index: 9999;
   display: none;
+
   &.is-show {
     display: block;
     transition: opacity 300ms ease-out;
@@ -191,37 +52,43 @@ $--color-light-light-7:mix(#fff, $--color-light, 70%) !default;
   position: relative;
   border-radius: 2px;
   background-color: #fff;
-  box-shadow: 0 5px 20px rgba(37, 38, 45, 0.1);
+  box-shadow: 0 5px 50px rgba(37, 38, 45, 0.3);
   max-height: calc(100vh - 48px);
 }
 
 .u-dialog-title {
   font-size: 15px;
-  padding: 0 20px;
+  padding: 0 40px 0 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: none;
   border-bottom: 1px solid #f1f1f1;
   line-height: 47px;
   height: 47px;
   font-weight: 600;
   color: #212121;
+
   &.is-show {
     display: block;
-    & + .u-dialog-body {
+
+    &+.u-dialog-body {
       height: calc(100% - 48px);
     }
   }
 }
 
 .u-dialog-body {
-  padding:20px;
+  line-height: 1.67;
+  padding: 12px 20px;
   height: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
+  max-height: calc(100vh - 71px);
 }
 
 /** 提示 toast */
-
 .u-dialog__toast {
   .u-dialog-content {
     background-color: rgba(37, 38, 45, 0.9);
@@ -229,6 +96,7 @@ $--color-light-light-7:mix(#fff, $--color-light, 70%) !default;
     color: #fff;
     line-height: 1.5;
   }
+
   .u-dialog-body {
     padding: 12px 20px;
     text-align: center;
@@ -246,18 +114,21 @@ $--color-light-light-7:mix(#fff, $--color-light, 70%) !default;
     color: #fff;
     line-height: 20px;
   }
+
   .u-dialog-body {
     padding: 10px;
     text-align: center;
     min-width: 80px;
     max-width: 200px;
   }
+
   i {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     display: block;
   }
+
   p {
     height: 20px;
     margin: 0;
@@ -285,6 +156,7 @@ $--color-light-light-7:mix(#fff, $--color-light, 70%) !default;
   form {
     transform: rotate3d(0, 0, 1, 0);
   }
+
   to {
     transform: rotate3d(0, 0, 1, 360deg);
   }
@@ -295,28 +167,71 @@ $--color-light-light-7:mix(#fff, $--color-light, 70%) !default;
   font-size: 0;
   position: absolute;
   cursor: pointer;
-  right: -30px;
-  top: 0;
+  right: 9px;
+  top: 9px;
   width: 30px;
   height: 30px;
+
   &:before {
     content: "";
     position: absolute;
-    right: 0;
+    right: 7px;
     top: 7px;
     width: 16px;
     height: 16px;
     transition: none;
-    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTcxODIyMjQ1MTMyIiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjI0ODU1IiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPjwvc3R5bGU+PC9kZWZzPjxwYXRoIGQ9Ik01MjEuNjkzODY3IDQ0OS4yOTcwNjdMMTExLjQxMTIgMzkuMDE0NGE1MS4yIDUxLjIgMCAxIDAtNzIuNDMwOTMzIDcyLjM2MjY2N2w0MTAuMjgyNjY2IDQxMC4zMTY4LTQxMC4yODI2NjYgNDEwLjMxNjhhNTEuMiA1MS4yIDAgMSAwIDcyLjM5NjggNzIuMzk2OGw0MTAuMzE2OC00MTAuMjgyNjY3IDQxMC4zMTY4IDQxMC4yODI2NjdhNTEuMiA1MS4yIDAgMSAwIDcyLjM5NjgtNzIuMzYyNjY3bC00MTAuMjgyNjY3LTQxMC4zNTA5MzMgNDEwLjI4MjY2Ny00MTAuMjgyNjY3YTUxLjIgNTEuMiAwIDEgMC03Mi4zOTY4LTcyLjM5NjhsLTQxMC4yODI2NjcgNDEwLjI4MjY2N3oiIGZpbGw9IiNmZmZmZmYiIHAtaWQ9IjI0ODU2Ij48L3BhdGg+PC9zdmc+)
-      center no-repeat;
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTg1MTkyMTQyMzU3IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjQ2NTkiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PC9zdHlsZT48L2RlZnM+PHBhdGggZD0iTTU3NS40MzY4IDUxMmwzMzMuNTE2OC0zMzMuNjcwNGE0My43MjQ4IDQzLjcyNDggMCAwIDAgMC02MS40NGwtMS43OTItMS44NDMyYTQzLjY3MzYgNDMuNjczNiAwIDAgMC02MS40NCAwbC0zMzMuNTY4IDMzNC4xMzEyTDE3OC42ODggMTE1LjA0NjRhNDMuNjczNiA0My42NzM2IDAgMCAwLTYxLjQ0IDBsLTEuODQzMiAxLjc5MmE0Mi45MDU2IDQyLjkwNTYgMCAwIDAgMCA2MS40NEw0NDguOTIxNiA1MTJsLTMzMy41NjggMzMzLjY3MDRhNDMuNzI0OCA0My43MjQ4IDAgMCAwIDAgNjEuNDRsMS44NDMyIDEuODQzMmE0My42NzM2IDQzLjY3MzYgMCAwIDAgNjEuNDQgMGwzMzMuNTE2OC0zMzMuNjcwNCAzMzMuNTY4IDMzMy42NzA0YTQzLjY3MzYgNDMuNjczNiAwIDAgMCA2MS40NCAwbDEuNzkyLTEuNzkyYTQzLjcyNDggNDMuNzI0OCAwIDAgMCAwLTYxLjQ0TDU3NS40ODggNTEyeiIgZmlsbD0iIzUxNTE1MSIgcC1pZD0iNDY2MCI+PC9wYXRoPjwvc3ZnPg==) center no-repeat;
     background-size: 16px;
   }
+
   &.is-show {
     display: block;
+
     &:hover:before,
     &:active:before {
       transition: 0.3s;
-      transform: rotate(90deg);
+      // transform: rotate(90deg);
+    }
+  }
+}
+
+/** 扩展 */
+
+.u-dialog--btns {
+  text-align: right;
+  padding: 20px 0 8px;
+
+  .u-btn {
+    width: 76px;
+  }
+}
+
+
+/** 右键菜单 */
+.u-dialog--contextmenu {
+  .u-dialog-content {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  .u-dialog-body {
+    padding: 0;
+    padding: 4px 0;
+  }
+
+  &-item {
+    padding: 0 24px;
+    line-height: 24px;
+    font-size: 12px;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: #eee;
+    }
+
+    &.is-border {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
   }
 }

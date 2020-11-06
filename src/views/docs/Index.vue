@@ -1,7 +1,7 @@
 <template>
   <div style="overflow: auto;height:100%;">
     <div style="width:1200px;margin: 10px auto 80px;">
-      <div class="u-flex">
+      <div class="u-flex  u-flex--start">
         <div class="t-subcard u-flex__item">
           <div style="margin:20px">
             <router-view></router-view>

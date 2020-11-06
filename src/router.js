@@ -29,11 +29,11 @@ const router = new VueRouter({
           component: V("docs/Index"),
           children: getChildren(docsRoute)
         },
-        {
-          path: "servers",
-          component: V("servers/Index"),
-          children: getChildren(serversRoute)
-        },
+        // {
+        //   path: "servers",
+        //   component: V("servers/Index"),
+        //   children: getChildren(serversRoute)
+        // },
         {
           path: "laboratory",
           component: V("laboratory/Index"),

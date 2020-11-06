@@ -1,7 +1,7 @@
 <template>
   <u-house style="background:#f4f4f4;">
     <div class="t-header">
-      <div class="u-flex" style="margin: 0 auto;width:1200px;">
+      <div class="u-flex u-flex--start" style="margin: 0 auto;width:1200px;">
         <a href="https://yanyujiangnan.coding.me/">
           <img src="~@/assets/logo.png" style="height:60px" draggable="false" />
         </a>
