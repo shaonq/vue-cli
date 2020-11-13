@@ -1,6 +1,130 @@
 let attr = "data-u-dialog";
 const isUndefined = value => typeof value === "undefined";
+const dom = {
+  ie: Number(document.documentMode) | 0,
+  on: (function () {
+    if (document.addEventListener) {
+      return function (element, event, handler) {
+        if (element && event && handler) {
+          element.addEventListener(event, handler, false);
+        }
+      }
+    } else {
+      return function (element, event, handler) {
+        if (element && event && handler) {
+          element.attachEvent('on' + event, handler);
+        }
+      }
+    }
+  })(),
+  off: (function () {
+    if (document.removeEventListener) {
+      return function (element, event, handler) {
+        if (element && event) {
+          element.removeEventListener(event, handler, false);
+        }
+      }
+    } else {
+      return function (element, event, handler) {
+        if (element && event) {
+          element.detachEvent('on' + event, handler);
+        }
+      }
+    }
+  })(),
+  once: function (el, event, fn) {
+    var off = this.off;
+    var listener = function () {
+      if (fn) fn.apply(this, arguments)
+      off(el, event, listener);
+    };
+    this.on(el, event, listener)
+  },
+  // 位置信息
+  position: function (el) {
+    const box = el.getBoundingClientRect();
+    // html元素对象的上/左边框的宽度
+    const { clientTop, clientLeft } = document.documentElement;
+    const { pageYOffset, pageXOffset } = window;
+    return {
+      top: box.top - clientTop,
+      left: box.left - clientLeft,
+      height: el.clientHeight,
+      width: el.clientWidth,
+      pageYOffset,
+      pageXOffset,
+    }
+  },
+  el: function (attr, doc) {
+    if (!doc) doc = document;
+    return doc.querySelector(attr)
+  },
+  els: function (attr, doc) {
+    if (!doc) doc = document;
+    return [].slice.call(doc.querySelectorAll(attr))
+  },
+  hasClass: function (el, cls) {
+    if (!el || !cls) return false;
+    if (cls.indexOf(' ') !== -1) throw new Error('className should not contain space.');
+    if (el.classList) {
+      return el.classList.contains(cls);
+    } else {
+      return (' ' + el.className + ' ').indexOf(' ' + cls + ' ') > -1;
+    }
+  },
+  // 去掉前后空格
+  trim: function (string) {
+    return (string || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '');
+  },
+  addClass: function (el, cls) {
+    if (!el) return;
+    var curClass = el.className;
+    var classes = (cls || '').split(' ');
+
+    for (var i = 0, j = classes.length; i < j; i++) {
+      var clsName = classes[i];
+      if (!clsName) continue;
+
+      if (el.classList) {
+        el.classList.add(clsName);
+      } else if (!this.hasClass(el, clsName)) {
+        curClass += ' ' + clsName;
+      }
+    }
+    if (!el.classList) {
+      el.className = curClass;
+    }
+  },
+  removeClass: function (el, cls) {
+    if (!el || !cls) return;
+    var classes = cls.split(' ');
+    var curClass = ' ' + el.className + ' ';
+
+    for (var i = 0, j = classes.length; i < j; i++) {
+      var clsName = classes[i];
+      if (!clsName) continue;
+
+      if (el.classList) {
+        el.classList.remove(clsName);
+      } else if (this.hasClass(el, clsName)) {
+        curClass = curClass.replace(' ' + clsName + ' ', ' ');
+      }
+    }
+    if (!el.classList) {
+      el.className = this.trim(curClass);
+    }
+  },
+  append(el, doc) {
+    if (!doc) doc = document.body;
+    doc.appendChild(el);
+  },
+  remove(el) {
+    if (el && el.parentNode) el.parentNode.removeChild(el)
+  }
+}
+
 function dialog() {
+  this.dom = dom;
   const open = (options = {}) => {
     // default options key
     if (isUndefined(options.shadow)) options.shadow = true;
@@ -10,16 +134,19 @@ function dialog() {
     const maskEl = document.createElement("div");
     const id = (+new Date).toString(32);
     maskEl.className = "u-dialog-mask";
-    if (options.shadow) maskEl.classList.add("is-show");
+    if (options.shadow) dom.addClass(maskEl, "is-show");//  maskEl.classList.add("is-show");
     if (options.shadow < 1 && options.shadow > 0) maskEl.style.opacity = options.shadow;
     maskEl.setAttribute("data-u-dialog", id);
     const el = document.createElement("div");
     el.className = "u-dialog";
     // add skin className
     const skin = options.skin || options.className;
-    if (skin) el.classList.add(skin);
+    if (skin) dom.addClass(el, skin);//el.classList.add(skin);
     // add extend
-    if (options.extend) { el.classList.add("is-extend"); maskEl.classList.add("is-extend"); }
+    if (options.extend) {
+      dom.addClass(el, "is-extend"); dom.addClass(maskEl, "is-extend");
+      // el.classList.add("is-extend"); maskEl.classList.add("is-extend"); 
+    }
     el.setAttribute("data-u-dialog", id);
     // change xss
     const filterXss = (value = "") => value.replace(/ipt>/g, "ipt&gt;")
@@ -33,8 +160,10 @@ function dialog() {
         <div class="u-dialog-body">${options.content}</div>
         <div class="u-dialog-close ${options.showClose ? "is-show" : ""}">x</div>
       </div> `;
-    document.body.appendChild(maskEl);
-    document.body.appendChild(el);
+    // document.body.appendChild(maskEl);
+    // document.body.appendChild(el);
+    dom.append(maskEl);
+    dom.append(el);
     const winHeight = window.innerHeight;
     const winWidth = window.innerWidth;
     // set position width/height
@@ -42,20 +171,21 @@ function dialog() {
       let offset = options.offset || ["auto", "auto"];
       el.style.top = offset[0] === "auto" ? Math.max((winHeight - el.clientHeight) / 2, 0) + "px" : offset[0];
       el.style.left = offset[1] === "auto" ? Math.max((winWidth - el.clientWidth) / 2, 0) + "px" : offset[1];
-      el.classList.add("is-show");
+      //el.classList.add("is-show");
+      dom.addClass(el, "is-show");
     }
     // add event
     if (options.shadowClose) maskEl.onclick = () => this.hideToast(maskEl.getAttribute(attr));
-    if (options.showClose) el.querySelector(".u-dialog-close").onclick = () => this.hideToast(el.getAttribute(attr));
+    if (options.showClose) dom.on(dom.el(".u-dialog-close", el), "click", () => this.hideToast(el.getAttribute(attr)));
     if (options.time) setTimeout(() => this.hideToast(el.getAttribute(attr)), options.time * 1e3);
     if (typeof options.success === "function") options.success(id, el);
     // @bug  IE not`s support vh
     {
-      let elc = el.querySelector(".u-dialog-content");
-      let elhh = el.querySelector(".u-dialog-title").clientHeight;
+      let elc = dom.el(".u-dialog-content", el);
+      let elhh = dom.el(".u-dialog-title", el).clientHeight;
       let elch = winHeight - elhh;
       elc.style.maxHeight = elch + 'px';
-      el.querySelector(".u-dialog-body").style.maxHeight = (elch - elhh) + 'px';
+      dom.el(".u-dialog-body", el).style.maxHeight = (elch - elhh) + 'px';
     }
     // width height auto
     {
@@ -67,19 +197,20 @@ function dialog() {
     // return clsoe index
     return id;
   };
+
   this.hideToast = id => {
     function remove(el) {
-      el.classList.remove("is-show");
-      let cl = () => el.parentNode && el.parentNode.removeChild(el);
+      // el.classList.remove("is-show");
+      dom.removeClass(el, "is-show");
+      //  let cl = () => el.parentNode && el.parentNode.removeChild(el);
+      let cl = () => dom.remove(el);
       setTimeout(cl, 300);
     }
-    // Array.prototype.forEach.call(document.querySelectorAll(`[${attr}]`), el => {
-    //   id ? id == el.getAttribute(attr) && remove(el) : (!~el.className.indexOf('is-extend') && remove(el));
-    // });
-    [].slice.call(document.querySelectorAll(`[${attr}]`)).forEach(el => {
+    dom.els(`[${attr}]`).forEach(el => {
       id ? id == el.getAttribute(attr) && remove(el) : (!~el.className.indexOf('is-extend') && remove(el));
     })
   };
+
   this.toast = (content, time = 2) => {
     this.hideToast();
     return open({
@@ -91,8 +222,9 @@ function dialog() {
       time
     });
   };
+
   this.showLoading = content => {
-    let el = document.querySelector(".u-dialog__loading");
+    let el = dom.el(".u-dialog__loading", el);
     if (!el) {
       this.hideToast();
       return open({
@@ -104,10 +236,11 @@ function dialog() {
         shadowClose: false
       });
     } else {
-      el.querySelector("p").innerHTML = content;
+      dom.el("p", el).innerHTML = content;
       return el.getAttribute(attr);
     }
   };
+
   this.showSuccess = (content, time = 2) => {
     this.hideToast();
     return open({
@@ -120,6 +253,46 @@ function dialog() {
       time
     });
   };
+
+
+  this.alert = content => {
+    this.hideToast();
+    typeof content === "string" && (content = { content });
+    if (isUndefined(content.width)) content.width = "380px";
+    if (isUndefined(content.time)) content.time = 0;
+    if (isUndefined(content.title)) content.title = "提示";
+    if (isUndefined(content.shadowClose)) content.shadowClose = true;
+    if (isUndefined(content.showClose)) content.showClose = false;
+    if (!content.cancel) content.cancel = { label: "取消" };
+    let okhtml = '', cancelHtml = `<a class="u-btn">${content.cancel.label}</a>`;
+    // ok:{label,onclick,skin}
+    if (typeof content.ok === "function") { content.ok = { onclick: content.ok } }
+    let isok = typeof content.ok === "object";
+    if (isok) {
+      let label = content.ok.label || "确认";
+      okhtml = `<a class="u-btn u-btn--primary ${content.ok.skin ? content.ok.skin : 'u-btn--blue'}">${label}</a>`;
+    }
+    content.skin = "u-dialog__alert";
+    content.content = `<div style="min-height:5em">${content.content}</div>${okhtml}${cancelHtml}<div></div>`;
+    content.success = (index, el) => {
+      dom.els(".u-btn", el).forEach(btn => {
+        dom.on(btn, "click", () => {
+          if (dom.hasClass(btn, 'u-btn--primary') && isok) {
+            let onclick = content.ok.onclick;
+            typeof onclick === "function" ? onclick(index, btn) : this.hideToast(index)
+          } else {
+            let onclick = content.cancel.onclick;
+            typeof onclick === "function" ? onclick(index, btn) : this.hideToast(index)
+          }
+        })
+      })
+    }
+
+
+    return open(content);
+  }
+
+
   this.showModal = content => {
     this.hideToast();
     typeof content === "string" && (content = { content });
@@ -129,46 +302,89 @@ function dialog() {
     if (isUndefined(content.shadowClose)) content.shadowClose = false;
     if (isUndefined(content.showClose)) content.showClose = true;
     return open(content);
-  };
-  this.showContextMenu = ({ offset, list, success }) => {
-    let render = (list) => {
-      let html = '';
-      for (let i in list) {
-        let item = list[i], p = '', isChildren = item.children && item.children.length
-        if (isChildren) p = render(item.children);
-        html += `<div class="u-dialog--contextmenu-item ${item.border ? 'is-border' : ''} ${isChildren ? 'is-children' : ''}" data-code="${item.code}">${item.text}${p}</div>`
-      }
-      return `<div>${html}</div>`
-    }
+  }
+
+
+  /**
+   * 生成条目弹窗
+   * offset 位置
+   * skin 样式
+   * @param {Array} list :[{  label: "不可选", value: "remove", disabled: true, border: true   }]
+   * @param {String} code :默认选中code
+   * @param {Function} success =>(index, el) 
+   */
+
+
+  /**
+   * popover 弹出组件
+   * popover
+   */
+  this.showPopover = options => {
     this.showModal({
-      content: render(list),
+      content: options.content,
       shadow: false,
       width: "auto",
       height: "auto",
-      skin: "u-dialog--contextmenu",
+      skin: options.skin,
       showClose: false,
-      offset,
+      offset: options.offset,
       success: (index, el) => {
-        [].forEach.call(el.querySelectorAll('.u-dialog--contextmenu-item'), self => {
-          if (!~self.className.indexOf("is-children")) {
-            const close = () => {
-              this.hideToast(index);
-              document.removeEventListener("click", close, false);
-            }
-            self.addEventListener("click", e => {
-              success && success({
-                text: self.innerText,
-                code: self.getAttribute("data-code")
-              });
-              close();
-              e.stopPropagation();
-              e.preventDefault();
-            })
-            document.addEventListener("click", close, false);
-          }
+        dom.once(document, "scroll", () => this.hideToast(index));
+        setTimeout(() => dom.once(document, "click", () => this.hideToast(index)), 100)
+        dom.on(el, "click", e => { e.stopPropagation(), e.preventDefault() })
+        options.success && options.success(index, el);
+      }
+    })
+  }
+
+  /**
+   * 创建列表模板
+   * @param {Array} list: [{label,value}]
+   * @param {Array} value: default value
+   */
+  this.createLabelValue = ({ skin, list, value = "" }) => {
+    return list.reduce((html, item) => {
+      let childrenHtml = '', isChildren = item.children && item.children.length
+      if (isChildren) childrenHtml = render(item.children);
+      html += `<div class="${skin}-item${item.border ? ' is-border' : ''}${item.disabled ? ' is-disabled' : ''}${isChildren ? ' is-children' : ''}${item.value == value ? ' is-active' : ''}" data-value="${item.value}">${item.label}${childrenHtml}</div>`
+      return html
+    }, "")
+  }
+
+  this.showDropdown = ({ offset, success, list, value }) => {
+    const skin = "u-dialog--dropdown";
+    this.showPopover({
+      offset, skin, list,
+      content: this.createLabelValue({ skin, list, value }),
+      success: (index, el) => {
+        dom.els(`.${skin}-item`).forEach(self => {
+          if (dom.hasClass(self, 'is-disabled')) return;
+          if (dom.hasClass(self, 'is-children')) return;
+          dom.on(self, "click", e => {
+            success && success({ label: self.innerText, value: self.getAttribute("data-value") });
+            this.hideToast(index);
+          })
         })
       }
-    });
+    })
+  }
+
+  this.showContextMenu = ({ offset, success, list }) => {
+    const skin = "u-dialog--contextmenu";
+    this.showPopover({
+      offset, skin, list,
+      content: this.createLabelValue({ skin, list }),
+      success: (index, el) => {
+        dom.els(`.${skin}-item`).forEach(self => {
+          if (dom.hasClass(self, 'is-disabled')) return;
+          if (dom.hasClass(self, 'is-children')) return;
+          dom.on(self, "click", e => {
+            success && success({ label: self.innerText, value: self.getAttribute("data-value") });
+            this.hideToast(index);
+          })
+        })
+      }
+    })
   }
 
   /**
@@ -184,7 +400,6 @@ function dialog() {
       input.type = "file";
       input.accept = "image/*";
       input.onchange = e => {
-        // console.log(e);
         const file = (e.target || e.path[0]).files[0];
         /** 名称，大小，类型 */
         let { name, size, type } = file;
@@ -209,27 +424,33 @@ function dialog() {
         }
         input = null;
       };
+      /* @bug   IE <= 10    */
+      if (dom.ie && dom.ie <= 10) {
+        input.style.clip = "rect(0px, 0px, 0px, 0px)";
+        dom.append(input);
+        setTimeout(a => dom.remove(input), 100)
+      }
       input.click();
     }
     function canvasInit(callback) {
       showModal({
         extend: true,
-        title: "上传头像",
+        title: options.title || "上传头像",
         shadow: 0.8,
-        width: "400px",
-        height: "540px",
+        width: "auto",
+        height: "auto",
         content: `<div class="u-center u-noselect">
-                   <p style="margin: 20px 0;color: #888;">调整头像位置</p>
-                   <div><canvas width="240" height="240" style="width: 240px; height: 240px; cursor: grab;"></canvas></div>
-                   <p style="margin-top:40px"><button style="width:240px;" class="${options.btnClass || 'u-btn'}"> 保存</button></p>
+                   <p style="margin: 20px 0;color: #888;">${options.desc || "调整头像位置"}</p>
+                   <div style="padding: 10px 40px;"><canvas width="240" height="240" style="width: 240px; height: 240px; cursor: grab;"></canvas></div>
+                   <p style="margin:40px 0"><button style="width:240px;" class="${options.btnClass || 'u-btn'}"> 保存</button></p>
                    </div> `,
         success(index, el) {
-          let canvas = el.querySelector("canvas");
+          let canvas = dom.el("canvas", el);
           const ctx = canvas.getContext("2d");
           if (typeof callback === "function") {
             callback(canvas, ctx);
-            let button = el.querySelector("button");
-            button.onclick = function () {
+            let button = dom.el("button", el);
+            dom.on(button, "click", function () {
               let imgData = ctx.getImageData(40, 40, 160, 160);
               let _canvas = document.createElement("canvas");
               let _ctx = _canvas.getContext("2d");
@@ -238,7 +459,7 @@ function dialog() {
               let base64 = _canvas.toDataURL("image/png", 0.91);
               imgData = _canvas = _ctx = null;
               typeof options.success === "function" && options.success(base64, index);
-            };
+            })
           }
         }
       });
@@ -265,8 +486,7 @@ function dialog() {
       }
 
       /**
-       * 图片创建成功 开始创建画布
-       *
+       * 图片创建成功 开始创建画布       *
        * 如不满足条件可以阻断
        *
        */
@@ -275,31 +495,34 @@ function dialog() {
 
       canvasInit((canvas, ctx) => {
         const { width, height } = info;
-        function drawImage(offset = { width: 0, height: 0 }) {
+        function drawImage(offset, callback) {
+          // let { width = 0, height = 0 } = offset;
           ctx.clearRect(0, 0, cWidth, cWidth);
           ctx.fillStyle = "#ccc";
           ctx.fillRect(0, 0, cWidth, cWidth);
           ctx.fill();
           // 是否水平
           let isHorizontal = width >= height;
-          // 画图 ctx.drawImage(image, dx, dy, dWidth, dHeight);
-          let dx, dy, dWidth, dHeight;
-          let max = cLine;
+          // 记住上一次绘制的数据
+          let dx = canvas.getAttribute("dx") | 0;
+          let dy = canvas.getAttribute("dy") | 0;
+          // dx, dy,
+          let dWidth, dHeight, max = cLine;
           if (isHorizontal) {
             dWidth = h2w(width, height);
             dHeight = iWidth;
-            dx = (cWidth - dWidth) / 2;
-            dy = cLine;
-            // 可移动范围
+            dx = dx || (cWidth - dWidth) / 2;
+            dy = dy || cLine;
+            // 验证: 可移动范围
             let min = dHeight + cLine - dWidth;
             dx = dx + offset.width;
             dx = m2m(min, max, dx);
           } else {
             dWidth = iWidth;
             dHeight = h2w(height, width);
-            dx = cLine;
-            dy = (cWidth - dHeight) / 2;
-            // 可移动范围
+            dx = dx || cLine;
+            dy = dy || (cWidth - dHeight) / 2;
+            // 验证: 可移动范围
             let min = dWidth + cLine - dHeight;
             dy = dy + offset.height;
             dy = m2m(min, max, dy);
@@ -313,29 +536,44 @@ function dialog() {
           ctx.fillRect(40, 0, 160, 40);
           ctx.fillRect(40, 200, 160, 40);
           ctx.fill();
+          callback && callback({
+            dx, dy
+          })
         }
         // 绑定事件
-
-        canvas.onmousedown = e => {
+        // 上一次移动触发的偏移
+        dom.on(canvas, "mousedown", e => {
           let clientX = e.pageX || e.clientX;
           let clientY = e.pageY || e.clientY;
-
           canvas.style.cursor = "grabbing";
-          document.onmousemove = e => {
+          let isMove = true;
+          const fnMove = e => {
+            if (isMove) {
+              let cX = e.pageX || e.clientX;
+              let cY = e.pageY || e.clientY;
+              let width = cX - clientX;
+              let height = cY - clientY;
+              drawImage({ width, height });
+            }
+          }
+          const fnUp = e => {
+            canvas.style.cursor = "grab";
             let cX = e.pageX || e.clientX;
             let cY = e.pageY || e.clientY;
             let width = cX - clientX;
             let height = cY - clientY;
-            drawImage({ width, height });
-          };
-          document.onmouseup = e => {
-            canvas.style.cursor = "grab";
-            clientX = e.pageX || e.clientX;
-            clientY = e.pageY || e.clientY;
-            document.onmousemove = null;
-          };
-        };
-        drawImage();
+            drawImage({ width, height }, o => {
+              canvas.setAttribute("dx", o.dx)
+              canvas.setAttribute("dy", o.dy)
+            });
+            isMove = false;
+            dom.off(document, "mouseup", fnUp)
+            dom.off(document, "mousemove", fnMove)
+          }
+          dom.on(document, "mousemove", fnMove)
+          dom.on(document, "mouseup", fnUp)
+        })
+        drawImage({ width: 0, height: 0 });
       });
     });
   };

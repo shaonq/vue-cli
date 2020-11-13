@@ -24,11 +24,11 @@
 </template>
 
 <script>
-import { docsRoute, serversRoute, laboratoryRoute } from "@/views/routeFile.js";
+import { docsRoute, serversRoute, developerRoute } from "@/views/routeFile.js";
 export default {
   data() {
     return {
-      list: laboratoryRoute
+      list: developerRoute
     }
   }
 }

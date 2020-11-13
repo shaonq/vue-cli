@@ -1,14 +1,14 @@
-/** var */
-$blue-color: #4795ef;
-$red-color: #ff4e20;
-$green-color: #11a668;
-$light-color: #888;
-$border-color: mix(lighten($light-color, 30%), $blue-color, 90%);
-$border-color--light: lighten($border-color, 14%);
-$space: 12px;
-$space--16: 16px;
-$space--20: 20px;
-
+// /** var */
+// $blue-color: #4795ef;
+// $red-color: #ff4e20;
+// $green-color: #11a668;
+// $light-color: #888;
+// $border-color: mix(lighten($light-color, 30%), $blue-color, 90%);
+// $border-color--light: lighten($border-color, 14%);
+// $space: 12px;
+// $space--16: 16px;
+// $space--20: 20px;
+@import "./var.scss";
 hr {
   height: 1px;
   margin: $space 0;
@@ -219,13 +219,12 @@ $colors: (blue: $blue-color,
     left: 100%;
     white-space: nowrap;
     padding: 5px 12px;
-    background-color: #333;
+    background-color:  rgba(37, 38, 45, 0.9);
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
     color: #fff;
     border: 0;
     text-align: center;
-    border-radius: 4px;
-    //letter-spacing: 1px;
+    border-radius: 3px;
     max-width: 350px;
     line-height: 1.4;
     font-size: 13px;
@@ -523,8 +522,14 @@ textarea.u-input {
 .u-form-small {
   font-size: 13px;
   height: 24px;
-  line-height: 24px;
-  padding: 0 16px;
+  line-height: 22px;
+  padding: 0 13px;
+}
+
+.u-from-large {
+  height: 40px;
+  line-height: 40px;
+  font-size: 15px;
 }
 
 .u-form-inline {
@@ -636,6 +641,7 @@ textarea.u-input {
 
 // 表单
 .u-field {
+  position: relative;
   padding: 15px 0;
 
   &:not(:first-child) {

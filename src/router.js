@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import App from "./App.vue";
 import store from "@/store";
 Vue.use(VueRouter);
-import { docsRoute, serversRoute, laboratoryRoute } from "@/views/routeFile.js";
+import { docsRoute, serversRoute, developerRoute } from "@/views/routeFile.js";
 const V = path => Vue.extend(require(`@/views/${path}.vue`).default);
 const getChildren = (arr, file) => {
   let children = arr.map((item, index) => {
@@ -29,15 +29,10 @@ const router = new VueRouter({
           component: V("docs/Index"),
           children: getChildren(docsRoute)
         },
-        // {
-        //   path: "servers",
-        //   component: V("servers/Index"),
-        //   children: getChildren(serversRoute)
-        // },
         {
-          path: "laboratory",
-          component: V("laboratory/Index"),
-          children: getChildren(laboratoryRoute)
+          path: "developer",
+          component: V("developer/Index"),
+          children: getChildren(developerRoute)
         },
         { path: "*", component: V("404") }
       ]

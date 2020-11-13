@@ -49,9 +49,7 @@ export default {
                     _className: {},
                     _source: item
                 };
-                if (item.className) o._className = {
-                    [item.className]: true
-                }
+                if (item.className) o._className = { [item.className]: true }
                 return o
             })
         },
@@ -125,7 +123,7 @@ export default {
         // 获取当天的数据
         getItem(ymd) {
             let date = +new Date(ymd);
-            let arr = (this.listFormat||[]).filter(item => {
+            let arr = this.listFormat.filter(item => {
                 let {
                     startDate,
                     endDate
@@ -159,7 +157,7 @@ export default {
         },
         // 法定节假日
         getHoliday(date, holiday = true) {
-            let [item] = (this.holiday||[]).filter(d => d.date === date);
+            let [item] = this.holiday.filter(d => d.date === date);
             return item && item.holiday === holiday
         }
 
