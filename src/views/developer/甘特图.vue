@@ -19,7 +19,7 @@
       <h1>例子</h1>
     </div>
 
-    <u-gantt :list="list" style="height:370px" skin="test-gantt" />
+    <u-gantt :list="list" style="height:770px" skin="test-gantt" />
   </div>
 </template>
 
@@ -174,9 +174,9 @@ export default {
 .test-gantt {
   thead {
     td {
-      // border-color: #ff6e6e;
-      // background: #f79898;
-      // color: #fff;
+      border-color: #f79898;
+      background: #f79898;
+      color: #fff;
     }
   }
 }

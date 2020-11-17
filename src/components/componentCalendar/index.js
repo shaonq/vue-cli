@@ -64,7 +64,7 @@ export default {
         },
         monthList() { // 当月数据，按周分
             let first = this.$date.firstDayOfMonth(this.activeDay);
-            let len = 31,
+            let len = 36,
                 i = 0,
                 j = 0,
                 _j = 0,

@@ -1,5 +1,5 @@
 <template>
-  <u-house style="background:#f4f4f4;">
+  <div style="background:#f4f4f4;min-height:100vh">
     <div class="t-header">
       <div class="u-flex u-flex--start" style="margin: 0 auto;width:1200px;">
         <a href="https://yanyujiangnan.coding.me/">
@@ -14,7 +14,7 @@
       </div>
     </div>
     <router-view></router-view>
-  </u-house>
+  </div>
 </template>
 
 <style>

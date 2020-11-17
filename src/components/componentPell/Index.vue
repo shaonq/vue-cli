@@ -186,6 +186,7 @@ export default {
 
   img{
     display:block;
+    border-radius: 2px;
     margin :1.4em auto;
   }
 }

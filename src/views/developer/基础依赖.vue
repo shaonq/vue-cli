@@ -2,8 +2,8 @@
   <div>
     <div class="u-card" style="border: 1px solid #f1f1f1;box-shadow:none">
       <ul class="u-tabs">
-        <li class="u-tabs__item"><a class="u-tabs__link is-active">内容区块</a></li>
-        <li class="u-tabs__item"><a class="u-tabs__link">菜单切换</a></li>
+        <li class="u-tabs__item"><a class="u-tabs__link" :class="{'is-active':tabName==='a'}" @click="tabName='a'">内容区块</a></li>
+        <li class="u-tabs__item"><a class="u-tabs__link" :class="{'is-active':tabName==='b'}" @click="tabName='b'">菜单切换</a></li>
       </ul>
       <div class="u-card__bd">
         <pre>
@@ -134,6 +134,11 @@ util.uplaodAvartar(option)
 </template>
 <script>
 export default {
+  data() {
+    return {
+      tabName: "a",
+    }
+  },
   methods: {
     /**
      * @param

@@ -71,7 +71,7 @@ $red: #f43;
     border: 1px solid transparent;
     box-sizing: border-box;
     transition: border 0.2s, background-color 0.2s;
-    opacity: 0.1; // 当前月
+    opacity: 0.3; // 当前月
 
     // 法定节假日
     &-holiday {

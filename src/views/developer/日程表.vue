@@ -167,23 +167,6 @@ export default {
     onItem(date, item) {
       console.log(date + "=> on-item => " + JSON.stringify(item));
     },
-  },
-  mounted() {
-    //test
-    function timeout(second) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve("async loadend");
-        }, second);
-      });
-    }
-    (async function () {
-      console.time('async');
-      let result1 = await timeout(200);
-      let result2 = await timeout(200);
-      console.timeEnd('async');
-      //console.log(result1, result2);
-    })();
-  },
+  }
 };
 </script>

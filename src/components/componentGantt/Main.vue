@@ -119,7 +119,10 @@
 <script>
 export default {
   props: {
-    list: Array,
+    list: {
+      type: Array,
+      default: () => []
+    },
     skin: String,
     labelList: {
       type: Array,
@@ -161,30 +164,33 @@ export default {
       let list = Object.assign([], this.list).map(({ startDate, endDate }) => [this.getDateNumber(startDate, true), this.getDateNumber(endDate, true)]);
       let minDate = date.addDays(-1, date.toString(Math.min.apply(null, list.map(([a, b]) => a))));
       let maxDate = date.addDays(1, date.toString(Math.max.apply(null, list.map(([a, b]) => b))));
-      return { minDate, maxDate, rangeDay: this.getDateDiff(maxDate, minDate), };
+      return { minDate, maxDate, rangeDay: this.getDateDiff(maxDate, minDate) };
     },
     /**
      * 周期最小为30天
      */
     dateRangeDay() {
-      const { minDate, rangeDay } = this.dateRange;
-      return rangeDay < 30 ? this.$util.date.addDays(30, minDate) : rangeDay;
+      return Math.max(this.dateRange.rangeDay, 30)
     },
   },
   methods: {
     getDateNumber(day, isNow) {
-      let time; try { time = this.$util.date.toDate(day) } catch (e) { time = isNow ? new Date() : 0 } return +time;
+      let time; try { time = this.$util.date.toDate(day) } catch (e) { };
+      if (!time) time = isNow ? new Date() : 0;
+      return +time;
     },
     getDateDiff(endDate, startDate) {
       const date = this.$util.date;
       endDate = this.getStringDate(endDate);
       startDate = this.getStringDate(startDate);
-      return (date.toDate(endDate) - date.toDate(startDate)) / (24 * 3600 * 1000)
+      // offset 1 day
+      return (date.toDate(endDate) - date.toDate(startDate)) / (24 * 3600 * 1000) + 1;
     },
     getIndexDate(index) {
       return this.$util.date.addDays(index, this.getStringDate(this.dateRange.minDate));
     },
     getStringDate(date) {
+      if (!date) { return "" }
       if (typeof date !== "string") return this.$util.date.toString(date);
       return this.$util.date.toString(this.$util.date.toDate(date));
     },
@@ -196,15 +202,15 @@ export default {
       }
     },
     headDateFromt(date) {
-      // console.log(date); == 1 ? date.slice(5, 7)+'月' : day
       let day = +date.slice(-2);
       return day
     },
     // 计划开始时间
     getBarStyle(item, dayIndex) {
       if (this.getDateNumber(item.startDate) && this.getDateNumber(item.endDate)) {
+        let diffday = this.getDateDiff(item.endDate, item.startDate);
         return {
-          width: this.dayPX.width * this.getDateDiff(item.endDate, item.startDate) + 'px',
+          width: this.dayPX.width * (diffday < 0 ? 0 : diffday) + 'px',
           height: this.dayPX.height + 'px',
           left: this.dayPX.width * dayIndex + 'px'
         }
@@ -249,6 +255,7 @@ export default {
   },
 };
 </script>
+
 
 <style lang="scss">
 @import "@/utils/util/var.scss";
@@ -352,29 +359,5 @@ export default {
       border-left: 0px;
     }
   }
-  // 滚动条美化
-  // .u-gantt-head,
-  // .u-gantt-warp,
-  // .u-gantt__scroll {
-  //   &::-webkit-scrollbar {
-  //     width: 8px;
-  //     height: 8px;
-  //     background-color: rgba(#000, 0.05);
-  //   }
-  //   &::-webkit-scrollbar-thumb {
-  //     background-color: rgba(#000, 0);
-  //     transition: 1000ms;
-  //     border-radius: 6px;
-  //     &:hover {
-  //       background-color: rgba(#000, 0.35);
-  //     }
-  //     &:active {
-  //       background-color: rgba(#000, 0.6);
-  //     }
-  //   }
-  //   &:hover::-webkit-scrollbar-thumb {
-  //     background-color: rgba(#000, 0.2);
-  //   }
-  // }
 }
 </style>

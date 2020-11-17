@@ -1,6 +1,6 @@
 let docs = ["环境初始化", "vue vue-route vuex"];
 // let servers = ["HTTP接口文档"];
-let developer = ["基础依赖", "富文本", "甘特图", "日程表"];
+let developer = ["基础依赖", "富文本", "甘特图", "日程表", "网页截图"];
 
 // 文件名称转成标准的路由格式
 const setRoute = (arr, file) =>
