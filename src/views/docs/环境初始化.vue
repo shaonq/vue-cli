@@ -2,7 +2,7 @@
   <div class="u-pell--body">
     <h1>工具版本</h1>
     <ul>
-      <li>v10.16.0(npm 6.9.0)</li>
+      <li>node v10.16.0(npm 6.9.0)</li>
       <li>yarn v1.22.4</li>
       <li>vue-cli v3.0</li>
     </ul>

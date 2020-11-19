@@ -1,5 +1,7 @@
 <template>
-  <div ref="el" class="u-pell"><slot/></div>
+  <div ref="el" class="u-pell">
+    <slot />
+  </div>
 </template>
 
 <script>
@@ -14,40 +16,41 @@ export default {
   mounted() {
     let { el } = this.$refs;
     let html = el.innerHTML;
-    if(html)el.innerHTML = null;
-    let { exec,content } = pell({
-    el,
-    onChange: e =>this.$emit("on-change", e),
-    actions: [
-    // 'underline', 'strikethrough'
-    // {name: "heading2",icon: "&#xe68e;",title: "二级标题"},
-    {name: "bold", icon: "&#xe6d9;",title: "粗体(Ctrl+B)"},
-    {name: "italic",icon: "&#xe6f8;",title: "斜体 (Ctrl+I)"},
-    {type: "space"},
-    {name: "heading1",icon: "&#xe68d;",title: "一级标题"},
-    {name: "quote",icon: "&#xe649;",title: "引用块"},
-    {name: "code",icon: "&#xe6f7;",title: "插入代码" },
-    {name: "olist",icon: "&#xe71b;",title: "无序列表"},
-    {name: "ulist",icon: "&#xe71a;",title: "有序列表"},
-    {type: "space"},  
-    {name: "link",icon: "&#xe701;",title: "插入链接",
-        result: ()=> {
-              var url = window.prompt("请输入链接地址");
-              if (url) exec("createLink", url);
-
-        }
-    },
-    {name: "image",icon: "&#xe6f5;",title: "上传图片",
-        result:()=> {
+    if (html) el.innerHTML = null;
+    let { exec, content } = pell({
+      el,
+      onChange: e => this.$emit("on-change", e),
+      actions: [
+        // 'underline', 'strikethrough'
+        // {name: "heading2",icon: "&#xe68e;",title: "二级标题"},
+        { name: "bold", icon: "&#xe6d9;", title: "粗体(Ctrl+B)" },
+        { name: "italic", icon: "&#xe6f8;", title: "斜体 (Ctrl+I)" },
+        { type: "space" },
+        { name: "heading1", icon: "&#xe68d;", title: "一级标题" },
+        { name: "quote", icon: "&#xe649;", title: "引用块" },
+        { name: "code", icon: "&#xe6f7;", title: "插入代码" },
+        { name: "olist", icon: "&#xe71b;", title: "无序列表" },
+        { name: "ulist", icon: "&#xe71a;", title: "有序列表" },
+        { type: "space" },
+        {
+          name: "link", icon: "&#xe701;", title: "插入链接",
+          result: () => {
+            var url = window.prompt("请输入链接地址");
+            if (url) exec("createLink", url);
+          }
+        },
+        {
+          name: "image", icon: "&#xe6f5;", title: "上传图片",
+          result: () => {
             var url = window.prompt('请输入图片链接地址');
             if (url) exec('insertImage', url);
-        }
-    },
-    {name: "line",icon: "&#xe6e5;",title: "插入分割线"},
-    {type: "space"},
-    {name: "paragraph",icon:"&#xe700;",title:"清除格式"},
-    ]
-});
+          }
+        },
+        { name: "line", icon: "&#xe6e5;", title: "插入分割线" },
+        { type: "space" },
+        { name: "paragraph", icon: "&#xe700;", title: "清除格式" },
+      ]
+    });
     // 显示已经有的内容
     if (html) content.innerHTML = html;
   }
@@ -57,19 +60,20 @@ export default {
 <style lang="scss">
 /** 编辑器 */
 @font-face {
-  font-family: 'icon-pell';  /* project id 1125526 */
-  src: url('//at.alicdn.com/t/font_1125526_vsgudgr5ef.eot');
-  src: url('//at.alicdn.com/t/font_1125526_vsgudgr5ef.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1125526_vsgudgr5ef.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1125526_vsgudgr5ef.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1125526_vsgudgr5ef.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1125526_vsgudgr5ef.svg#icon-pell') format('svg');
+  font-family: "icon-pell"; /* project id 1125526 */
+  src: url("//at.alicdn.com/t/font_1125526_vsgudgr5ef.eot");
+  src: url("//at.alicdn.com/t/font_1125526_vsgudgr5ef.eot?#iefix")
+      format("embedded-opentype"),
+    url("//at.alicdn.com/t/font_1125526_vsgudgr5ef.woff2") format("woff2"),
+    url("//at.alicdn.com/t/font_1125526_vsgudgr5ef.woff") format("woff"),
+    url("//at.alicdn.com/t/font_1125526_vsgudgr5ef.ttf") format("truetype"),
+    url("//at.alicdn.com/t/font_1125526_vsgudgr5ef.svg#icon-pell") format("svg");
 }
 
 .u-pell {
   border: 1px solid rgba(10, 10, 10, 0.1);
   box-sizing: border-box;
-  color:#242424;
+  color: #242424;
 
   &__bar {
     background-color: #fff;
@@ -89,7 +93,7 @@ export default {
     vertical-align: middle;
     font-size: 17px;
     color: #424242;
-    &:active{
+    &:active {
       transform: scale(1.05);
     }
   }
@@ -123,6 +127,7 @@ export default {
     width: 300px;
     max-width: 100%;
     border: none;
+    background: transparent;
     border-top: 1px solid #e2e2e2;
   }
 
@@ -184,10 +189,10 @@ export default {
     border-left: 3px solid #d3d3d3;
   }
 
-  img{
-    display:block;
+  img {
+    display: block;
     border-radius: 2px;
-    margin :1.4em auto;
+    margin: 1.4em auto;
   }
 }
 </style>
