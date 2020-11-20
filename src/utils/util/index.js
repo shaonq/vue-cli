@@ -6,6 +6,29 @@
  */
 
 const util = {
+  loadJs: function (src) {
+    return new Promise((resolve, reject) => {
+      let n = document.getElementsByTagName("head")[0], o = document.createElement("script");
+      o.onload = o.onreadystatechange = o.onerror = function () {
+        o && o.readyState && /^(?!(?:loaded|complete)$)/.test(o.readyState) || (o.onload = o.onreadystatechange = o.onerror = null, o.src = "", o.parentNode.removeChild(o), o = null, resolve && resolve())
+      }, o.src = src;
+      try {
+        n.appendChild(o)
+      } catch (i) {
+        reject && reject()
+      }
+    });
+  },
+
+  loadCss: function (href, id) {
+    let n = document.getElementsByTagName("head")[0], o = document.createElement("link"),
+      el = document.getElementById(id);
+    o.onload = o.onreadystatechange = o.onerror = null, o.rel = "stylesheet", o.href = href;
+    try {
+      el ? (o = null) : (id && (o.id = id), n.appendChild(o))
+    } catch (i) {
+    }
+  },
   is: function () {
     let d = {},
       ua = navigator.userAgent;
@@ -66,37 +89,37 @@ const util = {
    * @returns {Function}
    * 等待执行,在time之内只执行1次
    */
-  debounce: function (func, wait, immediate) {
-    let timeout, args, context, timestamp, result;
+  // debounce: function (func, wait, immediate) {
+  //   let timeout, args, context, timestamp, result;
 
-    let later = function () {
-      let last = +new Date() - timestamp;
+  //   let later = function () {
+  //     let last = +new Date() - timestamp;
 
-      if (last < wait && last >= 0) {
-        timeout = setTimeout(later, wait - last);
-      } else {
-        timeout = null;
-        if (!immediate) {
-          result = func.apply(context, args);
-          if (!timeout) context = args = null;
-        }
-      }
-    };
+  //     if (last < wait && last >= 0) {
+  //       timeout = setTimeout(later, wait - last);
+  //     } else {
+  //       timeout = null;
+  //       if (!immediate) {
+  //         result = func.apply(context, args);
+  //         if (!timeout) context = args = null;
+  //       }
+  //     }
+  //   };
 
-    return function () {
-      context = this;
-      args = arguments;
-      timestamp = +new Date();
-      let callNow = immediate && !timeout;
-      if (!timeout) timeout = setTimeout(later, wait);
-      if (callNow) {
-        result = func.apply(context, args);
-        context = args = null;
-      }
+  //   return function () {
+  //     context = this;
+  //     args = arguments;
+  //     timestamp = +new Date();
+  //     let callNow = immediate && !timeout;
+  //     if (!timeout) timeout = setTimeout(later, wait);
+  //     if (callNow) {
+  //       result = func.apply(context, args);
+  //       context = args = null;
+  //     }
 
-      return result;
-    };
-  },
+  //     return result;
+  //   };
+  // },
   /**
    * *
    * @param func {Function}
@@ -105,37 +128,37 @@ const util = {
    * @returns {Function}
    * 立即执行,在time之内只执行1次
    */
-  throttle: function (func, wait, options) {
-    let context, args, result;
-    let timeout = null;
-    let previous = 0;
-    if (!options) options = {};
-    let later = function () {
-      previous = options.leading === false ? 0 : +new Date();
-      timeout = null;
-      result = func.apply(context, args);
-      if (!timeout) context = args = null;
-    };
-    return function () {
-      let now = +new Date();
-      if (!previous && options.leading === false) previous = now;
-      let remaining = wait - (now - previous);
-      context = this;
-      args = arguments;
-      if (remaining <= 0 || remaining > wait) {
-        if (timeout) {
-          clearTimeout(timeout);
-          timeout = null;
-        }
-        previous = now;
-        result = func.apply(context, args);
-        if (!timeout) context = args = null;
-      } else if (!timeout && options.trailing !== false) {
-        timeout = setTimeout(later, remaining);
-      }
-      return result;
-    };
-  },
+  // throttle: function (func, wait, options) {
+  //   let context, args, result;
+  //   let timeout = null;
+  //   let previous = 0;
+  //   if (!options) options = {};
+  //   let later = function () {
+  //     previous = options.leading === false ? 0 : +new Date();
+  //     timeout = null;
+  //     result = func.apply(context, args);
+  //     if (!timeout) context = args = null;
+  //   };
+  //   return function () {
+  //     let now = +new Date();
+  //     if (!previous && options.leading === false) previous = now;
+  //     let remaining = wait - (now - previous);
+  //     context = this;
+  //     args = arguments;
+  //     if (remaining <= 0 || remaining > wait) {
+  //       if (timeout) {
+  //         clearTimeout(timeout);
+  //         timeout = null;
+  //       }
+  //       previous = now;
+  //       result = func.apply(context, args);
+  //       if (!timeout) context = args = null;
+  //     } else if (!timeout && options.trailing !== false) {
+  //       timeout = setTimeout(later, remaining);
+  //     }
+  //     return result;
+  //   };
+  // },
 
   date: {
     toString: function (l, t) {
@@ -342,9 +365,9 @@ const util = {
   toObject: function (val) {
     return val = this.parse(val), typeof val === 'object' ? val : {}
   },
-  equal: function (v1, v2) {
-    return (v1 + '') === (v2 + '')
-  },
+  // equal: function (v1, v2) {
+  //   return (v1 + '') === (v2 + '')
+  // },
   trim: function (val) {
     return val.replace(/\s/g, "")
   },
@@ -355,7 +378,7 @@ const util = {
       bytes = bytes / unit;
       i++;
     }
-    return bytes.toFixed(2) + (i?loop.charAt(i):'')+'B';
+    return bytes.toFixed(2) + (i ? loop.charAt(i) : '') + 'B';
   }
 };
 

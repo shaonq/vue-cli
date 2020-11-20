@@ -27,20 +27,20 @@
         </li>
       </ul>
       <h1>项目依赖包( yarn )</h1>
-      <pre>
+      <pre class="line-numbers"><code class="language-javascript">
  npm config set registry https://registry.npm.taobao.org 
  npm install -g yarn@1.12.3
  yarn config set registry https://registry.npm.taobao.org -g
  yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
  yarn global add @vue/cli
- </pre>
+</code> </pre>
     </div>
     <h1>兼容IE10+</h1>
     <div>
       <blockquote>package.json -&gt; browserslist&nbsp;或者 .browserslist&nbsp; 添加 [“not ie &lt; 10”]</blockquote>
       <div>
         <blockquote>Vue CLI 项目会使用 @vue/babel-preset-app，它通过 @babel/preset-env 和 browserslist 配置来决定项目需要的 polyfill 默认情况下，它会把 useBuiltIns: ‘usage’ 传递给 @babel/preset-env</blockquote>
-        <pre>
+        <pre class="line-numbers"><code class="language-javascript">
 yarn add babel-polyfill
 
 /** babel.config.js 添加 */
@@ -48,7 +48,7 @@ yarn add babel-polyfill
 module.exports = {
   presets: [["@vue/app", { polyfills: ["es6.promise", "es6.symbol"] }]]
 }
-        </pre>
+      </code>  </pre>
         <div>
           <ul>
             <li>
@@ -60,7 +60,8 @@ module.exports = {
       </div>
     </div>
     <h1>项目结构</h1>
-    <pre># public/
+    <pre class="line-numbers"><code class="language-javascript">
+# public/
 # -------- index.html
 # src/
 # -------- asstes/ # 静态资源
@@ -73,10 +74,21 @@ module.exports = {
 # -------- router.js # 路由
 # -------- store.js # Vuex
 # babel.config.js
-# vue.config.js</pre>
+# vue.config.js 
+</code></pre>
+
     <h1>项目启动</h1>
-    <pre>yarn   # 安装依赖包
+    <pre class="line-numbers"><code class="language-javascript">
+yarn   # 安装依赖包
 yarn run dev   # 启动测试环境
-yarn run build   # 编译项目 <br /></pre>
+yarn run build   # 编译项目 
+</code> </pre>
   </div>
 </template>
+<script>
+export default {
+  mounted() {
+    this.$cdn.Prism();    // 代码高亮
+  }
+}
+</script>

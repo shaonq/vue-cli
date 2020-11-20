@@ -101,7 +101,8 @@
         <button class="u-btn" @click="$util.toast('右键点击看效果')" @contextmenu.prevent="showContextMenu" aria-label="showContextMenu" tooltip="top">右键菜单</button>
         <button class="u-btn" @click="showDropdown" aria-label="showDropdown" tooltip="top">下拉菜单</button>
       </div>
-      <pre>
+      <pre class="line-numbers"><code class="language-javascript">
+        
 /**
  * @namespace util
  * @param {String} content : html 内容
@@ -128,7 +129,9 @@ util.showModal(options)
  */
 
 util.uplaodAvartar(option)
-         </pre>
+</code>
+</pre>
+
     </div>
   </div>
 </template>
@@ -236,6 +239,10 @@ export default {
       });
     },
   },
+  mounted() {
+
+    this.$cdn.Prism();    // 代码高亮
+  }
 };
 </script>
 

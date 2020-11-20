@@ -2,7 +2,7 @@
   <div>
     <div class="u-pell--body">
       <h1>数据格式</h1>
-      <pre>
+      <pre><code class="language-javascript">
     {
       title: "0.1协议或合同",
       endDate: "2020-11-30",
@@ -15,7 +15,7 @@
         { endDate: "2020-11-30", startDate: "2019-10-30", title: "0.1协议或合同", },
       ]
     }
-      </pre>
+      </code></pre>
       <h1>例子</h1>
     </div>
 
@@ -164,6 +164,7 @@ export default {
   },
   mounted() {
     document.querySelector(".t-subcard").nextElementSibling.style.display = "none";
+    this.$cdn.Prism();    // 代码高亮
   },
   destroyed() {
     document.querySelector(".t-subcard").nextElementSibling.style.display = "block";

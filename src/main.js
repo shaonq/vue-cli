@@ -22,6 +22,25 @@ import '@/styles/index.scss'
 Object.defineProperties(Vue.prototype, {
   $util: { get() { return util } },
   $http: { get() { return http } },
+
+  // 当前系统下的钩子
+  $cdn: {
+    get() {
+      return {
+        // 代码高亮
+        Prism: function () {
+          (async () => {
+            if (typeof Prism === "undefined") {
+              await util.loadJs("https://cdn.jsdelivr.net/npm/prismjs@1.22.0/prism.min.js");
+              util.loadCss("https://cdn.jsdelivr.net/npm/prismjs@1.22.0/themes/prism.css");
+
+            }
+            Prism.highlightAll();
+          })();
+        }
+      }
+    }
+  }
 })
 
 // 初始化 debug

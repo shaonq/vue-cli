@@ -6,19 +6,13 @@
     </h1>
     <ul style>
       <li style>
-        <a
-          href="https://cn.vuejs.org/v2/guide/syntax.html"
-          style="color: rgb(0, 153, 255); margin: 0px 2px; padding: 0px; vertical-align: baseline;"
-        >模板文档</a>
+        <a href="https://cn.vuejs.org/v2/guide/syntax.html" style="color: rgb(0, 153, 255); margin: 0px 2px; padding: 0px; vertical-align: baseline;">模板文档</a>
       </li>
       <li style>
-        <a
-          href="https://cn.vuejs.org/v2/api/"
-          style="color: rgb(0, 153, 255); margin: 0px 2px; padding: 0px; vertical-align: baseline;"
-        >API文档</a>
+        <a href="https://cn.vuejs.org/v2/api/" style="color: rgb(0, 153, 255); margin: 0px 2px; padding: 0px; vertical-align: baseline;">API文档</a>
       </li>
     </ul>
-    <pre>
+    <pre><code class="language-javascript">
 export default {
   /** * data : 可用的数据，模板中的数据必须预定义 */
   data(){ return { a:1, b:2 } },
@@ -32,34 +26,28 @@ export default {
   watch:{count(value){console.log('我的值发生了变化')}},
   /** * 模板渲染完毕 类似jQ $(function(){}) */
   mounted(){ console.log("这里能读取虚拟dom") }
-}    </pre>
+}    </code></pre>
     <h1 style>vue-route 路由配置</h1>
     <ul style>
       <li style="line-height: 24px;">
-        <a
-          href="https://router.vuejs.org/zh/guide/essentials/named-routes.html"
-          style="color: rgb(0, 153, 255); margin: 0px 2px; padding: 0px; vertical-align: baseline;"
-        >官方文档</a>
+        <a href="https://router.vuejs.org/zh/guide/essentials/named-routes.html" style="color: rgb(0, 153, 255); margin: 0px 2px; padding: 0px; vertical-align: baseline;">官方文档</a>
       </li>
     </ul>
-    <pre>
+    <pre><code class="language-javascript">
  { path: '/** 路由访问地址 */',
    component: function(){return import('/* 引入 vue 文件地址 */')},
    name:'/** 路由名称 */',
    redirect:'/** 路由重定向 */',
    meta:{auth：true}, /**  其他信息 比如必须需要登录 */
  }
-    </pre>
+   </code> </pre>
     <h1 style>vuex 状态管理</h1>
     <ul style>
       <li style="line-height: 24px;">
-        <a
-          href="https://vuex.vuejs.org/zh/guide/state.html"
-          style="color: rgb(0, 153, 255); margin: 0px 2px; padding: 0px; vertical-align: baseline;"
-        >官方文档</a>
+        <a href="https://vuex.vuejs.org/zh/guide/state.html" style="color: rgb(0, 153, 255); margin: 0px 2px; padding: 0px; vertical-align: baseline;">官方文档</a>
       </li>
     </ul>
-    <pre>
+    <pre><code class="language-javascript">
 const store = new Vuex.Store({
   /** * state : 全局 this.$store.state 只读 */
   state: {
@@ -82,7 +70,15 @@ const store = new Vuex.Store({
   }
 })
 export default store
-    </pre>
+   </code> </pre>
     <h1>END</h1>
   </div>
 </template>
+<script>
+export default {
+  mounted() {
+
+    this.$cdn.Prism();    // 代码高亮
+  }
+}
+</script>

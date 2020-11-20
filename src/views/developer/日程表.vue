@@ -6,7 +6,7 @@
       <p>日程表，根据日期安排活动顺序及内容的表格。可以用日程表来规划时间，安排办事的流程。</p>
       <h1>每日数据</h1>
 
-      <pre>
+      <pre><code class="language-javascript">
 // @param {Object[]}  list :porp list Array
   [{
     content: "QC01-0710-APQP-01",
@@ -23,11 +23,9 @@
     "target":"国庆节",
     "date":"2019-09-29"
   }]
-</pre>
-
+</code></pre>
       <h1>例子</h1>
     </div>
-
     <u-full-calendar @on-init="dataInit" :list="list" :holiday="holiday" @on-day="onDay" @on-item="onItem" />
   </div>
 </template>
@@ -167,6 +165,9 @@ export default {
     onItem(date, item) {
       console.log(date + "=> on-item => " + JSON.stringify(item));
     },
+  },
+  mounted() {
+    this.$cdn.Prism();    // 代码高亮
   }
 };
 </script>
