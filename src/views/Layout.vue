@@ -2,7 +2,7 @@
   <div style="background:#f4f4f4;min-height:100vh">
     <div class="t-header">
       <div class="u-flex u-flex--start" style="margin: 0 auto;width:1200px;">
-        <a href="https://yanyujiangnan.coding.me/">
+        <a href="https://shaonq.github.io/">
           <img src="~@/assets/logo.png" style="height:60px" draggable="false" />
         </a>
         <div class="u-flex__item"></div>
@@ -48,30 +48,30 @@ export default {
     font-weight: 600;
   }
 }
-.t-sub{
-    &card {
+.t-sub {
+  &card {
     margin-bottom: 10px;
     background: #fff;
     overflow: hidden;
     border-radius: 2px;
-    box-shadow: 0 0 2px rgba(22, 22, 22, .2);
+    box-shadow: 0 0 2px rgba(22, 22, 22, 0.2);
     box-sizing: border-box;
-    font-size:15px;
-}
+    font-size: 15px;
+  }
 
-&link {
+  &link {
     display: block;
     padding: 8px 20px;
     color: #888;
-    transition: .3s;
+    transition: 0.3s;
 
     &:hover {
-        background: rgba(22, 22, 22, .05)
+      background: rgba(22, 22, 22, 0.05);
     }
 
     &.is-active {
-        color: #FF9800
+      color: #ff9800;
     }
-}
+  }
 }
 </style>
