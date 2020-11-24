@@ -32,7 +32,7 @@ Object.defineProperties(Vue.prototype, {
           (async () => {
             if (typeof Prism === "undefined") {
               await util.loadJs("https://cdn.jsdelivr.net/npm/prismjs@1.22.0/prism.min.js");
-              util.loadCss("https://cdn.jsdelivr.net/npm/prismjs@1.22.0/themes/prism.css");
+              util.loadCss("https://cdn.jsdelivr.net/npm/prismjs@1.22.0/themes/prism-solarizedlight.css");
 
             }
             Prism.highlightAll();

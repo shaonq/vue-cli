@@ -18,8 +18,10 @@
       </code></pre>
       <h1>例子</h1>
     </div>
-
-    <u-gantt :list="list" style="height:770px" skin="test-gantt" />
+    <!-- gantt demo -->
+    <div>
+      <u-gantt :list="list" style="height:770px" skin="test-gantt" />
+    </div>
   </div>
 </template>
 
@@ -163,11 +165,7 @@ export default {
     });
   },
   mounted() {
-    document.querySelector(".t-subcard").nextElementSibling.style.display = "none";
     this.$cdn.Prism();    // 代码高亮
-  },
-  destroyed() {
-    document.querySelector(".t-subcard").nextElementSibling.style.display = "block";
   }
 };
 </script>

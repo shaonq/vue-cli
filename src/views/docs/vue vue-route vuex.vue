@@ -15,17 +15,29 @@
     <pre><code class="language-javascript">
 export default {
   /** * data : 可用的数据，模板中的数据必须预定义 */
-  data(){ return { a:1, b:2 } },
+  data(){ 
+    return { a:1, b:2 }
+     },
   /** * computed： 自动计算，计算阶段的数据可以出现在模板中 */
-  computed:{ count(){ return this.a + this.b } },
+  computed:{ 
+    count(){ return this.a + this.b }
+     },
   /** * 数据计算完毕，但是未渲染模板 this.$refs还未生成 */
-  created(){ this.dataInit() },
+  created(){ 
+    this.dataInit()
+     },
   /** * 书写模板中和当前生命周期中可用的方法 */
-  methods:{ dataInit(){ console.log('我是请求数据等操作') } },
+  methods:{ 
+    dataInit(){ console.log('我是请求数据等操作') 
+    } },
   /** * 监测数据发生变化 */
-  watch:{count(value){console.log('我的值发生了变化')}},
+  watch:{
+    count(value){console.log('我的值发生了变化')}
+    },
   /** * 模板渲染完毕 类似jQ $(function(){}) */
-  mounted(){ console.log("这里能读取虚拟dom") }
+  mounted(){
+     console.log("这里能读取虚拟dom")
+      }
 }    </code></pre>
     <h1 style>vue-route 路由配置</h1>
     <ul style>

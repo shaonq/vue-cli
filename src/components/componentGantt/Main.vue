@@ -34,7 +34,7 @@
       </ul>
     </div>
     <!-- 内区域 tbody -->
-    <div class="u-gantt-warp" style="height:calc(100% - 43px)">
+    <div class="u-gantt-warp" style="height:calc(100% - 50px)">
       <ul class="u-flex u-flex--start">
         <li :style="{width:sideWidth+'px'}" class="u-flex__item--clamp">
           <div class="u-gantt__scroll  u-gantt---left">
@@ -249,7 +249,13 @@ export default {
     }
   },
   mounted() {
-    if (this.skin) this.$util.dom.addClass(this.$refs.gantt, this.skin);
+    const dom = this.$util.dom;
+    const $gantt = this.$refs.gantt;
+    // 自定义样式
+    if (this.skin) dom.addClass($gantt, this.skin);
+    // 计算实际的高度
+    let offsetHeight = dom.el(".u-gantt-head", $gantt).offsetHeight + dom.el(".u-gantt-scroll", $gantt).offsetHeight;
+    dom.el(".u-gantt-warp", $gantt).style.height = ($gantt.offsetHeight - offsetHeight) + 'px';
     /**@debug */
     window.debug = this;
   },

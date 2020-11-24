@@ -40,13 +40,17 @@
       <blockquote>package.json -&gt; browserslist&nbsp;或者 .browserslist&nbsp; 添加 [“not ie &lt; 10”]</blockquote>
       <div>
         <blockquote>Vue CLI 项目会使用 @vue/babel-preset-app，它通过 @babel/preset-env 和 browserslist 配置来决定项目需要的 polyfill 默认情况下，它会把 useBuiltIns: ‘usage’ 传递给 @babel/preset-env</blockquote>
-        <pre class="line-numbers"><code class="language-javascript">
+        <pre class="line-numbers">
+          <code class="language-shell-session">
+# install babel-polyfill        
 yarn add babel-polyfill
-
-/** babel.config.js 添加 */
-
+          </code>
+          <code class="language-javascript">
+// babel.config.js add 
 module.exports = {
-  presets: [["@vue/app", { polyfills: ["es6.promise", "es6.symbol"] }]]
+  presets: [
+    ["@vue/app", { polyfills: ["es6.promise", "es6.symbol"] }]
+  ]
 }
       </code>  </pre>
         <div>
