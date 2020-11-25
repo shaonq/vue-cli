@@ -251,13 +251,11 @@ export default {
   mounted() {
     const dom = this.$util.dom;
     const $gantt = this.$refs.gantt;
-    // 自定义样式
-    if (this.skin) dom.addClass($gantt, this.skin);
     // 计算实际的高度
     let offsetHeight = dom.el(".u-gantt-head", $gantt).offsetHeight + dom.el(".u-gantt-scroll", $gantt).offsetHeight;
     dom.el(".u-gantt-warp", $gantt).style.height = ($gantt.offsetHeight - offsetHeight) + 'px';
     /**@debug */
-    window.debug = this;
+    // window.debug = this;
   },
 };
 </script>

@@ -72,10 +72,6 @@ const dom = {
       return (' ' + el.className + ' ').indexOf(' ' + cls + ' ') > -1;
     }
   },
-  // 去掉前后空格
-  trim: function (string) {
-    return (string || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '');
-  },
   addClass: function (el, cls) {
     if (!el) return;
     var curClass = el.className;
@@ -111,7 +107,7 @@ const dom = {
       }
     }
     if (!el.classList) {
-      el.className = this.trim(curClass);
+      el.className = curClass;
     }
   },
   append(el, doc) {

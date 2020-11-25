@@ -20,7 +20,7 @@
     </div>
     <!-- gantt demo -->
     <div>
-      <u-gantt :list="list" style="height:770px" skin="test-gantt" />
+      <u-gantt :list="list" style="height:380px" class="test-gantt" />
     </div>
   </div>
 </template>
