@@ -49,8 +49,8 @@ const dom = {
     return {
       top: box.top - clientTop,
       left: box.left - clientLeft,
-      height: el.clientHeight,
-      width: el.clientWidth,
+      height: box.height,
+      width: box.width,
       pageYOffset,
       pageXOffset,
     }
@@ -185,7 +185,7 @@ function dialog() {
       let offsetTop = el.clientHeight + el.offsetTop;
       let offsetLeft = el.clientWidth + el.offsetLeft;
       if (offsetTop > (winHeight - 10)) el.style.top = (winHeight - el.clientHeight - 10) + "px";
-      if (offsetLeft > (winWidth - 10)) el.style.top = (winWidth - el.clientWidth - 10) + "px";
+      if (offsetLeft > (winWidth - 10)) el.style.left = (winWidth - el.clientWidth - 10) + "px";
     }
     // return clsoe index
     return id;

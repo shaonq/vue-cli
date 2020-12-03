@@ -209,6 +209,16 @@
 }
 
 
+
+.u-dialog--contextmenu,
+.u-dialog--dropdown {
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 10em;
+  text-overflow: ellipsis;
+  transition: 0.3s;
+}
 /** 右键菜单 */
 .u-dialog--contextmenu {
   .u-dialog-content {
@@ -227,8 +237,6 @@
     padding: 0 24px;
     line-height: 24px;
     font-size: 12px;
-    transition: 0.3s;
-    user-select: none;
 
     &:not(.is-disabled):hover {
       background-color: #eee;
@@ -269,8 +277,6 @@
     padding: 0 24px;
     line-height: 30px;
     font-size: 13px;
-    transition: 0.3s;
-    user-select: none;
 
     &:not(.is-disabled):hover {
       background-color: #eee;
