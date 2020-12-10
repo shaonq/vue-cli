@@ -366,9 +366,11 @@ function dialog() {
       offset, skin, list,
       content: this.createLabelValue({ skin, list }),
       success: (index, el) => {
-        dom.els(`.${skin}-item`).forEach(self => {
+        let els = dom.els(`.${skin}-item`), isOne = els.length === 1;
+        els.forEach(self => {
           if (dom.hasClass(self, 'is-disabled')) return;
           if (dom.hasClass(self, 'is-children')) return;
+          if (isOne) self.style.lineHeight = (self.offsetHeight + 3) + "px";
           dom.on(self, "click", e => {
             success && success({ label: self.innerText, value: self.getAttribute("data-value") });
             this.hideToast(index);
