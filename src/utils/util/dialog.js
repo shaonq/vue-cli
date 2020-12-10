@@ -1,5 +1,6 @@
 let attr = "data-u-dialog";
 const isUndefined = value => typeof value === "undefined";
+// dom.js
 const dom = {
   ie: Number(document.documentMode) | 0,
   on: (function () {
@@ -321,7 +322,11 @@ function dialog() {
       offset: options.offset,
       success: (index, el) => {
         dom.once(document, "scroll", () => this.hideToast(index));
-        setTimeout(() => dom.once(document, "click", () => this.hideToast(index)), 100)
+        setTimeout(() => {
+          dom.once(document, "contextmenu", () => this.hideToast(index))
+          dom.once(document, "click", () => this.hideToast(index))
+        }, 100)
+        dom.on(el, "contextmenu", e => { e.stopPropagation(), e.preventDefault() })
         dom.on(el, "click", e => { e.stopPropagation(), e.preventDefault() })
         options.success && options.success(index, el);
       }
@@ -370,7 +375,7 @@ function dialog() {
         els.forEach(self => {
           if (dom.hasClass(self, 'is-disabled')) return;
           if (dom.hasClass(self, 'is-children')) return;
-          if (isOne) self.style.lineHeight = (self.offsetHeight + 3) + "px";
+          if (isOne) self.style.lineHeight = (self.offsetHeight + 2) + "px";
           dom.on(self, "click", e => {
             success && success({ label: self.innerText, value: self.getAttribute("data-value") });
             this.hideToast(index);

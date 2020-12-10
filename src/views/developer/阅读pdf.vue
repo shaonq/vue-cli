@@ -56,9 +56,10 @@ export default {
               canvas.width = viewport.width || 794;
               canvas.height = viewport.height || 1123;
               canvas.style.width = "100%";
-              canvas.style.boxShadow = "0 1px 3px rgba(0, 0, 0, 0.14)";
+              canvas.style.boxShadow = "0 1px 3px rgba(0, 0, 0, 0.16)";
               canvas.style.marginBottom = "5px";
               canvas.style.borderRadius = "2px";
+              canvas.style.display = "block";
               let ctx = canvas.getContext('2d');
               let renderTask = pdfPage.render({
                 canvasContext: ctx,

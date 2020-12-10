@@ -59,7 +59,7 @@
                     <div class="u-gantt-cell ">
                       <template v-if="getIndexDate(dayIndex) ===getStringDate(item.startDate)">
                         <!-- 渲染条目 bar 条形图 -->
-                        <div class="u-gantt-bar" :title="item.startDate+'~'+item.endDate" :style="getBarStyle(item,dayIndex)">
+                        <div class="u-gantt-bar" :title="item.title+'\n'+item.startDate+'~'+item.endDate" :style="getBarStyle(item,dayIndex)">
                           <div class="u-gantt-bar__title" @click="$emit('on-item-click',item,$event)">{{item.title}}</div>
                         </div>
                         <!-- 世纪开始 -->
@@ -262,7 +262,7 @@ export default {
 
 
 <style lang="scss">
-@import "@/utils/util/var.scss";
+@import "@/utils/util/scss/var.scss";
 .u-gantt {
   min-height: 175px;
   height: 100%;
