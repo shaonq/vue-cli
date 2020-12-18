@@ -9,7 +9,6 @@
           <div class="u-flex__item"></div>
           <div>
             <router-link class="lay-head__link" :to="{path:'/docs'}">相关文档</router-link>
-            <!-- <router-link class="t-link" :to="{path:'/servers'}">团队约定</router-link> -->
             <router-link class="lay-head__link" :to="{path:'/developer'}">实验室</router-link>
           </div>
         </div>
@@ -26,13 +25,7 @@ export default {
       if (typeof StickySidebar === "undefined") {
         await this.$util.loadJs("https://cdn.jsdelivr.net/npm/sticky-sidebar@3.3.1/dist/sticky-sidebar.min.js");
       }
-      // topSpacing: 0,
-      // bottomSpacing: 0,
-      // containerSelector: '.app__demo',
-      // innerWrapperSelector: '.sidebar__inner'
-
       new StickySidebar('.lay-head', {});
-      // new StickySidebar('.lay-body__side', {});
     })()
   }
 }
@@ -41,7 +34,7 @@ export default {
 // 布局
 .lay {
   &-doc {
-    background: #f4f4f4;
+    background: #f1f1f1;
     min-height: 100vh;
   }
   // 主体

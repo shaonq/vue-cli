@@ -437,7 +437,7 @@ function dialog() {
         shadow: 0.8,
         width: "auto",
         height: "auto",
-        content: `<div class="u-center u-noselect">
+        content: `<div class="u-center u-nos">
                    <p style="margin: 20px 0;color: #888;">${options.desc || "调整头像位置"}</p>
                    <div style="padding: 10px 40px;"><canvas width="240" height="240" style="width: 240px; height: 240px; cursor: grab;"></canvas></div>
                    <p style="margin:40px 0"><button style="width:240px;" class="${options.btnClass || 'u-btn'}"> 保存</button></p>

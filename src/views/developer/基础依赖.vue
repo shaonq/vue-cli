@@ -42,33 +42,11 @@
           </div>
         </li>
         <li class="u-mt">
-          <p class="u-mt">小号分组(u-form-small)</p>
+          <p class="u-mt">小号分组</p>
           <div class="u-btn__group u-mt">
-            <button class="u-btn u-form-small" @click="uplaodAvartar">上传头像</button>
-            <button class="u-btn u-btn--green u-btn--primary u-form-small">我被选中</button>
-            <button class="u-btn u-form-small" @click="$util.showModal({title:'标题',content:'内容'})">普通弹窗</button>
-          </div>
-        </li>
-        <li>
-          <p class="u-mt">大号分组(u-form-large)</p>
-          <div class="u-card" style="width:400px;height:400px;border: 1px solid #f1f1f1;box-shadow:none">
-            <div class="u-card__hd">登 录</div>
-            <div class="u-card__bd"></div>
-            <div class="u-card__bd">
-              <div class="u-mt">
-                <input placeholder="用户名" class="u-input u-from-large" />
-              </div>
-              <div class="u-mt">
-                <select type="password" class="u-input  u-from-large">
-                  <option>原始下拉</option>
-                  <option>密码1</option>
-                  <option>密码2</option>
-                </select>
-              </div>
-              <div class="u-mt">
-                <button class="u-btn u-btn--blue u-from-large u-btn--primary u-btn--spread">登 录</button>
-              </div>
-            </div>
+            <button class="u-btn u-btn--small" @click="uplaodAvartar">上传头像</button>
+            <button class="u-btn u-btn--green u-btn--primary u-btn--small">我被选中</button>
+            <button class="u-btn u-btn--small" @click="$util.showModal({title:'标题',content:'内容'})">普通弹窗</button>
           </div>
         </li>
         <li>
@@ -88,6 +66,82 @@
               <button class="u-btn u-field__hover u-btn--link u-btn--blue"><i class="el-icon-edit"></i> 修改</button>
             </div>
           </div>
+
+          <h2 class="u-mt">u-field-small</h2>
+          <div class="u-field u-field--small">
+            <label class="u-field__label">自动下载</label>
+            <div class="u-field__content">
+              <label class="u-checkbox">
+                <input type="checkbox" />
+                <i class="u-checkbox__icon"></i>
+                开启文件自动下载
+              </label>
+              <div class="u-inline" aria-label="开启后自动下载" tooltip="top">?</div>
+            </div>
+          </div>
+          <!-- 多选 -->
+          <div class="u-field u-field--small">
+            <label class="u-field__label">多选框</label>
+            <div class="u-field__content">
+              <label class="u-checkbox">
+                <input type="checkbox" name="checkbox" />
+                <div class="u-checkbox__icon"></div>
+                选项A
+              </label>
+              <label class="u-checkbox u-ml">
+                <input type="checkbox" name="checkbox" />
+                <i class="u-checkbox__icon"></i>
+                选项B
+              </label>
+              <label class="u-checkbox u-ml">
+                <input type="checkbox" name="checkbox" disabled />
+                <i class="u-checkbox__icon"></i>
+                选项C
+              </label>
+              <label class="u-checkbox u-ml">
+                <input type="checkbox" name="checkbox" checked disabled />
+                <i class="u-checkbox__icon"></i>
+                选项D
+              </label>
+            </div>
+          </div>
+          <!-- 单选 -->
+          <div class="u-field u-field--small">
+            <label class="u-field__label">单选框</label>
+            <div class="u-field__content">
+              <label class="u-radio">
+                <input type="radio" name="radio" />
+                <div class="u-radio__icon"></div>
+                选项A
+              </label>
+              <label class="u-radio u-ml">
+                <input type="radio" name="radio" />
+                <i class="u-radio__icon"></i>
+                选项B
+              </label>
+              <label class="u-radio u-ml">
+                <input type="radio" name="radio" disabled />
+                <i class="u-radio__icon"></i>
+                选项C
+              </label>
+              <label class="u-radio u-ml">
+                <input type="radio" name="radio" checked disabled />
+                <i class="u-radio__icon"></i>
+                选项D
+              </label>
+            </div>
+          </div>
+          <div class="u-field u-field--small">
+            <label class="u-field__label">文件管理</label>
+            <div class="u-field__content">
+              <div>
+                <p class="u-inline"><input class="u-input u-input--small" value="C:\Users\user\Documents" /></p>
+              </div>
+              <div class="u-color-light">微信文件默认保存位置</div>
+              <div><a class="u-btn  u-btn--small">更改</a><a class="u-btn  u-btn--small">打开文件夹</a></div>
+            </div>
+          </div>
+
         </li>
       </ul>
       <!-- ui demo end-->
@@ -143,40 +197,6 @@ export default {
     }
   },
   methods: {
-    /**
-     * @param
-     * @returns {Number} index
-     */
-    // show(type) {
-    //   switch (type) {
-    //     case 1:
-    //       this.$util.showLoading("加载中");
-    //       setTimeout(() => this.$util.showSuccess("加载成功"), 3000);
-    //       break;
-    //     case 2:
-    //       this.$util.toast("显示弹窗");
-    //       break;
-    //     case 4:
-    //       this.$util.showModal({
-    //         title: "出错了",
-    //         content: new Error("未知错误").toString(),
-    //       });
-    //       break;
-    //     case 3:
-    //       this.$util.uplaodAvartar((src) => {
-    //         this.$util.showLayer({
-    //           content: `<img style="margin-top:8px;" src="${src}"/>`,
-    //           width: "200px",
-    //           height: "200px",
-    //           btn: "u-btn",
-    //         });
-    //       });
-    //       break;
-
-    //     default:
-    //       break;
-    //   }
-    // },
     showLoading() {
       this.$util.showLoading("0%");
       let now = +new Date(),
@@ -240,7 +260,6 @@ export default {
     },
   },
   mounted() {
-
     this.$cdn.Prism();    // 代码高亮
   }
 };
