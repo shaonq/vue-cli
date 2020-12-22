@@ -403,6 +403,8 @@ hr {
 
   // 组
   &__group {
+    font-size: 0;
+
     &>.u-btn:not(:first-child):not(:last-child) {
       border-radius: 0;
     }
@@ -565,6 +567,12 @@ textarea.u-input {
 }
 
 .u-radio {
+
+  &:hover input:not(:checked)+#{&}__icon,
+  input:not(:checked)+.u-checkbox__icon:hover {
+    background-color: $border-color--light;
+  }
+
   input {
     &:disabled+.u-radio__icon {
       background-color: $border-color--light;
@@ -580,10 +588,6 @@ textarea.u-input {
 
     &:checked:disabled+.u-radio__icon:after {
       background-color: $border-color;
-    }
-
-    &:not(:checked)+.u-radio__icon:hover {
-      background-color: $border-color--light;
     }
   }
 
@@ -603,6 +607,12 @@ textarea.u-input {
 }
 
 .u-checkbox {
+
+  &:hover input:not(:checked)+#{&}__icon,
+  input:not(:checked)+.u-checkbox__icon:hover {
+    background-color: $border-color--light;
+  }
+
   input {
     &:disabled+.u-checkbox__icon {
       background-color: $border-color--light;
@@ -618,10 +628,6 @@ textarea.u-input {
 
     &:checked:disabled+.u-checkbox__icon:after {
       border-color: $border-color;
-    }
-
-    &:not(:checked)+.u-checkbox__icon:hover {
-      background-color: $border-color--light;
     }
   }
 

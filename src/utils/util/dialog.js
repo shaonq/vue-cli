@@ -387,11 +387,11 @@ function dialog() {
 
   /**
    ** 扩展:extend
-   ** uplaodAvartar 头像上传
+   ** uploadAvartar 头像上传
    ** change : Function 读取图片信息 Object *
    ** success : Function 返回图片地址 Srting 
    */
-  this.uplaodAvartar = function (options = {}) {
+  this.uploadAvartar = function (options = {}) {
     const showModal = this.showModal;
     function imageInit(callback) {
       let input = document.createElement("input");
