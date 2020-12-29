@@ -176,10 +176,10 @@ function dialog() {
     // @bug  IE not`s support vh
     {
       let elc = dom.el(".u-dialog-content", el);
-      let elhh = dom.el(".u-dialog-title", el).clientHeight;
-      let elch = winHeight - elhh;
-      elc.style.maxHeight = elch + 'px';
-      dom.el(".u-dialog-body", el).style.maxHeight = (elch - elhh) + 'px';
+      let elam = dom.el(".u-dialog-title", el).clientHeight;
+      let elect = winHeight - elam;
+      elc.style.maxHeight = elect + 'px';
+      dom.el(".u-dialog-body", el).style.maxHeight = (elect - elam) + 'px';
     }
     // width height auto
     {
@@ -188,7 +188,7 @@ function dialog() {
       if (offsetTop > (winHeight - 10)) el.style.top = (winHeight - el.clientHeight - 10) + "px";
       if (offsetLeft > (winWidth - 10)) el.style.left = (winWidth - el.clientWidth - 10) + "px";
     }
-    // return clsoe index
+    // return close index
     return id;
   };
 
@@ -256,20 +256,20 @@ function dialog() {
     if (isUndefined(content.shadowClose)) content.shadowClose = true;
     if (isUndefined(content.showClose)) content.showClose = false;
     if (!content.cancel) content.cancel = { label: "取消" };
-    let okhtml = '', cancelHtml = `<a class="u-btn">${content.cancel.label}</a>`;
+    let ok_html = '', cancelHtml = `<a class="u-btn">${content.cancel.label}</a>`;
     // ok:{label,onclick,skin}
     if (typeof content.ok === "function") { content.ok = { onclick: content.ok } }
-    let isok = typeof content.ok === "object";
-    if (isok) {
+    let isOk = typeof content.ok === "object";
+    if (isOk) {
       let label = content.ok.label || "确认";
-      okhtml = `<a class="u-btn u-btn--primary ${content.ok.skin ? content.ok.skin : 'u-btn--blue'}">${label}</a>`;
+      ok_html = `<a class="u-btn u-btn--primary ${content.ok.skin ? content.ok.skin : 'u-btn--blue'}">${label}</a>`;
     }
     content.skin = "u-dialog__alert";
-    content.content = `<div style="min-height:5em">${content.content}</div>${okhtml}${cancelHtml}<div></div>`;
+    content.content = `<div style="min-height:5em">${content.content}</div>${ok_html}${cancelHtml}<div></div>`;
     content.success = (index, el) => {
       dom.els(".u-btn", el).forEach(btn => {
         dom.on(btn, "click", () => {
-          if (dom.hasClass(btn, 'u-btn--primary') && isok) {
+          if (dom.hasClass(btn, 'u-btn--primary') && isOk) {
             let onclick = content.ok.onclick;
             typeof onclick === "function" ? onclick(index, btn) : this.hideToast(index)
           } else {
@@ -387,11 +387,11 @@ function dialog() {
 
   /**
    ** 扩展:extend
-   ** uploadAvartar 头像上传
+   ** uploadAvatar 头像上传
    ** change : Function 读取图片信息 Object *
-   ** success : Function 返回图片地址 Srting 
+   ** success : Function 返回图片地址 String 
    */
-  this.uploadAvartar = function (options = {}) {
+  this.uploadAvatar = function (options = {}) {
     const showModal = this.showModal;
     function imageInit(callback) {
       let input = document.createElement("input");

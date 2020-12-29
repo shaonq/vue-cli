@@ -3,7 +3,7 @@
     <!-- 头部区域 tbody -->
     <div class="u-gantt-head">
       <ul class="u-flex u-flex--start">
-        <li :style="{width:sideWidth+'px'}" class="u-flex__item--clamp">
+        <li :style="{width:sideWidth+'px'}" class="is-overflow">
           <div class="u-gantt__scroll u-gantt---left">
             <table>
               <thead>
@@ -16,7 +16,7 @@
             </table>
           </div>
         </li>
-        <li class="u-flex__item u-flex__item--clamp">
+        <li class="u-flex__item is-overflow">
           <div class="u-gantt__scroll u-gantt---right">
             <table>
               <thead>
@@ -36,7 +36,7 @@
     <!-- 内区域 tbody -->
     <div class="u-gantt-warp" style="height:calc(100% - 50px)">
       <ul class="u-flex u-flex--start">
-        <li :style="{width:sideWidth+'px'}" class="u-flex__item--clamp">
+        <li :style="{width:sideWidth+'px'}" class=" is-overflow">
           <div class="u-gantt__scroll  u-gantt---left">
             <table>
               <tbody>
@@ -50,7 +50,7 @@
             </table>
           </div>
         </li>
-        <li class="u-flex__item u-flex__item--clamp">
+        <li class="u-flex__item is-overflow">
           <div class="u-gantt__scroll  u-gantt---right">
             <table>
               <tbody>
@@ -79,7 +79,7 @@
     <!-- 下部滚动条 -->
     <div class="u-gantt-scroll">
       <ul class="u-flex u-flex--start">
-        <li :style="{width:sideWidth+'px'}" class="u-flex__item--clamp">
+        <li :style="{width:sideWidth+'px'}" class="is-overflow">
           <div class="u-gantt__scroll" @scroll="scrollLeft">
             <div style="height:0;">
               <table>
@@ -94,7 +94,7 @@
             </div>
           </div>
         </li>
-        <li class="u-flex__item u-flex__item--clamp">
+        <li class="u-flex__item is-overflow">
           <div class="u-gantt__scroll" @scroll="scrollRight">
             <div style="height:0;">
               <table>

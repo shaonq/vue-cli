@@ -16,19 +16,6 @@
 </template>
 
 <script>
-function loadJs(src) {
-  return new Promise((resolve, reject) => {
-    let n = document.getElementsByTagName("head")[0], o = document.createElement("script");
-    o.onload = o.onreadystatechange = o.onerror = function () {
-      o && o.readyState && /^(?!(?:loaded|complete)$)/.test(o.readyState) || (o.onload = o.onreadystatechange = o.onerror = null, o.src = "", o.parentNode.removeChild(o), o = null, resolve && resolve())
-    }, o.src = src;
-    try {
-      n.appendChild(o)
-    } catch (i) {
-      reject && reject()
-    }
-  });
-}
 export default {
   props: {
     src: String
@@ -37,6 +24,7 @@ export default {
     loadPdfPath(path) {
       let el = this.$refs.view;
       el.innerHTML = "";
+      let loadJs = this.$util.loadJs;
       (async function () {
         if (typeof pdfjsLib === "undefined") {
           console.time('pdfjs v2.5.207')

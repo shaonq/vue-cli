@@ -44,7 +44,7 @@
         <li class="u-mt">
           <p class="u-mt">小号分组</p>
           <div class="u-btn__group u-mt">
-            <button class="u-btn u-btn--small" @click="uploadAvartar">上传头像</button>
+            <button class="u-btn u-btn--small" @click="uploadAvatar">上传头像</button>
             <button class="u-btn u-btn--green u-btn--primary u-btn--small">我被选中</button>
             <button class="u-btn u-btn--small" @click="$util.showModal({title:'标题',content:'内容'})">普通弹窗</button>
           </div>
@@ -151,7 +151,7 @@
         <button class="u-btn" @click="$util.alert('你好啊')" aria-label="toast" tooltip="top">询问</button>
         <button class="u-btn" @click="showLoading" aria-label="showLoading" tooltip="top">加载中</button>
         <button class="u-btn" @click="$util.hideToast()" aria-label="hideToast" tooltip="top">关闭其他</button>
-        <button class="u-btn" @click="uploadAvartar" aria-label="uploadAvartar" tooltip="top">上传头像</button>
+        <button class="u-btn" @click="uploadAvatar" aria-label="uploadAvatar" tooltip="top">上传头像</button>
         <button class="u-btn" @click="$util.toast('右键点击看效果')" @contextmenu.prevent="showContextMenu" aria-label="showContextMenu" tooltip="top">右键菜单</button>
         <button class="u-btn" @click="showDropdown" aria-label="showDropdown" tooltip="top">下拉菜单</button>
       </div>
@@ -182,7 +182,7 @@ util.showModal(options)
  * @param {Callback} option
  */
 
-util.uploadAvartar(option)
+util.uploadAvatar(option)
 </code>
 </pre>
 
@@ -210,8 +210,8 @@ export default {
           }
         }, 500);
     },
-    uploadAvartar() {
-      this.$util.uploadAvartar({
+    uploadAvatar() {
+      this.$util.uploadAvatar({
         success: (src, index) => {
           this.$util.showModal({
             content: `<p>${index}</p><img style="margin-top:8px;" src="${src}"/>`,

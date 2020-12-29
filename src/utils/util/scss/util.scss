@@ -26,7 +26,7 @@ hr {
   &__item {
     flex: 1;
 
-    &--clamp {
+    &.is-overflow {
       min-width: 0;
 
       &>* {
@@ -80,12 +80,14 @@ hr {
 }
 
 // flex 布局出现 ... 不兼容 ie
+.u-overflow,
 .u-clamp {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+.u-overflow2,
 .u-clamp2 {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -328,7 +330,7 @@ hr {
 
 /**
  * btn 组件 
- * 默认高度 32px 和elmentui 保持一致 
+ * 默认高度 32px 和element-ui 保持一致 
  */
 .u-btn {
   display: inline-block;
@@ -458,7 +460,6 @@ hr {
     background-color: transparent;
     border: none;
     border-radius: 0;
-    user-select: text;
 
     &:hover {
       background-color: transparent !important;
@@ -470,6 +471,10 @@ hr {
 /** 按钮样式  */
 @each $name,
 $color in $colors {
+  .u-color-#{$name} {
+    color: $color;
+  }
+
   .u-btn--#{$name} {
     color: $color;
     border-color: $color;
@@ -530,7 +535,7 @@ textarea.u-input {
   height: auto;
 }
 
-/** radio checkob  **/
+/** radio checkbox  **/
 
 .u-radio,
 .u-checkbox {
@@ -694,8 +699,8 @@ textarea.u-input {
   }
 }
 
-/** 加载动画 @api animejs.com */
-.u-loopnai {
+/** 加载动画 @api anime js.com */
+.u-looping {
   padding: 15px 0;
   display: inline-block;
   $time: 800ms;
@@ -721,7 +726,7 @@ textarea.u-input {
     }
 
     transform-origin: left center;
-    animation: u-loadnai $time linear infinite;
+    animation: u-looping $time linear infinite;
   }
 
   @for $i from 1 through 5 {
@@ -731,7 +736,7 @@ textarea.u-input {
   }
 }
 
-@keyframes u-loadnai {
+@keyframes u-looping {
 
   0%,
   100% {
