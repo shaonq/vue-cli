@@ -26,7 +26,7 @@ hr {
   &__item {
     flex: 1;
 
-    &.is-overflow {
+    &.is-clamp {
       min-width: 0;
 
       &>* {
@@ -699,12 +699,11 @@ textarea.u-input {
   }
 }
 
-/** 加载动画 @api anime js.com */
+/** load ani */
 .u-looping {
-  padding: 15px 0;
   display: inline-block;
-  $time: 800ms;
-  $width: 18px;
+  $width: 14px;
+  padding: $width 0;
   font-size: 0;
 
   i {
@@ -713,25 +712,24 @@ textarea.u-input {
     height: $width;
     position: relative;
 
-    &::before {
+    &:before {
       content: "";
       position: absolute;
-      width: 9px;
-      height: 9px;
+      width: $width/2;
+      height: $width/2;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%);
+      // transform: translate(-50%, -50%);
       border-radius: 50%;
-      background: #4795ef;
+      background: $blue-color;
+      animation: u-looping 800ms ease-in-out infinite;
+      transform-origin: left center;
     }
-
-    transform-origin: left center;
-    animation: u-looping $time linear infinite;
   }
 
-  @for $i from 1 through 5 {
-    i:nth-child(#{$i}) {
-      animation-delay: ($i - 1s)/9 - 9;
+  @for $i from 1 through 4 {
+    i:nth-child(#{$i}):before {
+      animation-delay: -($i - 1s)/8;
     }
   }
 }
@@ -740,16 +738,12 @@ textarea.u-input {
 
   0%,
   100% {
-    transform: translateY(-10px);
+    transform: translateY(-100%);
     opacity: 1;
   }
 
-  12.5% {
-    transform: translateY(-10px);
-  }
-
   50% {
-    transform: translateY(10px);
+    transform: translateY(100%);
     opacity: 0.83;
   }
 }

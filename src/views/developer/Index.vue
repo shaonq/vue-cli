@@ -2,7 +2,7 @@
   <div class="lay-body">
     <div class="lay-body__warp">
       <div class="u-flex u-flex--start">
-        <div class="u-flex__item is-overflow lay-body__main">
+        <div class="u-flex__item is-clamp lay-body__main">
           <router-view></router-view>
         </div>
         <div class="lay-body__side">

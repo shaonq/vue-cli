@@ -493,17 +493,17 @@ function dialog() {
 
       canvasInit((canvas, ctx) => {
         const { width, height } = info;
-        function drawImage(offset, callback) {
-          // let { width = 0, height = 0 } = offset;
+        const drawImage = (offset = { left: 0, top: 0 }) => {
+          // offset 临时移动数据
           ctx.clearRect(0, 0, cWidth, cWidth);
           ctx.fillStyle = "#ccc";
           ctx.fillRect(0, 0, cWidth, cWidth);
           ctx.fill();
           // 是否水平
           let isHorizontal = width >= height;
-          // 记住上一次绘制的数据
-          let dx = canvas.getAttribute("dx") | 0;
-          let dy = canvas.getAttribute("dy") | 0;
+          // 记住上一次绘制的数据 鼠标松开后的偏移
+          let dx = canvas.getAttribute("data-left") | 0;
+          let dy = canvas.getAttribute("data-top") | 0;
           // dx, dy,
           let dWidth, dHeight, max = cLine;
           if (isHorizontal) {
@@ -513,7 +513,7 @@ function dialog() {
             dy = dy || cLine;
             // 验证: 可移动范围
             let min = dHeight + cLine - dWidth;
-            dx = dx + offset.width;
+            dx = dx + offset.left;
             dx = m2m(min, max, dx);
           } else {
             dWidth = iWidth;
@@ -522,7 +522,7 @@ function dialog() {
             dy = dy || (cWidth - dHeight) / 2;
             // 验证: 可移动范围
             let min = dWidth + cLine - dHeight;
-            dy = dy + offset.height;
+            dy = dy + offset.top;
             dy = m2m(min, max, dy);
           }
 
@@ -534,47 +534,51 @@ function dialog() {
           ctx.fillRect(40, 0, 160, 40);
           ctx.fillRect(40, 200, 160, 40);
           ctx.fill();
-          callback && callback({
-            dx, dy
-          })
+
+          return { left: dx, top: dy }
         }
-        // 绑定事件
-        // 上一次移动触发的偏移
-        dom.on(canvas, "mousedown", e => {
-          let clientX = e.pageX || e.clientX;
-          let clientY = e.pageY || e.clientY;
-          canvas.style.cursor = "grabbing";
-          let isMove = true;
-          const fnMove = e => {
-            if (isMove) {
-              let cX = e.pageX || e.clientX;
-              let cY = e.pageY || e.clientY;
-              let width = cX - clientX;
-              let height = cY - clientY;
-              drawImage({ width, height });
-            }
-          }
-          const fnUp = e => {
-            canvas.style.cursor = "grab";
-            let cX = e.pageX || e.clientX;
-            let cY = e.pageY || e.clientY;
-            let width = cX - clientX;
-            let height = cY - clientY;
-            drawImage({ width, height }, o => {
-              canvas.setAttribute("dx", o.dx)
-              canvas.setAttribute("dy", o.dy)
-            });
-            isMove = false;
-            dom.off(document, "mouseup", fnUp)
-            dom.off(document, "mousemove", fnMove)
-          }
-          dom.on(document, "mousemove", fnMove)
-          dom.on(document, "mouseup", fnUp)
-        })
-        drawImage({ width: 0, height: 0 });
+
+        drawImage({ left: 0, top: 0 });
+        this.addDargEvent({ el: canvas, success: drawImage })
       });
     });
   };
+
+
+  this.addDargEvent = function ({ el, success, doc = document }) {
+    dom.on(el, "mousedown", e => {
+      let clientX = e.pageX || e.clientX;
+      let clientY = e.pageY || e.clientY;
+      el.style.cursor = "grabbing";
+      let isMove = true;
+      const fnMove = e => {
+        if (isMove) {
+          let cX = e.pageX || e.clientX;
+          let cY = e.pageY || e.clientY;
+          let left = cX - clientX;
+          let top = cY - clientY;
+          success({ left, top });
+        }
+      }
+      const fnUp = e => {
+        el.style.cursor = "grab";
+        let cX = e.pageX || e.clientX;
+        let cY = e.pageY || e.clientY;
+        let left = cX - clientX;
+        let top = cY - clientY;
+        let o = success({ left, top });
+        if (o) {
+          el.setAttribute("data-left", o.left | 0)
+          el.setAttribute("data-top", o.top | 0)
+        }
+        isMove = false;
+        dom.off(doc, "mouseup", fnUp)
+        dom.off(doc, "mousemove", fnMove)
+      }
+      dom.on(doc, "mousemove", fnMove)
+      dom.on(doc, "mouseup", fnUp)
+    })
+  }
 }
 
 export default new dialog();
