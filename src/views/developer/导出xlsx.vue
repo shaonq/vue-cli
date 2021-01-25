@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="u-pell--body">
+    <div class="u-quill-body">
       <h1></h1>
       <table class="xlsx">
         <tr>
@@ -26,19 +26,6 @@
 </template>
 
 <script>
-function loadJs(src) {
-  return new Promise((resolve, reject) => {
-    let n = document.getElementsByTagName("head")[0], o = document.createElement("script");
-    o.onload = o.onreadystatechange = o.onerror = function () {
-      o && o.readyState && /^(?!(?:loaded|complete)$)/.test(o.readyState) || (o.onload = o.onreadystatechange = o.onerror = null, o.src = "", o.parentNode.removeChild(o), o = null, resolve && resolve())
-    }, o.src = src;
-    try {
-      n.appendChild(o)
-    } catch (i) {
-      reject && reject()
-    }
-  });
-}
 export default {
   props: {
     src: String
@@ -59,6 +46,7 @@ export default {
   methods: {
     exportXLSX() {
       let data = this.list;
+      let { loadJs } = this.$util;
       (async function () {
         if (typeof XLSX === "undefined") {
           console.time('xlsx v0.16.8')

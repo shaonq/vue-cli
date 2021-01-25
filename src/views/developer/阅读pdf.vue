@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="u-pell--body">
+    <div class="u-quill-body">
       <h1>在线阅读pdf</h1>
       <div class="u-flex">
         <div class="u-flex__item"><input class="u-input" placeholder="请输入一个在线地址" value="https://shaonq.github.io/md/file/如何快速实现网页预览PDF文件.pdf" /></div>

@@ -119,6 +119,14 @@ const dom = {
     if (el && el.parentNode) el.parentNode.removeChild(el)
   }
 }
+// file.js
+
+const file = {
+  openFileInFolder() {
+
+  }
+
+}
 
 function dialog() {
   this.dom = dom;
@@ -271,10 +279,10 @@ function dialog() {
         dom.on(btn, "click", () => {
           if (dom.hasClass(btn, 'u-btn--primary') && isOk) {
             let onclick = content.ok.onclick;
-            typeof onclick === "function" ? onclick(index, btn) : this.hideToast(index)
+            typeof onclick === "function" ? onclick(index, el, btn) : this.hideToast(index)
           } else {
             let onclick = content.cancel.onclick;
-            typeof onclick === "function" ? onclick(index, btn) : this.hideToast(index)
+            typeof onclick === "function" ? onclick(index, el, btn) : this.hideToast(index)
           }
         })
       })
@@ -338,7 +346,7 @@ function dialog() {
    * @param {Array} list: [{label,value}]
    * @param {Array} value: default value
    */
-  this.createLabelValue = ({ skin, list, value = "" }) => {
+  const createLabelValue = ({ skin, list, value = "" }) => {
     return list.reduce((html, item) => {
       let childrenHtml = '', isChildren = item.children && item.children.length
       if (isChildren) childrenHtml = render(item.children);
@@ -351,7 +359,7 @@ function dialog() {
     const skin = "u-dialog--dropdown";
     return this.showPopover({
       offset, skin, list,
-      content: this.createLabelValue({ skin, list, value }),
+      content: createLabelValue({ skin, list, value }),
       success: (index, el) => {
         dom.els(`.${skin}-item`).forEach(self => {
           if (dom.hasClass(self, 'is-disabled')) return;
@@ -369,7 +377,7 @@ function dialog() {
     const skin = "u-dialog--contextmenu";
     return this.showPopover({
       offset, skin, list,
-      content: this.createLabelValue({ skin, list }),
+      content: createLabelValue({ skin, list }),
       success: (index, el) => {
         let els = dom.els(`.${skin}-item`), isOne = els.length === 1;
         els.forEach(self => {
@@ -384,6 +392,10 @@ function dialog() {
       }
     })
   }
+
+  this.selectFile = function () {
+
+  };
 
   /**
    ** 扩展:extend

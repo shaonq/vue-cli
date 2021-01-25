@@ -1,13 +1,18 @@
 // 工具
 import ULoad from './componentLoad.vue';
 import UGantt from './componentGantt/Main.vue';
-import UFullCalendar from './componentCalendar/Index.vue'
-import UPell from './componentPell/Index.vue'
+import UFullCalendar from './componentCalendar/Index.vue';
+import UQuill from './componentQuill/Index.vue';
+import UCharts from './componentChart';
+
+
+
 export default {
     install: function (Vue) {
         Vue.component('u-load', ULoad);
         Vue.component('u-gantt', UGantt);
-        Vue.component('u-full-calendar', UFullCalendar)
-        Vue.component('u-pell', UPell)
+        Vue.component('u-full-calendar', UFullCalendar);
+        Vue.component('u-quill', UQuill);
+        Vue.component('u-chart', UCharts);
     }
 }

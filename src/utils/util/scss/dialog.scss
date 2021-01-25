@@ -269,7 +269,7 @@
     padding: 0 24px;
     line-height: 30px;
     font-size: 13px;
-
+    color: inherit;
     &:not(.is-disabled):hover {
       background-color: #eee;
       cursor: pointer;
@@ -278,15 +278,15 @@
     &:first-child {
       border-top: none;
     }
-  }
 
-  .is-disabled {
-    color: $border-color;
-  }
+    &.is-active {
+      font-weight: 700;
+      color: $blue-color
+    }
 
-  .is-active {
-    font-weight: 700;
-    color: $blue-color
+    &.is-disabled {
+      color: $border-color;
+    }
   }
 }
 

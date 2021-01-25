@@ -213,12 +213,12 @@ const util = {
       return window.ActiveXObject || "ActiveXObject" in window ? (t.match(/msie\s(\d+)/) || [])[1] || "11" : !1
     }(), d
   }(),
-  verify: {
-    // name: value => /^(\w){6,20}$/.test(value), /[^u4e00-u9fa5w]/g
-    mobile: phone => /^1\d{10}$/g.test(phone),
-    email: value => /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value),
-    required: value => /[\S]+/.test(value),
-    url: value => /(^#)|(^http(s*):\/\/[^\s]+\.[^\s]+)/.test(value),
+  regexp: {
+    mobile: /^1\d{10}$/g,
+    email: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/,
+    required: /[\S]+/,
+    url: /^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/,
+    image: /\.(png|jpg|gif|jpeg|webp)$/i,
   },
   /**
   * cookie
@@ -274,23 +274,11 @@ const util = {
     if (typeof val === 'string') try { val = JSON.parse(val) } catch (e) { }
     return val
   },
-  isNumber: function (val) {
-    return typeof obj === 'number' && val.toString() !== 'NaN'
-  },
-  isArrayLen: function (val) {
-    return typeof val === 'object' && val.length > 0
-  },
-  toPercent: function (a) {
-    return (Math.round(a * 10000) / 100).toFixed(2) + '%';
-  },
   clone: function (val) {
     return typeof val === "object" ? this.parse(this.stringify(val)) : val
   },
-  toObject: function (val) {
-    return val = this.parse(val), typeof val === 'object' ? val : {}
-  },
-  trim: function (val) {
-    return val.replace(/\s/g, "")
+  toPercent: function (a) {
+    return (Math.round(a * 10000) / 100).toFixed(2) + '%';
   },
   toMB: function (bytes) {
     let i = 0;
@@ -307,5 +295,5 @@ const util = {
 import dialog from "./dialog.js"
 import "./scss/dialog.scss"
 import "./scss/util.scss"
-export default Object.assign(util, dialog, {date});
+export default Object.assign(util, dialog, { date });
 

@@ -109,7 +109,7 @@ export default {
     background-color: #f0f0f0;
   }
 }
-.u-pell--body,
+.u-quill-body,
 .u-pell__content {
   box-sizing: border-box;
   min-height: 140px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="u-pell--body">
+  <div class="u-quill-body">
     <h1>工具版本</h1>
     <ul>
       <li>node v10.16.0(npm 6.9.0)</li>

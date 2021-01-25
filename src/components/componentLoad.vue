@@ -1,22 +1,17 @@
 <template>
     <div>
-        <template v-if="loading"><slot name="loading">加载中...</slot></template>
-        <template v-else>
-            <template v-if="loadend">
-                <slot></slot>
-            </template>
-            <template v-else><slot name="loadend">没有内容</slot></template>
-        </template>
+        <slot v-if="loading" name="loading">加载中...</slot>
+        <slot v-else-if="empty" name="empty">没有内容</slot>
+        <slot v-else>加载中...</slot>
     </div>
 </template>
 <script>
 export default {
-    props:{
-        loading:Boolean,
-        loadend:Boolean
-    }    
+    props: {
+        loading: Boolean,
+        empty: Boolean
+    }
 }
 </script>
 <style lang="scss">
-
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="u-pell--body">
+    <div class="u-quill-body">
       <h1>日程表</h1>
       <h1>日程表含义</h1>
       <p>日程表，根据日期安排活动顺序及内容的表格。可以用日程表来规划时间，安排办事的流程。</p>

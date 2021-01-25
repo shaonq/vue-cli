@@ -8,7 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     // 读取存储的凭证
-    auth: util.toObject(getAuth()),
+    auth: getAuth(),
     // 我的mind信息 favorite
   },
   mutations: {
@@ -45,7 +45,7 @@ export default new Vuex.Store({
       return state.auth.token
     },
     userInfo(state, getters) {
-      return util.toObject(state.auth.userInfo)
+      return state.auth.userInfo
     },
   }
 })

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="u-pell--body">
+    <div class="u-quill-body">
       <h1>数据格式</h1>
       <pre><code class="language-javascript">
     {

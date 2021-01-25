@@ -1,5 +1,5 @@
 <template>
-  <div class="u-pell--body">
+  <div class="u-quill-body">
     <h1>
       vue 常用生命周期
       <br />

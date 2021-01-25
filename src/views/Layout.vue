@@ -1,96 +1,63 @@
-<template>
-  <div class="lay-doc">
-    <div class="lay-head">
-      <div class="lay-head__warp">
-        <div class="u-flex u-flex--start" style="margin: 0 auto;width:1200px;">
-          <a href="https://shaonq.github.io/">
-            <img src="~@/assets/logo.png" style="height:60px" draggable="false" />
-          </a>
-          <div class="u-flex__item"></div>
-          <div>
-            <router-link class="lay-head__link" :to="{path:'/docs'}">相关文档</router-link>
-            <router-link class="lay-head__link" :to="{path:'/developer'}">实验室</router-link>
+<template >
+  <div class="layout-doc" id="root">
+    <header>
+      <div class="layout-hd">
+        <div class="layout-warp">
+          <div class="u-flex u-flex--start">
+            <a href="https://shaonq.github.io/">
+              <img src="~@/assets/logo.png" width="256" draggable="false" />
+            </a>
+            <div class="u-flex__item"></div>
+            <div>
+              <router-link class="layout-hd__link" :to="{path:'/docs'}">相关文档</router-link>
+              <router-link class="layout-hd__link" :to="{path:'/developer'}">实验室</router-link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <div class="layout-hd__fill"></div>
+    </header>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  mounted() {
-    (async () => {
-      if (typeof StickySidebar === "undefined") {
-        await this.$util.loadJs("https://cdn.jsdelivr.net/npm/sticky-sidebar@3.3.1/dist/sticky-sidebar.min.js");
-      }
-      new StickySidebar('.lay-head', {});
-    })()
+  data() {
+    return {
+
+    }
   }
 }
 </script>
 <style lang="scss" >
 // 布局
-.lay {
+.layout {
   &-doc {
-    background: #f1f1f1;
+    background: #f5f5f5;
     min-height: 100vh;
+  }
+  &-warp {
+    width: 1000px;
+    margin: 0 auto;
   }
   // 主体
   &-body {
     position: relative;
-    padding: 10px 0 80px;
-    &__warp {
-      width: 1200px;
-      margin: 0 auto;
-    }
-    &__main,
-    &__side {
-      background: #fff;
-      border-radius: 2px;
-      box-shadow: 0 1px 3px rgba(22, 22, 22, 0.1);
-      box-sizing: border-box;
-      min-height: 260px;
-      padding-top: 10px;
-      padding-bottom: 10px;
-    }
-    &__main {
-      // overflow: hidden;
-      margin-right: 10px;
-      padding-left: 10px;
-      padding-right: 10px;
-    }
-    // 侧边
-    &__side {
-      width: 260px;
-      font-size: 15px;
-
-      & > a {
-        display: block;
-        padding: 8px 20px;
-        color: #888;
-        transition: 0.3s;
-
-        &:hover {
-          background: rgba(22, 22, 22, 0.05);
-        }
-
-        &.is-active {
-          color: #ff9800;
-        }
-      }
-    }
+    padding-bottom: 60px;
+    padding-top: 12px;
   }
 
   // 头部
-  &-head {
-    position: relative;
-    height: 60px;
+  &-hd {
+    position: fixed;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(22, 22, 22, 0.1);
     z-index: 999;
-    &__warp {
-      background-color: #fff;
-      box-shadow: 0 1px 3px rgba(22, 22, 22, 0.1);
+    &__fill,
+    & {
+      height: 60px;
     }
 
     &__link {
@@ -100,7 +67,7 @@ export default {
       padding: 0 22px;
       height: 60px;
       line-height: 60px;
-      font-size: 15px;
+      font-size: 16px;
       &.is-active {
         color: #444;
         font-weight: 600;

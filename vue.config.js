@@ -14,8 +14,10 @@ module.exports = {
     lintOnSave: true,
     //是否使用包含运行时编译器的 Vue 构建版本
     runtimeCompiler: false,
-    //是否生成 map souce
+    //是否生成 map source
     productionSourceMap: false,
+    // 进行编译的依赖
+    transpileDependencies: ['vue-echarts', 'resize-detector'],
     // 它支持webPack-dev-server的所有选项
     devServer: {
         port: 8080, // 调试链接的端口号

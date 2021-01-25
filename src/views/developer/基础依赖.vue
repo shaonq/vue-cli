@@ -17,7 +17,7 @@
         </pre>
       </div>
     </div>
-    <div class="u-pell--body">
+    <div class="u-quill-body">
       <!-- <h1>List</h1>
       <ul>
         <li>Button</li>
