@@ -128,7 +128,7 @@ export default {
       this.$emit('change', outerText, quill)
     });
     quill.on('selection-change', (range, oldRange, source) => {
-      console.log(range, oldRange, source)
+      // console.log(range, oldRange, source)
       this.$emit('selection', range, quill)
     });
     //Keyboard

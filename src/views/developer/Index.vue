@@ -8,7 +8,7 @@
           </div>
         </div>
         <!-- 侧边栏目 -->
-        <div class="u-ml" style="width:220px;" ref="el">
+        <div class="u-ml" style="width:238px;" ref="el">
           <div class="u-card ">
             <div class="u-card__bd" style="padding:12px 0">
               <router-link style="display: block;font-size:14px;border-radius: 4px;" v-for="(item,index) in list" :key="index" class="u-dialog--dropdown-item" :to="{path:item.to}" exact>{{item.name}}</router-link>

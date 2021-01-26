@@ -56,14 +56,14 @@
             <h3 class="u-field__label">昵称</h3>
             <div class="u-field__content">
               <span class="u-mr">鼠标划过试试</span>
-              <button class="u-btn u-field__hover u-btn--link u-btn--blue"><i class="el-icon-edit"></i> 修改</button>
+              <button class="u-btn u-field__hover u-btn--link u-btn--blue">修改</button>
             </div>
           </div>
           <div class="u-field">
             <h3 class="u-field__label">修改图片</h3>
             <div class="u-field__content">
               <img src="https://imgs.aixifan.com/jy9Gvt7hIk-iYn2Qf-iyUvai-zMf2ya-qeeeea.jpg" style="margin:0;width:100%" />
-              <button class="u-btn u-field__hover u-btn--link u-btn--blue"><i class="el-icon-edit"></i> 修改</button>
+              <button class="u-btn u-field__hover u-btn--link u-btn--blue">修改</button>
             </div>
           </div>
 

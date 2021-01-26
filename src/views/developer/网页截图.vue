@@ -8,9 +8,9 @@
           <li><code>jspdf.js</code> 图片转换为pdf文件 </li>
         </ol>
         <hr>
-        <img src="https://imgs.aixifan.com/jy9Gvt7hIk-iYn2Qf-iyUvai-zMf2ya-qeeeea.jpg">
+        <img @click="imageView" src="https://imgs.aixifan.com/jy9Gvt7hIk-iYn2Qf-iyUvai-zMf2ya-qeeeea.jpg">
         <hr>
-        <p>点击测试↓</p>
+        <p @click="$util.toast('123')">点击测试↓</p>
       </div>
     </div>
     <div class="u-btn__group">
@@ -22,9 +22,8 @@
 
 <script>
 export default {
-  mounted() {
-  },
   methods: {
+    // 截取el内部内容
     captureCanvas({ el, success }) {
       let dom = this.$util.dom;
       let { loadJs } = this.$util;
@@ -51,7 +50,9 @@ export default {
         html2canvas(el, { canvas: canva, background: '#FFFFFF', scrollY: 0, scrollX: 0, width: w, height: h, useCORS: true }).then(success)
       }());
     },
+    // 生成pdf
     createPDF({ canvas, pdfName }) {
+      let loadJs =this.$util;
       (async function () {
         console.time('create pdf')
         if (typeof jsPDF === "undefined") {
@@ -92,10 +93,15 @@ export default {
       let p = dom.position(el);
       this.captureCanvas({
         el, success: canvas => {
-          dom.append(canvas, dom.el("#qq"))
+          let src = canvas.toDataURL("image/jpeg", 0.83);
+          let img = new Image();
+          img.src=src;
+          img.onload = () =>dom.append(img, dom.el("#qq"))
+          dom.on(img,"click",this.imageView)
         }
       })
     },
+    // 下载内容
     downloadPDF() {
       let dom = this.$util.dom;
       let el = dom.el("#qq");
@@ -105,7 +111,57 @@ export default {
         }
       })
     },
-  }
+
+
+    // 点击图片放大
+    imageView(e) {
+      let { dom, showModal, hideToast } = this.$util;
+      let oldImg = e.target;
+      let { naturalWidth, naturalHeight } = oldImg;
+      if (!oldImg) return;
+      const p = dom.position(oldImg);
+      let { width, height, left, top } = p;
+      let scale = 1;
+      {
+        let w = Math.min(window.innerWidth, naturalWidth);
+        w = (w * 0.8) / width;
+        let h = Math.min(window.innerHeight, naturalHeight);
+        h = (h * 0.8) / height;
+        scale = Math.max(Math.min(w, h), 1);
+      }
+      if (width < 200) return;
+      showModal({
+        content: '',
+        shadowClose: true,
+        showClose: false,
+        ani: null,
+        width: width + 'px',
+        height: height + 'px',
+        before(el) {
+          el.style.transition = 'all 0.3s ease-in-out';
+          el.style.left = p.left + 'px';
+          el.style.top = p.top + 'px';
+          el.style.width = p.width + 'px';
+          el.style.height = p.height + 'px';
+          el.style.transform = "scale(1)";
+        },
+        success(index, el) {
+          let body = dom.el(".u-dialog-body", el);
+          body.style.padding = "0";
+          body.append(oldImg.cloneNode());
+          el.style.transform = `scale(${scale})`;
+        },
+        after(el) {
+          dom.addClass(el, "is-show");
+          el.style.left = p.left + 'px';
+          el.style.top = p.top + 'px';
+          el.style.width = p.width + 'px';
+          el.style.height = p.height + 'px';
+          el.style.transform = "scale(1)";
+        }
+      })
+    }
+  },
 }
 </script>
 

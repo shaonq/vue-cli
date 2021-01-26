@@ -10,26 +10,29 @@
   position: fixed;
   top: 0;
   z-index: 9999;
-  transform: scale(0.7);
   opacity: 0;
-  transition: transform 120ms ease-out, opacity 100ms ease-in-out;
   word-break: break-all;
   word-wrap: break-word;
   visibility: hidden;
+  transition: transform 120ms ease-out, opacity 100ms ease-in-out;
 
   &.is-show {
-    transition: transform 300ms ease-out, opacity 300ms ease-out;
     visibility: visible;
-    transform: scale(1);
+    transition: transform 300ms ease-out, opacity 300ms ease-out;
     opacity: 1;
   }
 }
 
-.u-dialog--ani1 {
-  transform: translateY(10px);
-
+.u-dialog-ani {
+  transform: scale(0.7);
   &.is-show {
-    transform: translateY(0);
+    transform: scale(1);
+  }
+  &1 {
+    transform: translateY(10px);
+    &.is-show {
+      transform: translateY(0);
+    }
   }
 }
 
@@ -270,6 +273,7 @@
     line-height: 30px;
     font-size: 13px;
     color: inherit;
+
     &:not(.is-disabled):hover {
       background-color: #eee;
       cursor: pointer;

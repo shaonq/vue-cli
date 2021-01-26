@@ -119,14 +119,6 @@ const dom = {
     if (el && el.parentNode) el.parentNode.removeChild(el)
   }
 }
-// file.js
-
-const file = {
-  openFileInFolder() {
-
-  }
-
-}
 
 function dialog() {
   this.dom = dom;
@@ -143,7 +135,11 @@ function dialog() {
     if (options.shadow < 1 && options.shadow > 0) mel.style.opacity = options.shadow;
     mel.setAttribute("data-u-dialog", id);
     const el = document.createElement("div");
-    el.className = "u-dialog";
+    el.className = "u-dialog " + (isUndefined(options.ani) || "u-dialog-ani");
+    //before
+    options.before && options.before(el);
+    // after-id 
+    options.after && (this['after' + id] = options.after);
     // add skin className
     const skin = options.skin || options.className;
     if (skin) dom.addClass(el, skin);
@@ -182,32 +178,36 @@ function dialog() {
     if (options.time) setTimeout(() => this.hideToast(el.getAttribute(attr)), options.time * 1e3);
     if (typeof options.success === "function") options.success(id, el);
     // @bug  IE not`s support vh
-    {
+    try {
       let elc = dom.el(".u-dialog-content", el);
       let elam = dom.el(".u-dialog-title", el).clientHeight;
       let elect = winHeight - elam;
       elc.style.maxHeight = elect + 'px';
       dom.el(".u-dialog-body", el).style.maxHeight = (elect - elam) + 'px';
-    }
+    } catch (e) { }
     // width height auto
     {
       let offsetTop = el.clientHeight + el.offsetTop;
       let offsetLeft = el.clientWidth + el.offsetLeft;
-      if (offsetTop > (winHeight - 10)) el.style.top = (winHeight - el.clientHeight - 10) + "px";
-      if (offsetLeft > (winWidth - 10)) el.style.left = (winWidth - el.clientWidth - 10) + "px";
+      if (offsetTop > (winHeight - 10)) el.style.top = Max.min((winHeight - el.clientHeight - 10), 0) + "px";
+      if (offsetLeft > (winWidth - 10)) el.style.left = Max.min((winWidth - el.clientWidth - 10), 0) + "px";
     }
     // return close index
     return id;
   };
 
   this.hideToast = id => {
-    function remove(el) {
+    let remove = el => {
       dom.removeClass(el, "is-show");
+      if (!dom.hasClass(el, "u-dialog-mask") && this['after' + id]) {
+        this['after' + id](el);
+        this['after' + id] = null
+      };
       let cl = () => dom.remove(el);
       setTimeout(cl, 300);
     }
     dom.els(`[${attr}]`).forEach(el => {
-      id ? id == el.getAttribute(attr) && remove(el) : (!~el.className.indexOf('is-extend') && remove(el));
+      id ? id == el.getAttribute(attr) && remove(el) : (!dom.hasClass(el, 'is-extend') && remove(el));
     })
   };
 

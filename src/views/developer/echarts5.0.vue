@@ -21,7 +21,6 @@
 
 <script>
 import { graphic } from "echarts";
-import { setTimeout, clearTimeout } from 'timers';
 export default {
   data() {
     return {
@@ -53,6 +52,7 @@ export default {
         tooltip: { show: true },
         xAxis: [{
           type: "category",
+          boundaryGap: true,
           data: [/** array */],
           splitLine: { show: false },
           axisTick: { alignWithLabel: true },
@@ -69,7 +69,7 @@ export default {
             color: "#feac5e"
           }
         }, {
-          name: "折线图2",
+          name: "柱状图2",
           type: "bar",
           data: [/** array */],
           itemStyle: {
@@ -86,15 +86,15 @@ export default {
       return Array(len).toString().split(',').map(() => (Math.random() * (max - min)) | 0)
     },
     dataInit() {
-      if (!this.len20list.length) this.len20list = this.createRandom(20);
-      let len20list = this.len20list.slice(1).concat(this.createRandom());
+      if (!this.len20list.length) this.len20list = this.createRandom(20, 2e4, 1e4);
+      let len20list = this.len20list.slice(1).concat(this.createRandom(1, 2e4, 1e4));
       this.len20list = len20list;
       this.line1.xAxis[0].data = len20list;
       this.line1.series[0].data = len20list;
-      let len10list = len20list.slice(0,10);
+      let len10list = len20list.slice(0, 10);
       this.line2.xAxis[0].data = len10list;
       this.line2.series[0].data = len10list;
-      this.line2.series[1].data = len10list;
+      this.line2.series[1].data = len20list.slice(10);
       this.timer = setTimeout(this.dataInit, 5e3);
     }
   },

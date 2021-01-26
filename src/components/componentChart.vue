@@ -11,7 +11,7 @@ const theme = {
   backgroundColor: "rgba(252,252,252,0)",
   textStyle: {},
   // 区域
-  grid: { top: "2%", left: "2%", right: "2%", bottom: "2%", containLabel: true },
+  grid: { top: "4%", left: "2%", right: "2%", bottom: "2%", containLabel: true },
   // 标题
   title: {
     textStyle: {
@@ -338,7 +338,7 @@ export default {
     },
     renderer: {
       type: String,
-      default: 'svg' // canvas|svg
+      default: 'canvas' // canvas|svg
     },
     theme: {
       type: [String, Object],
@@ -360,7 +360,7 @@ export default {
   },
   methods: {
     updateOptions() {
-      if(this.chart) {
+      if (this.chart) {
         // this.chart.clear();
         this.chart.setOption(this.options);
       }
