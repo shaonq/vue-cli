@@ -4,6 +4,7 @@ import UGantt from './componentGantt/Main.vue';
 import UFullCalendar from './componentCalendar/Index.vue';
 import UQuill from './componentQuill/Index.vue';
 import UCharts from './componentChart';
+import URouteBar from './componentRouteBar';
 
 
 
@@ -14,5 +15,6 @@ export default {
         Vue.component('u-full-calendar', UFullCalendar);
         Vue.component('u-quill', UQuill);
         Vue.component('u-chart', UCharts);
+        Vue.component('u-route-bar', URouteBar);
     }
 }

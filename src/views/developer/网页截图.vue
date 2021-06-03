@@ -13,7 +13,7 @@
         <p @click="$util.toast('123')">点击测试↓</p>
       </div>
     </div>
-    <div class="u-btn__group">
+    <div class="u-btn__group  u-mb u-ml">
       <a class="u-btn" @click="appendCanvas()">生成截图</a>
       <a class="u-btn" @click="downloadPDF()">下载PDF</a>
     </div>

@@ -189,8 +189,8 @@ function dialog() {
     {
       let offsetTop = el.clientHeight + el.offsetTop;
       let offsetLeft = el.clientWidth + el.offsetLeft;
-      if (offsetTop > (winHeight - 10)) el.style.top = Max.min((winHeight - el.clientHeight - 10), 0) + "px";
-      if (offsetLeft > (winWidth - 10)) el.style.left = Max.min((winWidth - el.clientWidth - 10), 0) + "px";
+      if (offsetTop > (winHeight - 10)) el.style.top = Math.min((winHeight - el.clientHeight - 10), 0) + "px";
+      if (offsetLeft > (winWidth - 10)) el.style.left = Math.min((winWidth - el.clientWidth - 10), 0) + "px";
     }
     // return close index
     return id;

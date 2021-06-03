@@ -47,6 +47,23 @@ hr {
   &--between {
     justify-content: space-between;
   }
+  // 珊格
+  &--row {
+    flex-wrap: wrap;
+  }
+
+  @for $i from 1 through 24 {
+    $width: 100% / 24 * $i;
+
+    .u-flex-#{$i} {
+      max-width: $width;
+      flex: 0 0 $width
+    }
+
+    .u-flex-push-#{$i} {
+      left: $width
+    }
+  }
 }
 
 // 间隔
