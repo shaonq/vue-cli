@@ -117,6 +117,30 @@ const dom = {
   },
   remove(el) {
     if (el && el.parentNode) el.parentNode.removeChild(el)
+  },
+  isHTMLElement(node) {
+    return node instanceof window.HTMLElement || node instanceof HTMLElement;
+  },
+  getScrollParent(node) {
+    try {
+      function isScrollParent(node, type = "y") {
+        // Firefox wants us to check `-x` and `-y` variations as well
+        let _getComputedStyle = window.getComputedStyle(node),
+          overflow = _getComputedStyle.overflow,
+          overflowX = _getComputedStyle.overflowX,
+          overflowY = _getComputedStyle.overflowY;
+        let str = (type === "y" ? overflowY : overflowX) || overflow;
+        // auto|scroll|overlay|hidden
+        return /scroll|overlay|auto/.test(str);
+      }
+      let parentNode = node.parentNode;
+      if (!this.isHTMLElement(parentNode)) return node;
+      if (isScrollParent(parentNode)) {
+        return parentNode;
+      }
+      return this.getScrollParent(parentNode)
+    } catch (e) { }
+    return window
   }
 }
 
@@ -279,10 +303,10 @@ function dialog() {
         dom.on(btn, "click", () => {
           if (dom.hasClass(btn, 'u-btn--primary') && isOk) {
             let onclick = content.ok.onclick;
-            typeof onclick === "function" ? onclick(index, el, btn) : this.hideToast(index)
+            typeof onclick === "function" ? onclick(index, btn) : this.hideToast(index)
           } else {
             let onclick = content.cancel.onclick;
-            typeof onclick === "function" ? onclick(index, el, btn) : this.hideToast(index)
+            typeof onclick === "function" ? onclick(index, btn) : this.hideToast(index)
           }
         })
       })
@@ -309,15 +333,19 @@ function dialog() {
    * 生成条目弹窗
    * offset 位置
    * skin 样式
-   * @param {Array} list :[{  label: "不可选", value: "remove", disabled: true, border: true   }]
+   * @param {Array} list :[{  label: "文字", value: "remove", disabled: true, border: true   }]
    * @param {String} code :默认选中code
-   * @param {Function} success =>(index, el) 
+   * @param {Function} success : (index, el) = {}
    */
 
 
   /**
    * popover 弹出组件
    * popover
+   * @param {Object} options  options.scrollEl 触发事件的element
+   * @param {Element} options.el 触发事件的element
+   * @param {Array} options.list :[{  label: "文字", value: "remove", disabled: true, border: true   }]
+   * @param {Function} options.success ：(index, el) = {}
    */
   this.showPopover = options => {
     return this.showModal({
@@ -327,9 +355,10 @@ function dialog() {
       height: "auto",
       skin: options.skin,
       showClose: false,
+      extend: true,
       offset: options.offset,
       success: (index, el) => {
-        dom.once(document, "scroll", () => this.hideToast(index));
+        dom.once(dom.getScrollParent(options.el), "scroll", () => this.hideToast(index));
         setTimeout(() => {
           dom.once(document, "contextmenu", () => this.hideToast(index))
           dom.once(document, "click", () => this.hideToast(index))
@@ -346,7 +375,7 @@ function dialog() {
    * @param {Array} list: [{label,value}]
    * @param {Array} value: default value
    */
-  const createLabelValue = ({ skin, list, value = "" }) => {
+  this.createLabelValue = ({ skin, list, value = "" }) => {
     return list.reduce((html, item) => {
       let childrenHtml = '', isChildren = item.children && item.children.length
       if (isChildren) childrenHtml = render(item.children);
@@ -355,12 +384,12 @@ function dialog() {
     }, "")
   }
 
-  this.showDropdown = ({ offset, success, list, value }) => {
+  this.showDropdown = ({ offset, success, el, list, value }) => {
     const skin = "u-dialog--dropdown";
     return this.showPopover({
-      offset, skin, list,
-      content: createLabelValue({ skin, list, value }),
-      success: (index, el) => {
+      offset, skin, list, el,
+      content: this.createLabelValue({ skin, list, value }),
+      success: (index, that) => {
         dom.els(`.${skin}-item`).forEach(self => {
           if (dom.hasClass(self, 'is-disabled')) return;
           if (dom.hasClass(self, 'is-children')) return;
@@ -373,12 +402,12 @@ function dialog() {
     })
   }
 
-  this.showContextMenu = ({ offset, success, list }) => {
+  this.showContextMenu = ({ offset, success, el, list }) => {
     const skin = "u-dialog--contextmenu";
     return this.showPopover({
-      offset, skin, list,
-      content: createLabelValue({ skin, list }),
-      success: (index, el) => {
+      offset, skin, list, el,
+      content: this.createLabelValue({ skin, list }),
+      success: (index, that) => {
         let els = dom.els(`.${skin}-item`), isOne = els.length === 1;
         els.forEach(self => {
           if (dom.hasClass(self, 'is-disabled')) return;
@@ -392,10 +421,6 @@ function dialog() {
       }
     })
   }
-
-  this.selectFile = function () {
-
-  };
 
   /**
    ** 扩展:extend
@@ -589,6 +614,54 @@ function dialog() {
       }
       dom.on(doc, "mousemove", fnMove)
       dom.on(doc, "mouseup", fnUp)
+    })
+  }
+
+  this.imageView = function (node) {
+    let { dom, showModal, hideToast } = this;
+    if(!dom.isHTMLElement(node))throw "imageView , Please select an element"
+    let oldImg = node;
+    let { naturalWidth, naturalHeight } = oldImg;
+    if (!oldImg) return;
+    const p = dom.position(oldImg);
+    let { width, height, left, top } = p;
+    let scale = 1;
+    {
+      let w = Math.min(window.innerWidth, naturalWidth);
+      w = (w * 0.8) / width;
+      let h = Math.min(window.innerHeight, naturalHeight);
+      h = (h * 0.8) / height;
+      scale = Math.max(Math.min(w, h), 1);
+    }
+    showModal({
+      content: '',
+      shadowClose: true,
+      showClose: false,
+      ani: null,
+      width: width + 'px',
+      height: height + 'px',
+      before(el) {
+        el.style.transition = 'all 0.3s ease-in-out';
+        el.style.left = p.left + 'px';
+        el.style.top = p.top + 'px';
+        el.style.width = p.width + 'px';
+        el.style.height = p.height + 'px';
+        el.style.transform = "scale(1)";
+      },
+      success(index, el) {
+        let body = dom.el(".u-dialog-body", el);
+        body.style.padding = "0";
+        body.append(oldImg.cloneNode());
+        el.style.transform = `scale(${scale})`;
+      },
+      after(el) {
+        dom.addClass(el, "is-show");
+        el.style.left = p.left + 'px';
+        el.style.top = p.top + 'px';
+        el.style.width = p.width + 'px';
+        el.style.height = p.height + 'px';
+        el.style.transform = "scale(1)";
+      }
     })
   }
 }

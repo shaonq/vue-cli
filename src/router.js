@@ -52,7 +52,7 @@ store.registerModule('routerBar', {
   mutations: {
     addRoute(state, route) {
       let target = state.list.find((item) => item.path === route.path);
-      console.log(state.list, route)
+      // console.log(state.list, route)
       if (target) {
         if (route.fullPath !== target.fullPath) Object.assign(target, route)
         return
