@@ -1,6 +1,20 @@
-let docs = ["环境初始化", "vue vue-route vuex","docker部署vue项目"];
-// let servers = ["HTTP接口文档"];
-let developer = ["基础依赖", "富文本", "甘特图", "日程表", "网页截图", "阅读pdf", "导出xlsx", "echarts5.0"];
+
+/**
+ * require.context 检索目录，测试不可用在function之中
+ */
+const paths = [require.context('./docs', false, /\.vue$/), require.context('./developer', false, /\.vue$/)]
+function getFilesVueList() {
+  return paths.map(item => {
+    let arr = [];
+    item.keys().forEach(key => {
+      let fileName = key.replace(/(\.\/|\.vue)/g, '');
+      if (fileName !== "Index") arr.push(fileName);
+    })
+    return arr.sort((a,b)=>a.length-b.length)
+  })
+
+}
+let [docs, developer] = getFilesVueList();
 
 const toUnicode = (string, prefix = '') => String(string).replace(/\s/g, "").split('').map(o => (/[\u4e00-\u9fa5]/.test(o) ? (prefix + o.charCodeAt(0).toString(16)) : o)).join('')
 // 文件名称转成标准的路由格式
@@ -16,6 +30,7 @@ const setRoute = (arr, file) =>
   });
 
 const docsRoute = setRoute(docs, "docs");
+console.log(docsRoute)
 // const serversRoute = setRoute(servers, "servers");
 const developerRoute = setRoute(developer, "developer");
 export { docsRoute, developerRoute, toUnicode };

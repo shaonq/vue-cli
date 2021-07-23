@@ -3,13 +3,19 @@ import VueRouter from "vue-router";
 import App from "./App.vue";
 import store from "@/store";
 Vue.use(VueRouter);
+
+
+/**
+ * 设置路由
+ */
 import { toUnicode, docsRoute, developerRoute } from "@/views/routeFile.js";
 const V = path => Vue.extend(require(`@/views/${path}.vue`).default);
 const getChildren = (arr, file) => {
   let children = arr.map((item, index) => {
-    return { path: toUnicode(item.url), component: V(item.path), meta: { title: item.name } };
+    // affix 记录路由信息
+    return { path: toUnicode(item.url), component: V(item.path), meta: { title: item.name, affix: !index } };
   });
-  children.push({ path: "", component: V(arr[0].path) });
+  children.unshift({ path: "", redirect: arr[0].to });
   return children;
 };
 
@@ -22,19 +28,8 @@ const router = new VueRouter({
       component: V("Layout"),
       children: [
         { path: "", redirect: "/docs" },
-        {
-          path: "docs",
-          component: V("docs/Index"),
-          children: getChildren(docsRoute).map((item, index) => {
-            if (!index) item.meta.affix = true;
-            return item
-          })
-        },
-        {
-          path: "developer",
-          component: V("developer/Index"),
-          children: getChildren(developerRoute)
-        },
+        { path: "docs", component: V("docs/Index"), children: getChildren(docsRoute) },
+        { path: "developer", component: V("developer/Index"), children: getChildren(developerRoute) },
         { path: "*", component: V("404") }
       ]
     }
@@ -42,9 +37,7 @@ const router = new VueRouter({
 });
 
 
-
-
-// 路由监听 meta.affix 表示路由常驻 meta.title 表示标题名称
+// @test 路由监听 meta.affix 表示路由常驻 meta.title 表示标题名称
 let list = [], fn = (router) => router.forEach(o => ((o.meta && o.meta.affix) && list.push(o), o.children && fn(o.children)))
 fn(router.getRoutes());
 store.registerModule('routerBar', {

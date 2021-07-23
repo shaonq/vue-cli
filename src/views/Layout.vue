@@ -15,15 +15,15 @@
 					</div>
 				</div>
 			</div>
-			<div class="layout-hd__fill" style="height:12px"></div>
-			<!-- routeBar -->
-			<div class="layout-hd" style="height:44px;margin-top:1px;" v-show="false">
-				<div class="layout-warp">
-					<u-route-bar />
-				</div>
-			</div>
-			<div class="layout-hd__fill" style="height:44px"></div>
+			<div class="layout-hd__static" style="height:60px"></div>
 		</header>
+		<!-- routeBar -->
+		<div class="layout-hd" style="height:44px;margin-top:1px;" v-show="false">
+			<div class="layout-warp">
+				<u-route-bar />
+			</div>
+		</div>
+		<!-- <div class="layout-hd__fill" style="height:44px"></div> -->
 		<router-view></router-view>
 	</div>
 </template>
@@ -52,9 +52,13 @@
 		&-body {
 			position: relative;
 			padding-bottom: 60px;
-			padding-top: 12px;
+			margin: 10px auto;
 		}
-
+		&-side {
+			position: relative;
+			width: 240px;
+			margin-left: 10px;
+		}
 		// 头部
 		&-hd {
 			position: fixed;
@@ -63,8 +67,9 @@
 			&__fill,
 			& {
 				height: 60px;
-			background-color: #fff;
-			box-shadow: 0 0 1px 0px rgba(22, 22, 22, 0.2), 0 0 6px 2px rgba(22, 22, 22, .05);
+				background-color: #fff;
+				box-shadow: 0 0 1px 0px rgba(22, 22, 22, 0.2),
+					0 0 6px 2px rgba(22, 22, 22, 0.05);
 			}
 
 			&__link {
@@ -80,6 +85,22 @@
 					font-weight: 600;
 				}
 			}
+		}
+	}
+
+	.layout-body {
+		.u-quill-body {
+			padding: 16px 20px;
+		}
+		.u-quill-body h1,
+		.u-quill-body h2 {
+			margin-top: 2em;
+			margin-block: 1em;
+		}
+	}
+	.layout-side {
+		.u-card__bd {
+			color: #212121;
 		}
 	}
 </style>

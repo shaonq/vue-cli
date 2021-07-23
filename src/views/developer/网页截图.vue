@@ -52,7 +52,7 @@
 			},
 			// 生成pdf
 			createPDF({ canvas, pdfName }) {
-				let loadJs = this.$util;
+				let { loadJs } = this.$util;
 				(async function () {
 					console.time('create pdf')
 					if (typeof jsPDF === "undefined") {
