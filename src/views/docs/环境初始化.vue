@@ -34,6 +34,7 @@
  yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
  yarn global add @vue/cli
 </code> </pre>
+<pre>https://mirrors.cloud.tencent.com/</pre>
     </div>
     <h1>兼容IE10+</h1>
     <div>

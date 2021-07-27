@@ -158,11 +158,11 @@
 }
 
 @keyframes toast-loading {
-  form {
+  0% {
     transform: rotate3d(0, 0, 1, 0);
   }
 
-  to {
+  100% {
     transform: rotate3d(0, 0, 1, 360deg);
   }
 }
