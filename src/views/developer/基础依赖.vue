@@ -26,8 +26,8 @@
 			<h1>Button</h1>
 			<!-- ui demo start -->
 
-			<ul style="padding:20px 0;">
-				<li>
+			<div style="padding:20px 0;">
+				<div>
 					<p class="u-mt">普通按钮</p>
 					<div class="u-mt">
 						<button class="u-btn" @click="showLoading">加载中</button>
@@ -38,16 +38,16 @@
 						<button class="u-btn u-btn--primary" @click="$util.toast('显示弹窗')">toast提示</button>
 						<button class="u-btn u-btn--red u-btn--primary"> u-btn--primary</button>
 					</div>
-				</li>
-				<li class="u-mt">
+				</div>
+				<div class="u-mt">
 					<p class="u-mt">小号分组</p>
 					<div class="u-btn__group u-mt">
 						<button class="u-btn u-btn--small" @click="uploadAvatar">上传头像</button>
 						<button class="u-btn u-btn--green u-btn--primary u-btn--small">我被选中</button>
 						<button class="u-btn u-btn--small" @click="$util.showModal({title:'标题',content:'内容'})">普通弹窗</button>
 					</div>
-				</li>
-				<li>
+				</div>
+				<div>
 					<h2 class="u-mt">u-field</h2>
 
 					<div class="u-field u-mt">
@@ -140,8 +140,8 @@
 						</div>
 					</div>
 
-				</li>
-			</ul>
+				</div>
+			</div>
 			<!-- ui demo end-->
 			<h1>弹窗使用和演示</h1>
 			<div>

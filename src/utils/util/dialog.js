@@ -1,6 +1,4 @@
-let attr = "data-u-dialog";
-const isUndefined = value => typeof value === "undefined";
-// dom.js
+// ʕ　·ᴥ·ʔ dom.js
 const dom = {
   ie: Number(document.documentMode) | 0,
   on: (function () {
@@ -144,63 +142,89 @@ const dom = {
   }
 }
 
+let log = { attr: "data-u-dialog" };
+const isUndefined = value => typeof value === "undefined";
 function dialog() {
   this.dom = dom;
   const open = (options = {}) => {
     // default options key
+    let attr = log.attr;
     if (isUndefined(options.shadow)) options.shadow = true;
     if (isUndefined(options.shadowClose)) options.shadowClose = true;
     if (isUndefined(options.showClose)) options.showClose = false;
-    // created element
-    const mel = document.createElement("div");
-    const id = (+new Date).toString(32);
-    mel.className = "u-dialog-mask";
-    if (options.shadow) dom.addClass(mel, "is-show");
-    if (options.shadow < 1 && options.shadow > 0) mel.style.opacity = options.shadow;
-    mel.setAttribute("data-u-dialog", id);
-    const el = document.createElement("div");
-    el.className = "u-dialog " + (isUndefined(options.ani) || "u-dialog-ani");
-    //before
-    options.before && options.before(el);
-    // after-id 
-    options.after && (this['after' + id] = options.after);
-    // add skin className
-    const skin = options.skin || options.className;
-    if (skin) dom.addClass(el, skin);
-    // add extend
-    if (options.extend) {
-      dom.addClass(el, "is-extend"); dom.addClass(mel, "is-extend");
+    var el, id = options.uniqueId || this.uniqueId('U');
+    // find uniqueId
+    if (options.uniqueId) {
+      let _ = dom.el('#' + id), timerId = log['timer_' + id];
+      if (_ && dom.hasClass(_, 'u-dialog')) el = _;
+      dom.removeClass(el, "is-show"), timerId && clearTimeout(timerId);
     }
-    el.setAttribute("data-u-dialog", id);
+    if (!el) {
+      // created element
+      const mel = document.createElement("div");
+      mel.className = "u-dialog-mask";
+      if (options.shadow) dom.addClass(mel, "is-show");
+      if (options.shadow < 1 && options.shadow > 0) mel.style.opacity = options.shadow;
+      mel.setAttribute("data-u-dialog", id);
+      el = document.createElement("div");
+      if (options.uniqueId) el.id = id;
+      el.className = "u-dialog " + (isUndefined(options.ani) ? "u-dialog-ani" : options.ani);
+      //before
+      options.before && options.before(el);
+      // after-id 
+      options.after && (log['after_' + id] = options.after);
+      // add skin className
+      const skin = options.skin || options.className;
+      if (skin) dom.addClass(el, skin);
+      // add extend
+      if (options.extend) {
+        dom.addClass(el, "is-extend"); dom.addClass(mel, "is-extend");
+      }
+      el.setAttribute("data-u-dialog", id);
+      mel.oncontextmenu = el.oncontextmenu = () => false;
+      if (options.shadowClose) mel.onclick = () => this.hideToast(mel.getAttribute(attr));
+      if (options.shadow) dom.append(mel);
+      dom.append(el);
+    }
+
     // change xss
     const filterXss = (value = "") => value.replace(/ipt>/g, "ipt&gt;")
     options.title = filterXss(options.title);
-    options.content = filterXss(options.content);
+    options.content = filterXss(String(options.content));
     options.width = options.width ? options.width : "auto";
     options.height = options.height ? options.height : "auto";
+    let closeTpl = options.showClose ? '<div class="u-dialog-close is-show">x</div>' : '';
     el.innerHTML = `
       <div class="u-dialog-content" style="width:${options.width};height:${options.height}">
-        <div class="u-dialog-title ${options.title ? "is-show" : ""}"> ${options.title}</div>
-        <div class="u-dialog-body">${options.content}</div>
-        <div class="u-dialog-close ${options.showClose ? "is-show" : ""}">x</div>
+        <div class="u-dialog-title${options.title ? ' is-show' : ''}"> ${options.title}</div>
+        <div class="u-dialog-body">${options.content}</div>${closeTpl}
       </div> `;
-    mel.oncontextmenu = el.oncontextmenu = () => false;
-    dom.append(mel);
-    dom.append(el);
+
+    // update offset
+    this.refreshOffset(el, options.offset);
+
+    // add event
+    if (options.showClose) dom.on(dom.el(".u-dialog-close", el), "click", () => this.hideToast(el.getAttribute(attr)));
+    if (options.time) log['timer_' + id] = setTimeout(() => this.hideToast(el.getAttribute(attr)), options.time * 1e3);
+    if (typeof options.success === "function") options.success(id, el);
+    // return close id    
+    return id;
+  };
+
+  // create uniqueId 
+  this.uniqueId = (before = "") => before + (+new Date).toString(32)
+
+  // update dom offset
+  this.refreshOffset = (el, offset = ["auto", "auto"]) => {
     const winHeight = window.innerHeight;
     const winWidth = window.innerWidth;
     // set position width/height
     {
-      let offset = options.offset || ["auto", "auto"];
+      //  let offset = offset || ["auto", "auto"];
       el.style.top = offset[0] === "auto" ? Math.max((winHeight - el.clientHeight) / 2, 0) + "px" : offset[0];
       el.style.left = offset[1] === "auto" ? Math.max((winWidth - el.clientWidth) / 2, 0) + "px" : offset[1];
       dom.addClass(el, "is-show");
     }
-    // add event
-    if (options.shadowClose) mel.onclick = () => this.hideToast(mel.getAttribute(attr));
-    if (options.showClose) dom.on(dom.el(".u-dialog-close", el), "click", () => this.hideToast(el.getAttribute(attr)));
-    if (options.time) setTimeout(() => this.hideToast(el.getAttribute(attr)), options.time * 1e3);
-    if (typeof options.success === "function") options.success(id, el);
     // @bug  IE not`s support vh
     try {
       let elc = dom.el(".u-dialog-content", el);
@@ -213,25 +237,26 @@ function dialog() {
     {
       let offsetTop = el.clientHeight + el.offsetTop;
       let offsetLeft = el.clientWidth + el.offsetLeft;
-      if (offsetTop > (winHeight - 10)) el.style.top = Math.min((winHeight - el.clientHeight - 10), 0) + "px";
-      if (offsetLeft > (winWidth - 10)) el.style.left = Math.min((winWidth - el.clientWidth - 10), 0) + "px";
+      if (offsetTop > (winHeight - 10)) {
+        el.style.top = Math.max((el.offsetTop - el.clientHeight), 0) + "px";
+      }
+      if (offsetLeft > (winWidth - 10)) {
+        el.style.left = Math.max((el.offsetLeft - el.clientWidth), 0) + "px";
+      }
     }
-    // return close index
-    return id;
-  };
+  }
 
   this.hideToast = id => {
     let remove = el => {
       dom.removeClass(el, "is-show");
-      if (!dom.hasClass(el, "u-dialog-mask") && this['after' + id]) {
-        this['after' + id](el);
-        this['after' + id] = null
-      };
-      let cl = () => dom.remove(el);
-      setTimeout(cl, 300);
+      // run after function
+      let afterFunc = log['after_' + id];
+      if (!dom.hasClass(el, "u-dialog-mask") && afterFunc) { afterFunc(el), log['after_' + id] = null };
+      // Wait for animation to end
+      log['timer_' + id] = setTimeout(() => { dom.remove(el), log['timer_' + id] = null }, 300);
     }
-    dom.els(`[${attr}]`).forEach(el => {
-      id ? id == el.getAttribute(attr) && remove(el) : (!dom.hasClass(el, 'is-extend') && remove(el));
+    dom.els(`[${log.attr}]`).forEach(el => {
+      id ? id == el.getAttribute(log.attr) && remove(el) : (!dom.hasClass(el, 'is-extend') && remove(el));
     })
   };
 
@@ -317,6 +342,14 @@ function dialog() {
   }
 
 
+  this.showNearby = (options = {}) => {
+    this.hideToast();
+    options.skin = "u-dialog__nearby " + (options.skin || options.className || "");
+    return open(Object.assign({}, { shadow: false, height: "auto", width: "auto", time: 2, showClose: false }, options))
+  }
+
+
+
   this.showModal = content => {
     this.hideToast();
     typeof content === "string" && (content = { content });
@@ -327,6 +360,7 @@ function dialog() {
     if (isUndefined(content.showClose)) content.showClose = true;
     return open(content);
   }
+
 
 
   /**
@@ -348,15 +382,12 @@ function dialog() {
    * @param {Function} options.success ：(index, el) = {}
    */
   this.showPopover = options => {
-    return this.showModal({
-      content: options.content,
+    return this.showModal(Object.assign({}, options, {
       shadow: false,
       width: "auto",
       height: "auto",
-      skin: options.skin,
       showClose: false,
       extend: true,
-      offset: options.offset,
       success: (index, el) => {
         dom.once(dom.getScrollParent(options.el), "scroll", () => this.hideToast(index));
         setTimeout(() => {
@@ -367,7 +398,7 @@ function dialog() {
         dom.on(el, "click", e => { e.stopPropagation(), e.preventDefault() })
         options.success && options.success(index, el);
       }
-    })
+    }))
   }
 
   /**
@@ -375,8 +406,8 @@ function dialog() {
    * @param {Array} list: [{label,value}]
    * @param {Array} value: default value
    */
-  this.createLabelValue = ({ skin, list, value = "" }) => {
-    return list.reduce((html, item) => {
+  log.createContextLabel = ({ skin, list, value = "" }) => {
+    return list.reduce((html, item, index) => {
       let childrenHtml = '', isChildren = item.children && item.children.length
       if (isChildren) childrenHtml = render(item.children);
       html += `<div class="${skin}-item${item.border ? ' is-border' : ''}${item.disabled ? ' is-disabled' : ''}${isChildren ? ' is-children' : ''}${item.value == value ? ' is-active' : ''}" data-value="${item.value}">${item.label}${childrenHtml}</div>`
@@ -384,11 +415,12 @@ function dialog() {
     }, "")
   }
 
-  this.showDropdown = ({ offset, success, el, list, value }) => {
+  this.showDropdown = (options) => {
+    let { offset, success, el, list, value } = options;
     const skin = "u-dialog--dropdown";
-    return this.showPopover({
-      offset, skin, list, el,
-      content: this.createLabelValue({ skin, list, value }),
+    return this.showPopover(Object.assign({}, options, {
+      skin,
+      content: log.createContextLabel({ skin, list, value }),
       success: (index, that) => {
         dom.els(`.${skin}-item`).forEach(self => {
           if (dom.hasClass(self, 'is-disabled')) return;
@@ -399,14 +431,15 @@ function dialog() {
           })
         })
       }
-    })
+    }))
   }
 
-  this.showContextMenu = ({ offset, success, el, list }) => {
+  this.showContextMenu = (options) => {
+    let { offset, success, el, list } = options;
     const skin = "u-dialog--contextmenu";
-    return this.showPopover({
-      offset, skin, list, el,
-      content: this.createLabelValue({ skin, list }),
+    return this.showPopover(Object.assign({}, options, {
+      skin,
+      content: log.createContextLabel({ skin, list }),
       success: (index, that) => {
         let els = dom.els(`.${skin}-item`), isOne = els.length === 1;
         els.forEach(self => {
@@ -419,7 +452,7 @@ function dialog() {
           })
         })
       }
-    })
+    }))
   }
 
   /**
@@ -576,13 +609,16 @@ function dialog() {
         }
 
         drawImage({ left: 0, top: 0 });
-        this.addDargEvent({ el: canvas, success: drawImage })
+        this.addMoveEvent({ el: canvas, success: drawImage })
       });
     });
   };
 
 
-  this.addDargEvent = function ({ el, success, doc = document }) {
+  /**
+   * 添加一个move 事件
+   */
+  this.addMoveEvent = function ({ el, success, doc = document }) {
     dom.on(el, "mousedown", e => {
       let clientX = e.pageX || e.clientX;
       let clientY = e.pageY || e.clientY;
@@ -617,12 +653,11 @@ function dialog() {
     })
   }
 
-  this.imageView = function (node) {
+  this.showImageView = function (node) {
     let { dom, showModal, hideToast } = this;
-    if(!dom.isHTMLElement(node))throw "imageView , Please select an element"
     let oldImg = node;
     let { naturalWidth, naturalHeight } = oldImg;
-    if (!oldImg) return;
+    if (!dom.isHTMLElement(oldImg) && oldImg.nodeName !== "IMG") return;
     const p = dom.position(oldImg);
     let { width, height, left, top } = p;
     let scale = 1;
@@ -637,7 +672,7 @@ function dialog() {
       content: '',
       shadowClose: true,
       showClose: false,
-      ani: null,
+      // ani: null,
       width: width + 'px',
       height: height + 'px',
       before(el) {

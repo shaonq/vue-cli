@@ -10,7 +10,7 @@ function getFilesVueList() {
       let fileName = key.replace(/(\.\/|\.vue)/g, '');
       if (fileName !== "Index") arr.push(fileName);
     })
-    return arr.sort((a,b)=>a.length-b.length)
+    return arr.sort((a, b) => a.length - b.length)
   })
 
 }
@@ -30,7 +30,7 @@ const setRoute = (arr, file) =>
   });
 
 const docsRoute = setRoute(docs, "docs");
-console.log(docsRoute)
+// console.log(docsRoute)
 // const serversRoute = setRoute(servers, "servers");
 const developerRoute = setRoute(developer, "developer");
 export { docsRoute, developerRoute, toUnicode };

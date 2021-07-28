@@ -294,6 +294,5 @@ const util = {
 
 import dialog from "./dialog.js"
 import "./scss/dialog.scss"
-import "./scss/util.scss"
 export default Object.assign(util, dialog, { date });
 
