@@ -1,50 +1,35 @@
 <template>
 	<div>
 		<ul class="u-tabs">
-			<li class="u-tabs__item"><a class="u-tabs__link" :class="{'is-active':tabName==='a'}" @click="tabName='a'">内容区块</a></li>
-			<li class="u-tabs__item"><a class="u-tabs__link" :class="{'is-active':tabName==='b'}" @click="tabName='b'">菜单切换</a></li>
+			<li class="u-tabs__item"><a class="u-tabs__link" :class="{'is-active':tabName==='a'}" @click="tabName='a'">菜单说明</a></li>
+			<li class="u-tabs__item"><a class="u-tabs__link" :class="{'is-active':tabName==='b'}" @click="tabName='b'">菜单样式</a></li>
 		</ul>
 		<div class="u-card__bd">
-			<pre>
-          .u-card
-          .u-card__hd/.u-tabs
-          .u-card__bd
-
-          .u-tabs
-          .u-tabs__item
-          .u-tabs__link.is-active
+			<pre v-if="tabName ==='b'"> .u-tabs .u-tabs__item
+ .u-tabs .u-tabs__item.is-active
+        </pre>
+			<pre v-else> Tab
+ 需要需要使用vm.data 配合 v-if 来使用
         </pre>
 		</div>
 		<div class="u-quill-body">
-			<!-- <h1>List</h1>
-      <ul>
-        <li>Button</li>
-        <li>Input</li>
-        <li>Dialog</li>
-        <li>Date</li>
-      </ul> -->
 			<h1>Button</h1>
-			<!-- ui demo start -->
-
 			<div style="padding:20px 0;">
 				<div>
-					<p class="u-mt">普通按钮</p>
+					<p class="u-mt">普通</p>
 					<div class="u-mt">
-						<button class="u-btn" @click="showLoading">加载中</button>
+						<button class="u-btn">默认按钮</button>
 						<button class="u-btn u-btn--blue">u-btn--blue</button>
-					</div>
-					<p class="u-mt">实心按钮</p>
-					<div class="u-mt">
-						<button class="u-btn u-btn--primary" @click="$util.toast('显示弹窗')">toast提示</button>
-						<button class="u-btn u-btn--red u-btn--primary"> u-btn--primary</button>
+						<button class="u-btn u-btn--primary">u-btn--primary</button>
+						<button class="u-btn u-btn--red u-btn--small u-btn--primary"> u-btn--small</button>
 					</div>
 				</div>
 				<div class="u-mt">
-					<p class="u-mt">小号分组</p>
+					<p class="u-mt">普通组</p>
 					<div class="u-btn__group u-mt">
-						<button class="u-btn u-btn--small" @click="uploadAvatar">上传头像</button>
-						<button class="u-btn u-btn--green u-btn--primary u-btn--small">我被选中</button>
-						<button class="u-btn u-btn--small" @click="$util.showModal({title:'标题',content:'内容'})">普通弹窗</button>
+						<button class="u-btn" @click="uploadAvatar">上传头像</button>
+						<button class="u-btn u-btn--blue u-btn--primary">我被选中</button>
+						<button class="u-btn">普通弹窗</button>
 					</div>
 				</div>
 				<div>
@@ -60,8 +45,17 @@
 					<div class="u-field">
 						<h3 class="u-field__label">修改图片</h3>
 						<div class="u-field__content">
-							<img src="https://imgs.aixifan.com/jy9Gvt7hIk-iYn2Qf-iyUvai-zMf2ya-qeeeea.jpg" style="margin:0;width:100%" />
+							<img src="https://imgs.aixifan.com/jy9Gvt7hIk-iYn2Qf-iyUvai-zMf2ya-qeeeea.jpg" @click="$util.showImageView($event.target)" style="margin:0;width:100%" />
 							<button class="u-btn u-field__hover u-btn--link u-btn--blue">修改</button>
+						</div>
+					</div>
+					<div class="u-field u-mt">
+						<h3 class="u-field__label">长图片</h3>
+						<div class="u-field__content">
+							<div style="max-height:300px;overflow: hidden;">
+								<img @click="$util.showImageView($event.target)" width="200"
+									src="https://nim-nosdn.netease.im/MTY3OTkxNjk=/bmltYV8xODI1MjY3MzQ5NV8xNjI4ODIxMzAxNDU2XzVmMDc4OWRlLTAzMzAtNGRmMi1iYzY2LTU2OWEwYTZiYTExMA==?createTime=1628821301390" />
+							</div>
 						</div>
 					</div>
 
@@ -142,16 +136,25 @@
 
 				</div>
 			</div>
+			<h1>其他小功能</h1>
+			<div>
+				<span class="u-unread">未读消息1</span>
+				<span class="u-ml u-unread" data-unread="99+">未读消息2</span>
+			</div>
 			<!-- ui demo end-->
 			<h1>弹窗使用和演示</h1>
 			<div>
 				<button class="u-btn" @click="$util.toast('提示')" aria-label="toast" tooltip="top">提示</button>
-				<button class="u-btn" @click="$util.alert('你好啊')" aria-label="toast" tooltip="top">询问</button>
 				<button class="u-btn" @click="showLoading" aria-label="showLoading" tooltip="top">加载中</button>
 				<button class="u-btn" @click="$util.hideToast()" aria-label="hideToast" tooltip="top">关闭其他</button>
 				<button class="u-btn" @click="uploadAvatar" aria-label="uploadAvatar" tooltip="top">上传头像</button>
 				<button class="u-btn" @click="$util.toast('右键点击看效果')" @contextmenu.prevent="showContextMenu" aria-label="showContextMenu" tooltip="top">右键菜单</button>
 				<button class="u-btn" @click="showDropdown" aria-label="showDropdown" tooltip="top">下拉菜单</button>
+			</div>
+			<div class="u-mt">
+				<button class="u-btn" @click="$util.alert('十步杀一人，千里不留行。<br> 事了拂衣去，深藏身与名。')" aria-label="toast" tooltip="top">侠客行</button>
+				<button class="u-btn" @click="confirmInfo()" aria-label="toast" tooltip="top">确认信息</button>
+				<button class="u-btn" @click="deleteInfo()" aria-label="toast" tooltip="top">删除提示</button>
 			</div>
 			<pre class="line-numbers"><code class="language-javascript">
         
@@ -166,7 +169,7 @@
  * @param {Boolean} shadowClose : 点击背景关闭 默认：false
  * @param {Boolean} showClose : 显示close小图标 
  * @param {Boolean} extend : 只能手动关闭 大部分默认：false
- * @returns {Number} index : 窗口索引，用于关闭
+ * @returns {String} index : 窗口索引，用于关闭
  */
 
 util.toast(content,time)
@@ -181,6 +184,16 @@ util.showModal(options)
  */
 
 util.uploadAvatar(option)
+
+/**
+ * util.alert(option,extend)
+ * @param extend.confirmText: '确定',
+ * @param extend.confirmSkin:'u-btn--blue',
+ * @param extend.confirm: {Function},
+ * @param extend.cancelText: '取消',
+ * @param extend.cancelSkin: '',
+ * @param extend.cancel: {Function},
+ */
 </code>
 </pre>
 
@@ -256,9 +269,22 @@ util.uploadAvatar(option)
 					value: "remove",
 				});
 			},
-		},
-		mounted() {
-			this.$cdn.Prism();    // 代码高亮
+			confirmInfo() {
+				this.$util.alert({
+					title: "确认信息",
+					content: "检测到未保存的内容，是否在离开页面前保存修改？",
+				}, {
+					confirmText: "放弃修改",
+					confirm: (index) => this.$util.toast("放弃修改")
+				})
+			},
+			deleteInfo() {
+				this.$util.alert("此操作将永久删除该文件, 是否继续?", {
+					confirmText: "确定",
+					confirmSkin: "u-btn--red",
+					confirm: (index) => this.$util.toast("删除成功")
+				})
+			},
 		}
 	};
 </script>

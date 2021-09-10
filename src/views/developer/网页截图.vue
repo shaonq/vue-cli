@@ -113,7 +113,7 @@
 			},
 			// 点击图片放大
 			imageView(e) {
-				this.$util.imageView(e.target);
+				this.$util.showImageView(e.target);
 			}
 		},
 	}

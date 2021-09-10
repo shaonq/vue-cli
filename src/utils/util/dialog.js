@@ -286,7 +286,7 @@ function dialog() {
       });
     } else {
       dom.el("p", el).innerHTML = content;
-      return el.getAttribute(attr);
+      return el.getAttribute(log.attr);
     }
   };
 
@@ -304,40 +304,56 @@ function dialog() {
   };
 
 
-  this.alert = content => {
+  this.alert = (content, extend) => {
     this.hideToast();
+    // 取消 确定
+    extend = Object.assign({}, extend);
     typeof content === "string" && (content = { content });
     if (isUndefined(content.width)) content.width = "380px";
     if (isUndefined(content.time)) content.time = 0;
     if (isUndefined(content.title)) content.title = "提示";
     if (isUndefined(content.shadowClose)) content.shadowClose = true;
     if (isUndefined(content.showClose)) content.showClose = false;
-    if (!content.cancel) content.cancel = { label: "取消" };
-    let ok_html = '', cancelHtml = `<a class="u-btn">${content.cancel.label}</a>`;
-    // ok:{label,onclick,skin}
-    if (typeof content.ok === "function") { content.ok = { onclick: content.ok } }
-    let isOk = typeof content.ok === "object";
-    if (isOk) {
-      let label = content.ok.label || "确认";
-      ok_html = `<a class="u-btn u-btn--primary ${content.ok.skin ? content.ok.skin : 'u-btn--blue'}">${label}</a>`;
+    // 兼容 content.cancel ||content.ok  >  {label,onclick,skin};
+    if (typeof content.ok === "object") {
+      extend.confirmText = content.ok.label
+      extend.confirmSkin = content.ok.skin
+      extend.confirm = content.ok.onclick
+    }
+    if (typeof content.cancel === "object") {
+      extend.cancelText = content.cancel.label
+      extend.cancelSkin = content.cancel.skin
+      extend.cancel = content.cancel.onclick
+    }
+
+    // extend.confirmText: '确定',
+    // extend.confirmSkin:'u-btn--blue',
+    // extend.confirm: Function,
+    // extend.cancelText: '取消',
+    // extend.cancelSkin: '',
+    // extend.cancel: Function,
+
+    if (!extend.cancelText) extend.cancelText = "取消"
+    let isConfirm = typeof extend.confirm === "function";
+    let confirmHtml = '', cancelHtml = `<a class="u-btn">${extend.cancelText}</a>`;
+    if (isConfirm) {
+      extend.confirmText = extend.confirmText || "确认"
+      extend.confirmSkin = extend.confirmSkin || 'u-btn--blue'
+      confirmHtml = `<a class="u-btn u-btn--primary ${extend.confirmSkin}">${extend.confirmText}</a>`;
     }
     content.skin = "u-dialog__alert";
-    content.content = `<div style="min-height:5em">${content.content}</div>${ok_html}${cancelHtml}<div></div>`;
+    content.content = `<div class="u-dialog__alert-content">${content.content}</div><div class="u-dialog__alert-btns">${confirmHtml}${cancelHtml}</div><div></div>`;
     content.success = (index, el) => {
       dom.els(".u-btn", el).forEach(btn => {
         dom.on(btn, "click", () => {
-          if (dom.hasClass(btn, 'u-btn--primary') && isOk) {
-            let onclick = content.ok.onclick;
-            typeof onclick === "function" ? onclick(index, btn) : this.hideToast(index)
+          if (dom.hasClass(btn, 'u-btn--primary') && isConfirm) {
+            extend.confirm(index, btn)
           } else {
-            let onclick = content.cancel.onclick;
-            typeof onclick === "function" ? onclick(index, btn) : this.hideToast(index)
+            typeof extend.cancel === "function" ? extend.cancel(index, btn) : this.hideToast(index)
           }
         })
       })
     }
-
-
     return open(content);
   }
 
@@ -658,8 +674,8 @@ function dialog() {
     let oldImg = node;
     let { naturalWidth, naturalHeight } = oldImg;
     if (!dom.isHTMLElement(oldImg) && oldImg.nodeName !== "IMG") return;
-    const p = dom.position(oldImg);
-    let { width, height, left, top } = p;
+    let p = dom.position(oldImg);
+    let { width, height } = p;
     let scale = 1;
     {
       let w = Math.min(window.innerWidth, naturalWidth);

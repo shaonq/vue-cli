@@ -1,9 +1,14 @@
 <template>
-  <router-view></router-view>
+	<router-view></router-view>
 </template>
 <script>
-export default {
-  created() {
-  }
-}
+	export default {
+		created() {
+		}
+	}
 </script>
+<style>
+	a {
+		color: inherit;
+	}
+</style>
