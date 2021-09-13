@@ -4,10 +4,10 @@
 			<div class="layout-hd">
 				<div class="layout-warp">
 					<div class="u-flex u-flex--start">
-						<a href="https://shaonq.github.io/">
+						<a href="https://shaonq.github.io/" class="layout-mobile-hide">
 							<img src="~@/assets/logo.png" width="256" draggable="false" />
 						</a>
-						<div class="u-flex__item"></div>
+						<div class="u-flex__item layout-mobile-hide"></div>
 						<div>
 							<router-link class="layout-hd__link" :to="{path:'/docs'}">相关文档</router-link>
 							<router-link class="layout-hd__link" :to="{path:'/developer'}">实验室</router-link>
@@ -52,7 +52,7 @@
 		&-body {
 			position: relative;
 			padding-bottom: 60px;
-			margin: 10px auto;
+			margin: 10px auto 0;
 		}
 		&-side {
 			position: relative;
@@ -101,6 +101,26 @@
 	.layout-side {
 		.u-card__bd {
 			color: #212121;
+		}
+	}
+
+	@media (max-width: 750px) {
+		.layout-warp {
+			width: 100%;
+			& > div {
+				flex-wrap: wrap;
+				& > div {
+					max-width: 100%;
+					flex: 0 0 100%;
+				}
+			}
+		}
+		.layout-mobile-hide {
+			display: none !important;
+		}
+		.layout-side {
+			margin-left: 0;
+			margin-top: 16px;
 		}
 	}
 </style>

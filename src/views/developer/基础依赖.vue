@@ -136,12 +136,6 @@
 
 				</div>
 			</div>
-			<h1>其他小功能</h1>
-			<div>
-				<span class="u-unread">未读消息1</span>
-				<span class="u-ml u-unread" data-unread="99+">未读消息2</span>
-			</div>
-			<!-- ui demo end-->
 			<h1>弹窗使用和演示</h1>
 			<div>
 				<button class="u-btn" @click="$util.toast('提示')" aria-label="toast" tooltip="top">提示</button>
@@ -197,6 +191,28 @@ util.uploadAvatar(option)
 </code>
 </pre>
 
+			<h1>其他</h1>
+			<div>
+				<span class="u-unread">未读消息 <code>u-unread</code></span>
+				<span class="u-ml u-unread" data-unread="99+">显示数字<code>data-unread</code></span>
+			</div>
+			<hr>
+			<p>骨架 <code>u-skeleton</code></p>
+			<div class="u-skeleton is-loading">
+				<li class="u-skeleton__item" v-for="i in 4" :key="i" :style="{width:i > 1?'100%':'60%'}"></li>
+			</div>
+			<p class="u-mt">过渡动画 </p>
+			<code class="u-mr">u-loading</code>
+			<span class="u-loading"><i /><i /><i /></span>
+			<code class="u-ml u-mr">u-looping</code>
+			<span class="u-looping"><i /><i /><i /><i /></span>
+			<p class="u-mb">加载条 <code>u-progress</code></p>
+			<div class="u-progress is-loading" style="width:320px">
+				<div class="u-progress-bar" style="width:50%"></div>
+			</div>
+
+
+			
 		</div>
 	</div>
 </template>
@@ -210,16 +226,16 @@ util.uploadAvatar(option)
 		methods: {
 			showLoading() {
 				this.$util.showLoading("0%");
-				let now = +new Date(),
-					timer = setInterval(() => {
-						let v = Math.ceil(((new Date() - now) / 3000) * 100);
-						if (v >= 100) {
-							clearInterval(timer);
-							this.$util.showSuccess("加载成功");
-						} else {
-							this.$util.showLoading(`加载${v}%`);
-						}
-					}, 500);
+				let now = +new Date();
+				let timer = setInterval(() => {
+					let v = Math.ceil(((new Date() - now) / 1000) * 100);
+					if (v >= 100) {
+						clearInterval(timer);
+						this.$util.showSuccess("加载成功");
+					} else {
+						this.$util.showLoading(`加载${v}%`);
+					}
+				}, 66);
 			},
 			uploadAvatar() {
 				this.$util.uploadAvatar({
