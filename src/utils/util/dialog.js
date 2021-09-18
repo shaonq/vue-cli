@@ -312,7 +312,6 @@ function dialog() {
     if (isUndefined(content.width)) content.width = "380px";
     if (isUndefined(content.time)) content.time = 0;
     if (isUndefined(content.title)) content.title = "提示";
-    if (isUndefined(content.shadowClose)) content.shadowClose = true;
     if (isUndefined(content.showClose)) content.showClose = false;
     // 兼容 content.cancel ||content.ok  >  {label,onclick,skin};
     if (typeof content.ok === "object") {
@@ -333,8 +332,10 @@ function dialog() {
     // extend.cancelSkin: '',
     // extend.cancel: Function,
 
-    if (!extend.cancelText) extend.cancelText = "取消"
     let isConfirm = typeof extend.confirm === "function";
+    // 如需确认，则不允许点击遮罩关闭 
+    if (isUndefined(content.shadowClose)) content.shadowClose = !isConfirm;
+    if (!extend.cancelText) extend.cancelText = "取消"
     let confirmHtml = '', cancelHtml = `<a class="u-btn">${extend.cancelText}</a>`;
     if (isConfirm) {
       extend.confirmText = extend.confirmText || "确认"
