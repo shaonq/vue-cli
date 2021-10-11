@@ -263,7 +263,7 @@ export default class DrawingBoard {
      * @param {Number}  canvas 
      * @param {height}  canvas 
      */
-    constructor({ canvas, width, height, color = "#fc4639", backgroundImage, lineWidth }) {
+    constructor({ canvas, width = canvas.scrollWidth, height = canvas.scrollHeight, color = "#fc4639", backgroundImage, lineWidth }) {
         // 是否开始绘制
         this.isStart = false;
         this.canvas = canvas;
@@ -361,9 +361,6 @@ export default class DrawingBoard {
         canvas.height = height;
         // 比例 真实大小/实际大小
         this.ratio = Number(width / canvas.offsetWidth);
-        console.log(this.ratio)
-        // console.log(canvas.offsetWidth)
-        // console.log(canvas.offsetHeight)
         canvas.style.width = canvas.offsetWidth + 'px'
         canvas.style.height = canvas.offsetHeight + 'px'
         this.ctx.scale(this.dpi, this.dpi);

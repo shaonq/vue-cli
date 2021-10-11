@@ -31,7 +31,7 @@
 		width: 20px;
 		height: 20px;
 		border-radius: 12px;
-		transition: all 100ms ;
+		transition: all 100ms;
 	}
 	.active {
 		box-shadow: 0 0 0 2px #fff, 0 0 0 4px currentColor;
@@ -58,12 +58,7 @@
 			// 截取el内部内容
 			dataInit() {
 				let canvas = this.$refs.canvas;
-				this.hb = new DrawingBoard({
-					canvas,
-					width: canvas.scrollWidth,
-					height: 750,
-					// backgroundImage: image
-				});
+				this.hb = new DrawingBoard({ canvas });
 				this.setColorIndex(this.colors.length - 1);
 			},
 			setColorIndex(index = 0) {
