@@ -27,15 +27,16 @@
 <style scoped>
 	.dot,
 	.rubber {
+		position: relative;
 		width: 20px;
 		height: 20px;
 		border-radius: 12px;
+		transition: all 100ms ;
 	}
 	.active {
 		box-shadow: 0 0 0 2px #fff, 0 0 0 4px currentColor;
 	}
 	.rubber {
-		position: relative;
 		top: -6px;
 		left: -10px;
 	}

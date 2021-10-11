@@ -275,9 +275,9 @@ export default class DrawingBoard {
         this.backgroundImage = backgroundImage;
 
         this.setArea({ width, height })
+
         this.setLineWidth(lineWidth);
 
-        const dpi = this.dpi
 
         this.clearCanvas();
 
@@ -337,7 +337,7 @@ export default class DrawingBoard {
             ctx.strokeStyle = this.color;
             ctx.lineCap = "round";
             ctx.lineJoin = "round";
-            ctx.lineWidth = this.dpiSize(this.lineWidth);
+            ctx.lineWidth = Number((this.lineWidth / this.dpi).toFixed(2));
         }, false);
         document.addEventListener(mouseup, () => {
             this.isStart = false;
@@ -347,7 +347,7 @@ export default class DrawingBoard {
     }
     // 真实大小
     dpiSize(x) {
-        return x / this.dpi
+        return x / this.dpi * this.ratio;
     }
     // 画笔颜色
     setColor(color) {
@@ -359,8 +359,13 @@ export default class DrawingBoard {
         const canvas = this.canvas;
         canvas.width = width;
         canvas.height = height;
-        canvas.style.width = canvas.width + 'px'
-        canvas.style.height = canvas.height + 'px'
+        // 比例 真实大小/实际大小
+        this.ratio = Number(width / canvas.offsetWidth);
+        console.log(this.ratio)
+        // console.log(canvas.offsetWidth)
+        // console.log(canvas.offsetHeight)
+        canvas.style.width = canvas.offsetWidth + 'px'
+        canvas.style.height = canvas.offsetHeight + 'px'
         this.ctx.scale(this.dpi, this.dpi);
     }
     // 设置画笔粗细
@@ -372,7 +377,7 @@ export default class DrawingBoard {
         if (closeTempData) this.tempImgData = null
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (this.backgroundImage) {
-            let zoom = this.dpiSize(this.canvas.width / this.backgroundImage.width);
+            let zoom = (this.canvas.width / this.backgroundImage.width);
             this.backgroundImage && this.ctx.drawImage(
                 this.backgroundImage, 0, 0, this.backgroundImage.width * zoom, this.backgroundImage.height * zoom,
             );
