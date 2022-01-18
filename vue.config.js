@@ -1,7 +1,8 @@
 /**！@doc https://cli.vuejs.org/zh/config/#vue-config-js  */
+const isProduction = process.env.NODE_ENV === "production";
 module.exports = {
     // 部署生产环境和开发环境下的URL。
-    publicPath: process.env.NODE_ENV === "production" ? "/vue" : "./",
+    publicPath: isProduction ? "/vue" : "./",
     // outputDir: build 时 ，生成文件的目录名称（要和baseUrl的生产环境路径一致）
     outputDir: "dist",
     //用于放置生成的静态资源 (js、css、img、fonts) 的；（项目打包之后，静态资源会放在这个文件夹下）
@@ -39,5 +40,26 @@ module.exports = {
                 return assetFilename.endsWith('.js');
             }
         }
+    },
+    chainWebpack: config => {
+        // 分割模块
+        config.optimization.splitChunks({
+            chunks: "all",
+            maxInitialRequests: Infinity,
+            minSize: 300000,
+            automaticNameDelimiter: "-",
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name(module) {
+                        const packageName = module.context.match(
+                            /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                        )[1];
+                        return `chunk.${packageName.replace("@", "")}`;
+                    },
+                    priority: 10
+                }
+            }
+        });
     }
 }
