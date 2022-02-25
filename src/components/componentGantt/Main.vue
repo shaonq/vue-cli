@@ -262,7 +262,9 @@ export default {
 
 
 <style lang="scss">
-@import "@/utils/util/scss/var.scss";
+// @import "@/utils/util/scss/var.scss";
+
+@import 'shaonq/src/index.scss';
 .u-gantt {
   min-height: 175px;
   height: 100%;

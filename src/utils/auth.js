@@ -1,6 +1,6 @@
 
 const TOKENNAME = '__system_auth__'
-import util from './util';
+import util from './index'
 const cookie = util.cookie;
 
 export function getAuth() {

@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { getAuth, setAuth, clearAuth } from '@/utils/auth'
-import util from '@/utils/util'
-import request from '@/utils/request'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({

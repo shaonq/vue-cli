@@ -1,6 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
-import util from '@/utils/util/index'
+import util from './index'
 // 查询 .ENV 配置 
 // console.log(process.env)
 

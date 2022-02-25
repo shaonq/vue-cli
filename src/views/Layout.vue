@@ -4,7 +4,7 @@
 			<div class="layout-hd">
 				<div class="layout-warp">
 					<div class="u-flex u-flex--start">
-						<a href="https://shaonq.github.io/" class="layout-mobile-hide">
+						<a href="https://shaonq.github.io/vue" class="layout-mobile-hide">
 							<img src="~@/assets/logo.png" width="256" draggable="false" />
 						</a>
 						<div class="u-flex__item layout-mobile-hide"></div>
