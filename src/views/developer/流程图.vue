@@ -26,9 +26,9 @@
 	 </pre
       >
       <hr />
-	  <blockquote>topology-bundle cdn demo</blockquote>
+      <blockquote>topology-bundle cdn demo</blockquote>
       <div
-        style="height: 300px; background: #eee; position: relative"
+        style="height: 300px; border:1px solid #e1e1e1; position: relative"
         id="l5l"
       ></div>
     </div>
@@ -373,15 +373,16 @@ export default {
             TID: "1e0a8177",
           },
         ],
-        lineName: "curve",
-        fromArrow: "",
-        toArrow: "triangleSolid",
-        scale: 1,
-        locked: 1,
+        lineName: "curve", // 当前图文默认连线类型
+        fromArrow: "", // 开始箭头
+        toArrow: "triangleSolid", // 结束箭头
+        scale: 1, // 缩放 0-1
+        locked: 1, // 0 未锁定，1只读，2不能移动，10 完全锁定
         x: 0,
         y: 0,
-        mqttOptions: { clientId: "4b0dc9a" },
-        dbIndex: 13,
+        rule: true,
+        ruleColor: "#000",
+        scroll: true,
       },
     };
   },
@@ -390,12 +391,13 @@ export default {
       (async function (o) {
         if (typeof Le5leTopology === "undefined") {
           console.time("Le5leTopology");
-          await o.$util.loadJs`https://cdn.jsdelivr.net/npm/topology-bundle@0.5.36/index.min.js`;
+          await o.$util
+            .loadJs`https://cdn.jsdelivr.net/npm/topology-bundle@0.5.36/index.min.js`;
           console.timeEnd("Le5leTopology");
         }
         const canvas = new Le5leTopology.Topology("l5l", {
           on(event, data) {
-            if(data)console.log("onMessage", event, data);
+            if (data) console.log("onMessage", event, data);
             // if (canvas && canvas.data) console.log(JSON.stringify(canvas.pureData()));
           },
         });
