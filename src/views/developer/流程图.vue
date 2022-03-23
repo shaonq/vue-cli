@@ -1,359 +1,410 @@
 <template>
-	<div class="u-quill-body">
-		<h2>流程图</h2>
-		<div>
-			<div class="u-flex u-flex--start">
-				<div style="width:200px;">
-					<div class="dnd-wrap">
-						<div data-type="start" class="dnd-circle" @mousedown="startDrag">开始</div>
-						<div data-type="process" class="dnd-rect" @mousedown="startDrag">过程</div>
-						<div data-type="choose" class="dnd-rect" @mousedown="startDrag">决策</div>
-						<div data-type="end" class="dnd-rect" @mousedown="startDrag" style="border-radius:30px;">结束</div>
+  <div class="u-quill-body">
+    <h2>流程图</h2>
+    <blockquote>
+      <a
+        class="u-color-blue"
+        target="_blank"
+        href="https://www.yuque.com/alsmile/topology/qrukhs"
+        >api</a
+      >
+      => <code>https://www.yuque.com/alsmile/topology/qrukhs</code>
+    </blockquote>
+    <blockquote>
+      topology =>
+      <code>https://www.jsdelivr.com/?query=author%3A%20le5le-com</code>
+    </blockquote>
+    <div>
+      <pre>
 
-						<a class="u-btn" @click="exportPNG">下载</a>
-					</div>
-				</div>
-				<div class="u-flex__item">
-					<div ref="container" style="height:500px;background:#f9f9f9;width:100%"></div>
-				</div>
-			</div>
-			<hr>
-		</div>
-	</div>
+    "@topology/activity-diagram": "^0.3.0",
+    "@topology/chart-diagram": "^0.3.0",
+    "@topology/class-diagram": "^0.3.0",
+    "@topology/core": "^0.5.8",
+    "@topology/flow-diagram": "^0.3.0",
+    "@topology/sequence-diagram": "^0.3.0",
+	 </pre
+      >
+      <hr />
+	  <blockquote>topology-bundle cdn demo</blockquote>
+      <div
+        style="height: 300px; background: #eee; position: relative"
+        id="l5l"
+      ></div>
+    </div>
+  </div>
 </template>
 
 <script>
-	let demojson = { "cells": [{ "position": { "x": 220, "y": 20 }, "shape": "start", "id": "77dd3bed-8798-423e-8b47-9d3b1427439d" }, { "position": { "x": 200, "y": 150 }, "shape": "process", "id": "4d7c7272-27fd-4295-be35-0f65ec2f80a1" }, { "position": { "x": 200, "y": 250 }, "shape": "choose", "id": "83092e96-2079-4918-b0d6-8d4f6795f289" }, { "position": { "x": 200, "y": 350 }, "shape": "end", "id": "8f4d3350-7ade-459e-9de4-0e8f11e5a059" }, { "shape": "edge", "id": "493f00d7-2a0c-47e9-98d5-b3161ec4ee81", "source": { "cell": "77dd3bed-8798-423e-8b47-9d3b1427439d", "port": "bottom" }, "target": { "cell": "4d7c7272-27fd-4295-be35-0f65ec2f80a1", "port": "top" }, "zIndex": 3 }, { "shape": "edge", "id": "f45e5deb-a9d2-4b08-beee-ff6e8c9c0507", "source": { "cell": "4d7c7272-27fd-4295-be35-0f65ec2f80a1", "port": "bottom" }, "target": { "cell": "83092e96-2079-4918-b0d6-8d4f6795f289", "port": "top" }, "zIndex": 4 }, { "shape": "edge", "id": "02131882-e2ab-48b0-83dd-c4e0655f5d28", "source": { "cell": "83092e96-2079-4918-b0d6-8d4f6795f289", "port": "bottom" }, "target": { "cell": "8f4d3350-7ade-459e-9de4-0e8f11e5a059", "port": "top" }, "zIndex": 5 }] };
-	export default {
-		methods: {
-			data() {
-				return {
-					graph: null,
-					dnd: null
-				}
-			},
-			dataInit() {
-				let { renderUI, registerNode } = this;
-				let { loadJs } = this.$util;
-				(async function () {
-					if (typeof X6 === "undefined") {
-						console.time('antv-x6 1.24.5')
-						await loadJs("https://cdn.jsdelivr.net/npm/@antv/x6@1.24.5/dist/x6.min.js");
-						console.timeEnd('antv-x6 1.24.5');
-						registerNode();
-					}
-					renderUI();
-				}());
-			},
-			registerNode() {
-				const { Graph } = X6;
-				/**
-				 * 流程图 
-				 * 定义符号 开始 start ()  过程 process  [] 决策choose <> 结束 end (=)
-				 * 定义连接线 edge
-				 * 显示部分，不包含操作逻辑
-				 */
-				// 定义拖动点
-				const dotAttrs = { circle: { r: 4, magnet: true, stroke: '#31d0c6', strokeWidth: 2, fill: '#fff' } };
-				const portsGroups = {
-					top: { position: { name: 'top' }, zIndex: 1, attrs: dotAttrs },
-					right: { position: { name: 'right' }, zIndex: 1, attrs: dotAttrs },
-					bottom: { position: { name: 'bottom' }, zIndex: 1, attrs: dotAttrs },
-					left: { position: { name: 'left' }, zIndex: 1, attrs: dotAttrs }
-				};
-				Graph.registerNode("start", {
-					inherit: 'circle', width: 60, height: 60, label: '开始',
-					ports: { items: [{ group: 'bottom', id: 'bottom' }], groups: portsGroups }, zIndex: 2
-				});
-				Graph.registerNode("process", {
-					inherit: 'rect', width: 100, height: 40, label: '过程', zIndex: 2,
-					ports: {
-						items: [{ group: 'top', id: 'top' }, { group: 'right', id: 'right' }, { group: 'bottom', id: 'bottom' }, { group: 'left', id: 'left' }],
-						groups: portsGroups,
-					},
-				});
-				Graph.registerNode("choose", {
-					inherit: 'polygon', points: '0,10 10,0 20,10 10,20', width: 100, height: 40, label: '决策', zIndex: 2,
-					ports: {
-						items: [{ group: 'top', id: 'top' }, { group: 'right', id: 'right' }, { group: 'bottom', id: 'bottom' }, { group: 'left', id: 'left' }],
-						groups: portsGroups,
-					},
-				});
-				Graph.registerNode("end", {
-					inherit: 'rect', width: 100, height: 40, label: '结束',
-					ports: {
-						items: [{ group: 'top', id: 'top' }, { group: 'right', id: 'right' }, { group: 'left', id: 'left' }],
-						groups: portsGroups,
-					},
-					attrs: { body: { strokeWidth: 1, rx: 20, ry: 20, stroke: '#333', fill: '#fff' } }, zIndex: 2,
-				}, true);
-
-			},
-			renderUI() {
-				const { Graph, Addon } = X6;
-				/** 
-				 * 初始化画布
-				 * @api : https://antv-x6.gitee.io/zh/docs/api/graph/graph
-				 * @demo ： https://github.com/lourain/x6-flow/tree/master/src 
-				 **/
-				const graph = this.graph = new Graph({
-					container: this.$refs.container,
-					grid: { size: 10, visible: true, type: 'mesh' },
-					history: true,
-					snapline: { enabled: true, sharp: true, },
-					scroller: { enabled: false, pageVisible: false, pageBreak: false, pannable: true, },
-					mousewheel: { enabled: true, modifiers: ['ctrl', 'meta'], },
-
-					// 链接桩可以被链接时候的高亮
-					selecting: true,
-					highlighting: {
-						magnetAvailable: {
-							name: 'stroke',
-							args: {
-								padding: 4,
-								attrs: { 'stroke-width': 4, stroke: 'skyblue' }
-							}
-						},
-						magnetAdsorbed: {
-							name: 'stroke',
-							args: {
-								padding: 4,
-								attrs: { 'stroke-width': 8, stroke: 'skyblue' }
-							}
-						}
-					},
-					// 连接线相关
-					connecting: {
-						snap: true,
-						allowBlank: false,
-						allowLoop: false,
-						highlight: true,
-						sourceAnchor: { name: 'center' },
-						targetAnchor: 'center',
-						connectionPoint: 'anchor',
-						// connector: 'smooth',
-						router: 'manhattan',
-						validateMagnet({ magnet }) {
-							return magnet.getAttribute('port-group') !== 'in';
-						},
-						createEdge() {
-							return this.createEdge({
-								zIndex: -1,
-								attrs: {
-									line: {
-										strokeDasharray: '5 5',
-										stroke: '#808080',
-										strokeWidth: 1,
-										targetMarker: {
-											name: 'block',
-											args: {
-												size: '6'
-											}
-										}
-									}
-								}
-							});
-						},
-						validateConnection({ targetView, sourceMagnet, targetMagnet }) {
-							// 只能从输出链接桩创建连接
-							// if (!sourceMagnet || sourceMagnet.getAttribute('port-group') === 'in') {
-							//   return false;
-							// }
-							// // 只能连接到输入链接桩
-							// if (!targetMagnet || targetMagnet.getAttribute('port-group') !== 'in') {
-							//   return false;
-							// }
-							if (!sourceMagnet || !targetMagnet) {
-								return false;
-							}
-							// 判断目标链接桩是否可连接
-							const portId = targetMagnet.getAttribute('port');
-							const node = targetView.cell;
-							const port = node.getPort(portId);
-							if (!port) {
-								return false;
-							}
-							return true;
-						}
-					}
-
-
-
-
-
-
-
-
-				}).drawBackground({ color: '#fff' });
-				this.dnd = new Addon.Dnd({ target: graph, validateNode() { return true; } });
-				graph.fromJSON(demojson);
-				this.bindEvent();
-				graph.centerContent();
-
-				window.g = graph;
-			},
-			startDrag(e) {
-				const { graph, dnd } = this;
-				const target = e.currentTarget;
-				const type = target.getAttribute('data-type');
-				let node = graph.createNode({ shape: type });
-				dnd.start(node, e);
-			},
-			exportPNG(e) {
-				const { DataUri } = X6;
-				g.toPNG((dataUri) => {
-					DataUri.downloadDataUri(dataUri, 'chart.png')
-				});
-				//	graph.toJSON({ diff: true })
-			},
-			bindEvent() {
-				const graph = this.graph;
-				let curCell;
-				graph.on('blank:click', ev => {
-					console.log('blank:click')
-					curCell = null
-					console.log(ev)
-				})
-				// 选中cell 添加操作工具
-				graph.on('cell:selected', ({ cell }) => {
-					console.log('cell:selected')
-					// instance.ctx.curCell = cell
-					// instance.ctx.node = cell
-					// console.log(instance.ctx.node);
-					curCell = cell;
-					let removeBtnCfg;
-					if (cell.isEdge()) {
-						cell.attr('line', { stroke: 'skyblue', strokeWidth: 3 });
-						removeBtnCfg = { distance: '30%' };
-					}
-
-					if (cell.isNode()) {
-						const cellView = graph.findView(cell);
-						cellView.addClass(`${cell.shape}-selected`);
-						removeBtnCfg = { x: 0, y: 0, offset: { x: -5, y: -5 } };
-					}
-					cell.addTools({
-						name: 'button-remove', // 工具名称
-						args: removeBtnCfg // 工具对应的参数
-					});
-				});
-				graph.on('cell:unselected', ({ cell }) => {
-					console.log('cell:unselected')
-					curCell = null;
-					if (cell.isEdge()) {
-						cell.attr('line', { stroke: '#808080', strokeWidth: 1 });
-					} else {
-						const cellView = graph.findView(cell);
-						cellView && cellView.removeClass(`${cell.shape}-selected`);
-					}
-					cell.removeTools()
-				});
-
-				// 连接线连接
-				graph.on('edge:connected', (args) => {
-					console.log('edge:connected')
-					const edge = args.edge;
-					const node = args.currentCell;
-					const elem = args.currentMagnet;
-					const portId = elem.getAttribute('port');
-
-					// 触发 port 重新渲染
-					node.setPortProp(portId, 'connected', true);
-					edge.zIndex = -1;
-					// 更新连线样式
-					edge.attr({
-						line: {
-							strokeDasharray: '',
-							targetMarker: 'classic'
-						}
-					});
-					edge.appendLabel({ attrs: { label: { text: "" } } });
-				});
-
-			}
-		},
-		mounted() {
-			this.dataInit();
-		}
-	}
+export default {
+  data() {
+    return {
+      flowJson: {
+        pens: [
+          {
+            imageRatio: true,
+            points: [],
+            anchors: [
+              { x: 246.7290612277941, y: 128.47677138785372, direction: 4 },
+              { x: 306.6690612277942, y: 108.4967713878537, direction: 1 },
+              { x: 366.6090612277943, y: 128.47677138785372, direction: 2 },
+              { x: 306.6690612277942, y: 148.45677138785376, direction: 3 },
+            ],
+            manualAnchors: [],
+            rotatedAnchors: [
+              { x: 246.7290612277941, y: 128.47677138785372, direction: 4 },
+              { x: 306.6690612277942, y: 108.4967713878537, direction: 1 },
+              { x: 366.6090612277943, y: 128.47677138785372, direction: 2 },
+              { x: 306.6690612277942, y: 148.45677138785376, direction: 3 },
+            ],
+            animateDuration: 0,
+            animateFrames: [],
+            animateFrame: 0,
+            name: "rectangle",
+            tags: [],
+            visible: true,
+            rect: {
+              x: 246.7290612277941,
+              y: 108.4967713878537,
+              width: 119.88000000000021,
+              height: 39.960000000000065,
+              center: { x: 306.6690612277942, y: 128.47677138785372 },
+              ex: 366.6090612277943,
+              ey: 148.45677138785376,
+            },
+            fontColor: "#222222",
+            fontFamily:
+              '"Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial',
+            fontSize: 11.988000000000019,
+            lineHeight: 1.5,
+            fontStyle: "normal",
+            fontWeight: "normal",
+            textAlign: "center",
+            textBaseline: "middle",
+            textBackground: "",
+            animateCycleIndex: 0,
+            events: [],
+            dash: 0,
+            lineDashOffset: 0,
+            lineWidth: 0.999000000000002,
+            strokeStyle: "#222222",
+            fillStyle: "",
+            globalAlpha: 1,
+            rotate: 0,
+            offsetRotate: 0,
+            textMaxLine: 0,
+            textOffsetX: 0,
+            textOffsetY: 0,
+            animatePos: 0,
+            id: "6b1eea4",
+            zRotate: 0,
+            borderRadius: 0.5,
+            imageAlign: "center",
+            gradientAngle: 0,
+            gradientRadius: 0.01,
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            children: [],
+            text: "开始",
+            type: 0,
+            animateType: "",
+            paddingLeftNum: 0,
+            paddingRightNum: 0,
+            paddingTopNum: 0,
+            paddingBottomNum: 0,
+            textRect: {
+              x: 286.6890612277941,
+              y: 108.4967713878537,
+              width: 79.92000000000014,
+              height: 39.960000000000065,
+              center: { x: 326.6490612277942, y: 128.47677138785372 },
+              ex: 366.60906122779426,
+              ey: 148.45677138785376,
+            },
+            fullTextRect: {
+              x: 246.7290612277941,
+              y: 108.4967713878537,
+              width: 119.88000000000021,
+              height: 39.960000000000065,
+              center: { x: 306.6690612277942, y: 128.47677138785372 },
+              ex: 366.6090612277943,
+              ey: 148.45677138785376,
+            },
+            iconRect: {
+              x: 246.7290612277941,
+              y: 108.4967713878537,
+              width: 39.960000000000065,
+              height: 39.960000000000065,
+              center: { x: 266.7090612277941, y: 128.47677138785372 },
+              ex: 286.6890612277941,
+              ey: 148.45677138785376,
+            },
+            fullIconRect: {
+              x: 246.7290612277941,
+              y: 108.4967713878537,
+              width: 119.88000000000021,
+              height: 39.960000000000065,
+              center: { x: 306.6690612277942, y: 128.47677138785372 },
+              ex: 366.6090612277943,
+              ey: 148.45677138785376,
+            },
+            oldRect: {
+              x: 119.4526001135294,
+              y: 119.2671289179117,
+              width: 116.64000000000019,
+              height: 38.88000000000006,
+              center: { x: 177.7726001135295, y: 138.70712891791175 },
+              ex: 236.09260011352958,
+              ey: 158.14712891791177,
+            },
+            z: 0,
+            iconSize: 0,
+            evs: { x: 333, y: 615 },
+            TID: "1e0a8177",
+            elementRendered: false,
+          },
+          {
+            imageRatio: true,
+            points: [],
+            anchors: [
+              { x: 325.2290612277935, y: 245.1567713878539, direction: 4 },
+              { x: 385.16906122779363, y: 225.17677138785388, direction: 1 },
+              { x: 445.10906122779375, y: 245.1567713878539, direction: 2 },
+              { x: 385.16906122779363, y: 265.13677138785397, direction: 3 },
+            ],
+            manualAnchors: [],
+            rotatedAnchors: [
+              { x: 325.2290612277935, y: 245.1567713878539, direction: 4 },
+              { x: 385.16906122779363, y: 225.17677138785388, direction: 1 },
+              { x: 445.10906122779375, y: 245.1567713878539, direction: 2 },
+              { x: 385.16906122779363, y: 265.13677138785397, direction: 3 },
+            ],
+            animateDuration: 0,
+            animateFrames: [],
+            animateFrame: 0,
+            name: "rectangle",
+            tags: [],
+            visible: true,
+            rect: {
+              x: 325.2290612277935,
+              y: 225.17677138785388,
+              width: 119.88000000000021,
+              height: 39.960000000000065,
+              center: { x: 385.16906122779363, y: 245.1567713878539 },
+              ex: 445.10906122779375,
+              ey: 265.13677138785397,
+            },
+            fontColor: "#222222",
+            fontFamily:
+              '"Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial',
+            fontSize: 11.988000000000019,
+            lineHeight: 1.5,
+            fontStyle: "normal",
+            fontWeight: "normal",
+            textAlign: "center",
+            textBaseline: "middle",
+            textBackground: "",
+            animateCycleIndex: 0,
+            events: [],
+            dash: 0,
+            lineDashOffset: 0,
+            lineWidth: 0.999000000000002,
+            strokeStyle: "#222222",
+            fillStyle: "",
+            globalAlpha: 1,
+            rotate: 0,
+            offsetRotate: 0,
+            textMaxLine: 0,
+            textOffsetX: 0,
+            textOffsetY: 0,
+            animatePos: 0,
+            id: "8fad661",
+            zRotate: 0,
+            borderRadius: 0,
+            imageAlign: "center",
+            gradientAngle: 0,
+            gradientRadius: 0.01,
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            children: [],
+            text: "流程",
+            type: 0,
+            animateType: "",
+            paddingLeftNum: 0,
+            paddingRightNum: 0,
+            paddingTopNum: 0,
+            paddingBottomNum: 0,
+            textRect: {
+              x: 365.18906122779356,
+              y: 225.17677138785388,
+              width: 79.92000000000014,
+              height: 39.960000000000065,
+              center: { x: 405.14906122779365, y: 245.1567713878539 },
+              ex: 445.1090612277937,
+              ey: 265.13677138785397,
+            },
+            fullTextRect: {
+              x: 325.2290612277935,
+              y: 225.17677138785388,
+              width: 119.88000000000021,
+              height: 39.960000000000065,
+              center: { x: 385.16906122779363, y: 245.1567713878539 },
+              ex: 445.10906122779375,
+              ey: 265.13677138785397,
+            },
+            iconRect: {
+              x: 325.2290612277935,
+              y: 225.17677138785388,
+              width: 39.960000000000065,
+              height: 39.960000000000065,
+              center: { x: 345.20906122779354, y: 245.1567713878539 },
+              ex: 365.18906122779356,
+              ey: 265.13677138785397,
+            },
+            fullIconRect: {
+              x: 325.2290612277935,
+              y: 225.17677138785388,
+              width: 119.88000000000021,
+              height: 39.960000000000065,
+              center: { x: 385.16906122779363, y: 245.1567713878539 },
+              ex: 445.10906122779375,
+              ey: 265.13677138785397,
+            },
+            oldRect: {
+              x: 173.4526001135289,
+              y: 214.30712891791188,
+              width: 116.64000000000019,
+              height: 38.88000000000006,
+              center: { x: 231.772600113529, y: 233.7471289179119 },
+              ex: 290.0926001135291,
+              ey: 253.18712891791193,
+            },
+            z: 0,
+            iconSize: 0,
+            evs: { x: 524, y: 711 },
+            TID: "1e0a8177",
+            elementRendered: false,
+          },
+          {
+            name: "curve",
+            tags: [],
+            visible: true,
+            rect: {
+              x: 0,
+              y: 0,
+              width: 0,
+              height: 0,
+              center: { x: 0, y: 0 },
+              ex: 0,
+              ey: 0,
+            },
+            fontColor: "",
+            fontFamily:
+              '"Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial',
+            fontSize: 11.988000000000019,
+            lineHeight: 1.5,
+            fontStyle: "normal",
+            fontWeight: "normal",
+            textAlign: "center",
+            textBaseline: "middle",
+            textBackground: "#ffffff",
+            animateCycleIndex: 0,
+            events: [],
+            dash: 0,
+            lineDashOffset: 0,
+            lineWidth: 0.999000000000002,
+            strokeStyle: "#222222",
+            fillStyle: "",
+            globalAlpha: 1,
+            rotate: 0,
+            offsetRotate: 0,
+            textMaxLine: 0,
+            textOffsetX: 0,
+            textOffsetY: 0,
+            animatePos: 0,
+            id: "0d19d98",
+            fromArrow: "",
+            toArrow: "triangleSolid",
+            controlPoints: [
+              {
+                x: 306.6690612277942,
+                y: 228.45677138785376,
+                direction: 3,
+                anchorIndex: 3,
+                id: "6b1eea4",
+              },
+              {
+                x: 385.16906122779363,
+                y: 145.17677138785388,
+                direction: 1,
+                anchorIndex: 1,
+                id: "8fad661",
+              },
+            ],
+            fromArrowSize: 5,
+            toArrowSize: 5,
+            borderWidth: 0,
+            borderColor: "#000000",
+            animateColor: "",
+            animateSpan: 1,
+            animateFromSize: 0,
+            animateToSize: 0,
+            animateDotSize: 3,
+            from: {
+              x: 306.6690612277942,
+              y: 148.45677138785376,
+              direction: 3,
+              anchorIndex: 3,
+              id: "6b1eea4",
+            },
+            to: {
+              x: 385.16906122779363,
+              y: 225.17677138785388,
+              direction: 1,
+              anchorIndex: 1,
+              id: "8fad661",
+            },
+            type: 1,
+            evs: { x: 514, y: 668 },
+            TID: "1e0a8177",
+          },
+        ],
+        lineName: "curve",
+        fromArrow: "",
+        toArrow: "triangleSolid",
+        scale: 1,
+        locked: 1,
+        x: 0,
+        y: 0,
+        mqttOptions: { clientId: "4b0dc9a" },
+        dbIndex: 13,
+      },
+    };
+  },
+  methods: {
+    dataInit() {
+      (async function (o) {
+        if (typeof Le5leTopology === "undefined") {
+          console.time("Le5leTopology");
+          await o.$util.loadJs`https://cdn.jsdelivr.net/npm/topology-bundle@0.5.36/index.min.js`;
+          console.timeEnd("Le5leTopology");
+        }
+        const canvas = new Le5leTopology.Topology("l5l", {
+          on(event, data) {
+            if(data)console.log("onMessage", event, data);
+            // if (canvas && canvas.data) console.log(JSON.stringify(canvas.pureData()));
+          },
+        });
+        canvas.open(o.flowJson);
+      })(this);
+    },
+  },
+  mounted() {
+    this.dataInit();
+  },
+};
 </script>
-
-<style>
-	.app {
-		font-family: sans-serif;
-		padding: 0;
-		display: flex;
-		padding: 16px 8px;
-	}
-
-	.app-content {
-		flex: 1;
-		height: 240px;
-		margin-left: 8px;
-		margin-right: 8px;
-		box-shadow: 0 0 10px 1px #e9e9e9;
-	}
-
-	.dnd-wrap {
-		width: 200px;
-		padding: 16px;
-		border: 1px solid #f0f0f0;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		user-select: none;
-	}
-
-	.dnd-rect {
-		width: 100px;
-		height: 40px;
-		border: 2px solid #31d0c6;
-		text-align: center;
-		line-height: 40px;
-		margin: 16px;
-		cursor: move;
-	}
-
-	.dnd-circle {
-		width: 60px;
-		height: 60px;
-		border-radius: 100%;
-		border: 2px solid #31d0c6;
-		text-align: center;
-		line-height: 60px;
-		margin: 16px;
-		cursor: move;
-	}
-
-	.x6-graph-scroller {
-		border: 1px solid #f0f0f0;
-		margin-left: -1px;
-	}
-
-	.validating {
-		position: relative;
-	}
-
-	.validating:after {
-		position: absolute;
-		top: 4px;
-		left: 4px;
-		content: " ";
-		display: block;
-		width: 50px;
-		height: 50px;
-		border-radius: 50%;
-		border: 6px solid #873bf4;
-		border-color: #873bf4 transparent #873bf4 transparent;
-		animation: lds-dual-ring 1.2s linear infinite;
-	}
-
-	@keyframes lds-dual-ring {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
-	}
-</style>

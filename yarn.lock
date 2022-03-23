@@ -6584,6 +6584,11 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
+shaonq@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmmirror.com/shaonq/-/shaonq-1.0.2.tgz#311f8605de57b965f1f0e9388c76db5ab9e36f93"
+  integrity sha512-Sfmnagn+CwgU4stRR8UZ5fNq9HcdDDLn7SvkGKwaTduLU6FBY57hcQOol9MIuiaMOgGRIT/08vqJ6RM7lOXgig==
+
 shebang-command@^1.2.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/shebang-command/-/shebang-command-1.2.0.tgz#44aac65b695b03398968c39f363fee5deafdf1ea"
