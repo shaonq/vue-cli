@@ -50,9 +50,9 @@ request.interceptors.response.use(
         const res = response.data
         // 处理请求成功后的数据 
         if (res.status === 10) {
-            util.dialog.showError('登陆过期');
+            util.toast('登陆过期');
         } else if (res.status !== 0) {
-            util.showError(res.msg||`${url} 出错了`);
+            util.toast(res.msg||`${url} 出错了`);
             return Promise.reject(new Error(res.msg || 'Error'))
         } else {
             util.hideToast();

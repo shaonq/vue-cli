@@ -1,13 +1,11 @@
 @font-face {
-  font-family: "icon-quill";
-  /* project id 1125526 */
-  src: url("//at.alicdn.com/t/font_1125526_bo69c79s8r5.eot");
-  src: url("//at.alicdn.com/t/font_1125526_bo69c79s8r5.eot?#iefix") format("embedded-opentype"),
-    url("//at.alicdn.com/t/font_1125526_bo69c79s8r5.woff2") format("woff2"),
-    url("//at.alicdn.com/t/font_1125526_bo69c79s8r5.woff") format("woff"),
-    url("//at.alicdn.com/t/font_1125526_bo69c79s8r5.ttf") format("truetype"),
-    url("//at.alicdn.com/t/font_1125526_bo69c79s8r5.svg#icon-pell") format("svg");
+  font-family: 'icon-quill';
+  /* Project id 1125526 */
+  src:
+    url('data:application/x-font-woff2;charset=utf-8;base64,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') format('woff2'),
+    url('https://at.alicdn.com/t/font_1125526_cvk5rc62hrf.ttf?t=1632360790646') format('truetype');
 }
+
 
 .u-quill {
   border: 1px solid rgba(10, 10, 10, 0.1);
@@ -25,9 +23,19 @@
   }
 
   .ql-editor {
-    height: 100%;
+    max-height: 100%;
     outline: 0;
+
+    figure {
+      border-radius: 3px;
+
+      &:focus {
+        box-shadow: 0 0 0 2px #212121;
+      }
+    }
+
   }
+
 
   .ql-editor.ql-blank:before {
     position: absolute;
@@ -144,7 +152,7 @@
       font-size: 0.9em;
       word-break: normal;
       word-wrap: normal;
-      white-space: pre;
+      white-space: pre-wrap;
       overflow: auto;
       -webkit-overflow-scrolling: touch;
       background: #f6f6f6;
