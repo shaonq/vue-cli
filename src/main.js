@@ -9,7 +9,7 @@ import Components from '@/components/'
 Vue.use(Components);
 
 // add util
-import util from '@/utils'
+import util from 'shaonq'
 import http from '@/utils/request'
 
 // add theme
