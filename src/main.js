@@ -4,6 +4,10 @@ import router from '@/router'
 import store from '@/store'
 Vue.config.productionTip = false
 
+
+import 'core-js/stable'; 
+import 'regenerator-runtime/runtime';
+
 // add component
 import Components from '@/components/'
 Vue.use(Components);

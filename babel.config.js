@@ -1,3 +1,3 @@
 module.exports = {
-  presets: [["@vue/app", { polyfills: ["es6.promise", "es6.symbol"] }]]
+  presets: [ [ "@vue/app", { useBuiltIns: "entry"} ] ]
 };
