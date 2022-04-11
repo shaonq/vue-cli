@@ -18,7 +18,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-service": "^3.8.0",
-    "core-js": "^3.21.1",
+    "babel-polyfill": "^6.26.0",
     "sass": "~1.32.6",
     "sass-loader": "~10.2.0",
     "vue-template-compiler": "^2.6.10"

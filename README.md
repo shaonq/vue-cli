@@ -1,16 +1,17 @@
 
 ### version
-* `node v14.16.0 / npm 6.14.11`
+* `node v14.16.0`
+* `node v16.13.0(2022-04)[推荐]`
 * `yarn 1.22.4`
 
 
 ### node install
-* windows install `node-v14.16.0-x64.msi `
-* [Download](https://nodejs.org/dist/v14.16.0/)
+* windows install `node-v16.13.0-x64.msi `
+* [Download](https://nodejs.org/dist/v16.13.0/)
 
 ### yarn install 
 ```
-  npm install -g yarn@1.22.4  --registry=https://registry.npm.taobao.org
+  npm install -g yarn --registry=https://registry.npm.taobao.org
   yarn config set registry https://registry.npm.taobao.org -g
   yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
   

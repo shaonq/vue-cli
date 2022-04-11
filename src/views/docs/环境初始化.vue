@@ -81,27 +81,20 @@
 				</blockquote>
 				<pre class="line-numbers">
           <code class="language-shell-session">
-yarn add @babel/preset-env corejs@3 </code>
+# vue-cli3 推荐使用 babel-polyfill@6 	  
+yarn add babel-polyfill -D </code>
           <code class="language-javascript">
 # babel.config.js       
   presets: [ [ "@vue/app", { useBuiltIns: "entry" } ] ]
 
-//  然后在入口文件添加 import 'core-js/stable'; import 'regenerator-runtime/runtime';
-# or webpack.config.js
-use:{
-    loader: 'babel-loader',
-    options: {
-      presets: [
-        ['@babel/preset-env', {
-          targets: {
-            "ie": "10",
-          },
-          useBuiltIns: 'usage',
-          corejs: 3
-        }]
-      ]
-    }
-  }
+# vue.config.js
+configureWebpack: config => {
+    transpileDependencies: ['*'], // node_modules 里面也需要编译的包
+    configureWebpack: config => {
+        config.entry.app = ["babel-polyfill", "./src/main.js"]
+		...
+	}	
+}	
       </code>  </pre>
 			</div>
 		</div>

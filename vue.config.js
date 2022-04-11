@@ -17,8 +17,6 @@ module.exports = {
     runtimeCompiler: false,
     //是否生成 map source
     productionSourceMap: false,
-    // 进行编译的依赖
-    transpileDependencies: ['vue-echarts', 'resize-detector'],
     // 它支持webPack-dev-server的所有选项
     devServer: {
         port: 8080, // 调试链接的端口号
@@ -27,9 +25,12 @@ module.exports = {
         open: false, //配置自动启动浏览器
         //proxy:"" //服务器代理请求的 url
     },
-    //警告 webpack 的性能提示
-    configureWebpack: {
-        performance: {
+    // 进行编译的依赖 
+    transpileDependencies: ['*'],
+    configureWebpack: config => {
+        config.entry.app = ["babel-polyfill", "./src/main.js"]
+        //警告 webpack 的性能提示
+        config.performance = {
             hints: 'warning',
             //入口起点的最大体积 整数类型（以字节为单位）
             maxEntrypointSize: 50000000,
