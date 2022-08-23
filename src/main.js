@@ -1,3 +1,5 @@
+import '@babel/polyfill'
+
 import Vue from 'vue'
 import App from '@/App.vue'
 import router from '@/router'
@@ -26,13 +28,6 @@ Object.defineProperties(Vue.prototype, {
       return {
         // 代码高亮
         Prism: function () {
-          // (async () => {
-          //   if (typeof Prism === "undefined") {
-          //     await util.loadJs("https://cdn.jsdelivr.net/npm/prismjs@1.22.0/prism.min.js");
-          //     util.loadCss("https://cdn.jsdelivr.net/npm/prismjs@1.22.0/themes/prism-solarizedlight.css");
-          //   }
-          //   Prism.highlightAll();
-          // })();
         }
       }
     }

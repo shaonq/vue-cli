@@ -28,7 +28,7 @@ module.exports = {
     // 进行编译的依赖 
     transpileDependencies: ['*'],
     configureWebpack: config => {
-        config.entry.app = ["babel-polyfill", "./src/main.js"]
+        config.entry.app = [ "./src/main.js"]
         //警告 webpack 的性能提示
         config.performance = {
             hints: 'warning',

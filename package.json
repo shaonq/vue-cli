@@ -8,20 +8,20 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "axios": "^0.19.0",
-    "echarts": "^5.0.1",
-    "shaonq": "^1.0.51",
-    "vue": "^2.6.10",
-    "vue-router": "^3.0.3",
-    "vuex": "^3.0.1"
+    "@babel/polyfill": "^7.12.1",
+    "axios": "^0.19.2",
+    "echarts": "^5.3.3",
+    "shaonq": "^1.1.2",
+    "vue": "^2.7.9",
+    "vue-router": "^3.5.4",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.8.0",
-    "@vue/cli-service": "^3.8.0",
-    "babel-polyfill": "^6.26.0",
+    "@vue/cli-plugin-babel": "^3.12.0",
+    "@vue/cli-service": "^3.12.1",
     "sass": "~1.32.6",
     "sass-loader": "~10.2.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.7.9"
   },
   "postcss": {
     "plugins": {
@@ -31,7 +31,7 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not ie < 11"
+    "ie >= 10"
   ],
   "resolutions": {}
 }

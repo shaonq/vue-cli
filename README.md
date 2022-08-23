@@ -4,7 +4,7 @@
 * `node v16.13.0(2022-04)[推荐]`
 * `yarn 1.22.4`
 
-
+https://blog.csdn.net/weixin_33743703/article/details/91362067
 ### node install
 * windows install `node-v16.13.0-x64.msi `
 * [Download](https://nodejs.org/dist/v16.13.0/)
